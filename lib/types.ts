@@ -1,0 +1,86 @@
+export enum BehandlingstidUnitType {
+  WEEKS = '1',
+  MONTHS = '2',
+}
+
+export interface Frist {
+  varsletBehandlingstidUnits: number;
+  varsletBehandlingstidUnitTypeId: BehandlingstidUnitType;
+  /**
+   * Date
+   * @example 2021-09-01
+   */
+  varsletFrist: string;
+}
+
+export enum EventDocumentType {
+  SVARBREV_KLAGE = 'SVARBREV_KLAGE',
+  SVARBREV_ANKE = 'SVARBREV_ANKE',
+}
+
+export interface EventDocument {
+  title: string;
+  /**
+   * LocalDateTime
+   * @example 2021-09-01T12:00:00.000
+   */
+  archiveDate: string; // LocalDateTime
+  journalpostId: string | null;
+  eventDocumentType: EventDocumentType;
+}
+
+export interface SakEvent {
+  type: EventType;
+  /**
+   * DateTime
+   * @example 2021-09-01T12:00:00.000
+   */
+  date: string; // DateTime
+  relevantDocuments: EventDocument[];
+}
+
+export enum CaseType {
+  KLAGE = '1',
+  ANKE = '2',
+  OMGJØRING = '5',
+}
+
+export interface Sak {
+  id: string;
+  typeId: CaseType;
+  saksnummer: string;
+  ytelseId: string;
+  innsendingsytelseId: string;
+  events: SakEvent[];
+  varsletBehandlingstid: Frist | null;
+  /**
+   * Date
+   * @example 2021-09-01
+   */
+  finishedDate: string | null;
+  /**
+   * Date
+   * @example 2021-09-01
+   */
+  mottattKlageinstans: string;
+}
+
+export enum Audience {
+  KABAL_API = 'kabal-api',
+  KODEVERK_API = 'klage-kodeverk-api',
+}
+export enum EventType {
+  KLAGE_MOTTATT_VEDTAKSINSTANS = 'KLAGE_MOTTATT_VEDTAKSINSTANS',
+  KLAGE_MOTTATT_KLAGEINSTANS = 'KLAGE_MOTTATT_KLAGEINSTANS',
+  KLAGE_AVSLUTTET_I_KLAGEINSTANS = 'KLAGE_AVSLUTTET_I_KLAGEINSTANS',
+  ANKE_MOTTATT_KLAGEINSTANS = 'ANKE_MOTTATT_KLAGEINSTANS',
+  ANKE_SENDT_TRYGDERETTEN = 'ANKE_SENDT_TRYGDERETTEN',
+  ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN = 'ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN',
+  ANKE_AVSLUTTET_I_TRYGDERETTEN = 'ANKE_AVSLUTTET_I_TRYGDERETTEN',
+  ANKE_AVSLUTTET_I_KLAGEINSTANS = 'ANKE_AVSLUTTET_I_KLAGEINSTANS',
+  OMGJOERINGSKRAV_MOTTATT_KLAGEINSTANS = 'OMGJOERINGSKRAV_MOTTATT_KLAGEINSTANS',
+  OMGJOERINGSKRAV_AVSLUTTET_I_KLAGEINSTANS = 'OMGJOERINGSKRAV_AVSLUTTET_I_KLAGEINSTANS',
+}
+export interface GetSakerResponse {
+  saker: Sak[];
+}
