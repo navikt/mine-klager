@@ -1,4 +1,4 @@
-import { getKlanke } from '@/lib/api';
+import { getSak } from '@/lib/api';
 import { Heading } from '@navikt/ds-react';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 
 export default async function Sak({ params }: Props) {
   const { id } = await params;
-  const klanke = await getKlanke(id);
+  const sak = await getSak(id);
 
   return (
     <>
@@ -15,7 +15,7 @@ export default async function Sak({ params }: Props) {
         Min klage eller anke
       </Heading>
 
-      {JSON.stringify(klanke)}
+      {JSON.stringify(sak)}
     </>
   );
 }

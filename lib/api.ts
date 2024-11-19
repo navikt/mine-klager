@@ -3,53 +3,89 @@ export const API_URL =
 
 const MOCK: boolean = true;
 
-enum KlankeType {
-  KLANK = 'klank',
-  KLANG = 'klang',
-  KLUNK = 'klunk',
+export enum SaksType {
+  KLAGE = '1',
+  ANKE = '2',
+  ANKE_I_TR = '3',
 }
 
-interface Klanke {
+enum EventType {
+  mottattVedtaksinstans = 'mottatt-vedtaksinstans',
+  mottattKA = 'mottatt-ka',
+  ferdigKA = 'ferdig-ka',
+  sendtTR = 'sendt-tr',
+}
+
+interface SakEvent {
+  type: EventType;
+  /**
+   * DateTime
+   * @example 2021-09-01T12:00:00.000
+   */
+  date: string; // DateTime
+}
+
+export interface Sak {
   id: string;
-  type: KlankeType;
+  typeId: SaksType;
+  saksnummer: string;
+  ytelseId: string;
+  innsendingsytelseId: string;
+  events: SakEvent[];
 }
 
-export const getKlanker = async (): Promise<Klanke[]> => {
+const MOCK_SAKER: Sak[] = [
+  {
+    id: '1',
+    typeId: SaksType.KLAGE,
+    ytelseId: '123',
+    saksnummer: '123',
+    innsendingsytelseId: '123',
+    events: [],
+  },
+  {
+    id: '2',
+    typeId: SaksType.ANKE,
+    ytelseId: '123',
+    saksnummer: '123',
+    innsendingsytelseId: '123',
+    events: [],
+  },
+  {
+    id: '3',
+    typeId: SaksType.ANKE_I_TR,
+    ytelseId: '123',
+    saksnummer: '123',
+    innsendingsytelseId: '123',
+    events: [],
+  },
+];
+
+interface GetSakerResponse {
+  active: Sak[];
+  finished: Sak[];
+}
+
+export const getSaker = async (): Promise<GetSakerResponse> => {
   if (MOCK) {
     await delay(200);
 
-    return [
-      {
-        id: '1',
-        type: KlankeType.KLANK,
-      },
-      {
-        id: '2',
-        type: KlankeType.KLANG,
-      },
-      {
-        id: '3',
-        type: KlankeType.KLUNK,
-      },
-    ];
+    return { active: MOCK_SAKER, finished: MOCK_SAKER };
   }
 
-  const klanker = await fetch(`${API_URL}/klanker`);
-  return await klanker.json();
+  const saker = await fetch(`${API_URL}/saker`);
+  return await saker.json();
 };
 
-export const getKlanke = async (id: string): Promise<Klanke> => {
+export const getSak = async (id: string): Promise<Sak | undefined> => {
   if (MOCK) {
     await delay(200);
 
-    return {
-      id: '1',
-      type: KlankeType.KLANK,
-    };
+    return MOCK_SAKER.find((s) => s.id === id);
   }
 
-  const klanke = await fetch(`${API_URL}/klanker/${id}`);
-  return await klanke.json();
+  const sak = await fetch(`${API_URL}/saker/${id}`);
+  return await sak.json();
 };
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
