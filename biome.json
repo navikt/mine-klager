@@ -69,12 +69,7 @@
         "noConsole": {
           "level": "off",
           "options": {
-            "allow": [
-              "debug",
-              "info",
-              "warn",
-              "error"
-            ]
+            "allow": ["debug", "info", "warn", "error"]
           }
         },
         "noReactSpecificProps": {
@@ -106,9 +101,6 @@
     }
   },
   "files": {
-    "ignore": [
-      "dist/**",
-      ".next"
-    ]
+    "ignore": ["dist/**", ".next/**"]
   }
 }
