@@ -1,18 +1,22 @@
 export const API_URL =
-  process.env.NODE_ENV === 'development' ? 'https://kling-api.intern.dev.nav.no' : 'http://kling-api';
+  process.env.NODE_ENV === 'development'
+    ? 'https://kabal-api.intern.dev.nav.no/api/innsyn'
+    : 'http://kabal-api/api/innsyn';
 
-const MOCK: boolean = true;
+const MOCK: boolean = false;
 
 export enum SaksType {
-  KLAGE = '1',
-  ANKE = '2',
-  ANKE_I_TR = '3',
+  KLAGE = 'KLAGE',
+  ANKE = 'ANKE',
+  ANKE_I_TRYGDERETTEN = 'ANKE_I_TRYGDERETTEN',
+  BEHANDLING_ETTER_TRYGDERETTEN_OPPHEVET = 'BEHANDLING_ETTER_TRYGDERETTEN_OPPHEVET',
+  OMGJOERINGSKRAV = 'OMGJOERINGSKRAV',
 }
 
-enum EventType {
-  mottattVedtaksinstans = 'mottatt-vedtaksinstans',
-  mottattKA = 'mottatt-ka',
-  ferdigKA = 'ferdig-ka',
+export enum EventType {
+  MOTTATT_VEDTAKSINSTANS = 'MOTTATT_VEDTAKSINSTANS',
+  MOTTATT_KA = 'MOTTATT_KA',
+  FERDIG_KA = 'FERDIG_KA',
   sendtTR = 'sendt-tr',
 }
 
@@ -53,7 +57,7 @@ const MOCK_SAKER: Sak[] = [
   },
   {
     id: '3',
-    typeId: SaksType.ANKE_I_TR,
+    typeId: SaksType.ANKE_I_TRYGDERETTEN,
     ytelseId: '123',
     saksnummer: '123',
     innsendingsytelseId: '123',

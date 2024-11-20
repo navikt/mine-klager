@@ -1,10 +1,13 @@
-import { type Sak, SaksType, getSaker } from '@/lib/api';
-import { Box, HStack, Heading, Tag, VStack } from '@navikt/ds-react';
-import {} from '@navikt/ds-react/Page';
-import Link from 'next/link';
+import { EventType, type Sak, SaksType, getSaker } from '@/lib/api';
+import { getYtelseName } from '@/lib/kodeverk';
+import { BodyShort, Box, HStack, Heading, Label, Link, Tag, VStack } from '@navikt/ds-react';
+import { } from '@navikt/ds-react/Page';
+import NextLink from 'next/link';
 
 export default async function Home() {
   const { active, finished } = await getSaker();
+
+  console.log({ active, finished });
 
   return (
     <VStack gap="8">
@@ -16,41 +19,78 @@ export default async function Home() {
         Aktive saker ({active.length})
       </Heading>
 
-      <HStack as="ul" gap="4">
+      <VStack as="ul" gap="4">
         {active.map(SakListItem)}
-      </HStack>
+      </VStack>
 
       <Heading level="2" size="medium" spacing>
         Ferdige saker ({finished.length})
       </Heading>
 
-      <HStack as="ul" gap="4">
+      <VStack as="ul" gap="4">
         {finished.map(SakListItem)}
-      </HStack>
+      </VStack>
     </VStack>
   );
 }
 
-const SakListItem = ({ id, typeId, ytelseId, saksnummer, events }: Sak) => {
+const SakListItem = (sak: Sak) => {
+  const { id, saksnummer, events } = sak;
   const lastEvent = events.at(-1);
+  const mottattEvent =
+    events.find((event) => event.type === EventType.MOTTATT_VEDTAKSINSTANS) ??
+    events.find((event) => event.type === EventType.MOTTATT_KA);
 
   return (
-    <Box as="li" key={id} shadow="small" minHeight="200px" padding="8">
-      <Link href={`/saker/${id}`}>
-        <Heading level="2" size="medium" spacing>
-          <Type type={typeId} /> - {ytelseId}
-        </Heading>
-        <div>{saksnummer}</div>
-        <span>{lastEvent === undefined ? 'Ingen hendelser ennå' : `${lastEvent.date}: ${lastEvent.type}`}</span>
-      </Link>
-    </Box>
+    <li key={id}>
+      <NextLink href={`/saker/${id}`} >
+        <Box shadow="small" minHeight="200px" padding="8" borderRadius="medium" color='var(--a-text-default)'>
+          <VStack>
+            <Heading level="2" size="medium" spacing>
+              <Title {...sak} />
+            </Heading>
+            <HStack gap="1" marginBlock="0 2">
+              <Label htmlFor="saksnummer">Saksnummer:</Label>
+              <span id="saksnummer">{saksnummer}</span>
+            </HStack>
+            <HStack gap="1" marginBlock="0 2">
+              <Label htmlFor="mottatt">Mottatt:</Label>
+              <span id="mottatt">{mottattEvent?.date}</span>
+            </HStack>
+            <HStack gap="1" marginBlock="0 2">
+              <Label htmlFor="mottatt">Sist hendelse:</Label>
+              <span id="mottatt">{lastEvent?.date} - {lastEvent?.type}</span>
+            </HStack>
+          </VStack>
+        </Box>
+      </NextLink>
+    </li>
   );
 };
 
 const TYPE_NAMES: Record<SaksType, string> = {
   [SaksType.KLAGE]: 'Klage',
   [SaksType.ANKE]: 'Anke',
-  [SaksType.ANKE_I_TR]: 'Anke i Trygderetten',
+  [SaksType.ANKE_I_TRYGDERETTEN]: 'Anke i Trygderetten',
+  [SaksType.BEHANDLING_ETTER_TRYGDERETTEN_OPPHEVET]: 'Behandling etter Trygderetten opphevet',
+  [SaksType.OMGJOERINGSKRAV]: 'Omgjøringskrav',
+};
+
+const Title = async ({ typeId, ytelseId }: Sak) => {
+  const ytelseName = await getYtelseName(ytelseId);
+
+  switch (typeId) {
+    case SaksType.KLAGE:
+      return `Klage på ${ytelseName}`;
+    case SaksType.ANKE:
+      return `Anke på ${ytelseName}`;
+    case SaksType.ANKE_I_TRYGDERETTEN:
+      return `Anke i Trygderetten for ${ytelseName}`;
+    case SaksType.BEHANDLING_ETTER_TRYGDERETTEN_OPPHEVET:
+      return `Anke på ${ytelseName}`;
+    case SaksType.OMGJOERINGSKRAV:
+      return `Omgjøringskrav for ${ytelseName}`;
+  }
 };
 
 interface TypeProps {
