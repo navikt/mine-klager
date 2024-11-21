@@ -2,20 +2,23 @@ import { DateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
 import { EventType, type Sak, SaksType, getSaker } from '@/lib/api';
 import { getYtelseName } from '@/lib/kodeverk';
+import { DEFAULT_LANGUAGE, type Languages } from '@/locales';
 import { ArrowsCirclepathIcon, FileExportIcon, ParagraphIcon } from '@navikt/aksel-icons';
 import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
 import NextLink from 'next/link';
 
 interface SakerPageProps {
-  params: Promise<{ lang: string }>;
+  params: Promise<{ lang: Languages }>;
 }
 
 export default async function SakerPage({ params }: SakerPageProps) {
   const { lang } = await params;
 
-  const { active, finished } = await getSaker();
+  // if (!isLanguage(lang)) {
+  //   return notFound();
+  // }
 
-  // console.log({ lang, active, finished });
+  const { active, finished } = await getSaker();
 
   return (
     <>
@@ -54,7 +57,7 @@ export default async function SakerPage({ params }: SakerPageProps) {
 
 interface SakListItemProps {
   sak: Sak;
-  lang: string;
+  lang: Languages;
 }
 
 const SakListItem = ({ sak, lang }: SakListItemProps) => {
@@ -66,9 +69,11 @@ const SakListItem = ({ sak, lang }: SakListItemProps) => {
 
   const Icon = getIcon(typeId);
 
+  const pathPrefix = lang === DEFAULT_LANGUAGE ? '' : `/${lang}`;
+
   return (
     <li className="group duration-200 ease-in-out hover:bg-surface-hover">
-      <NextLink href={`/${lang}/saker/${id}`} className="block text-text-default no-underline">
+      <NextLink href={`${pathPrefix}/saker/${id}`} className="block text-text-default no-underline">
         <Box as="section" shadow="small" padding="8" borderRadius="medium">
           <HStack gap="2" align="center">
             <Icon aria-hidden className="h-16 w-fit text-text-subtle group-hover:text-text-action-hover" />

@@ -6,11 +6,12 @@ import { HStack, Heading } from '@navikt/ds-react';
 import { notFound } from 'next/navigation';
 
 interface Props {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; lang: string }>;
 }
 
 export default async function SakPage({ params }: Props) {
   const { id } = await params;
+
   const sak = await getSak(id);
 
   if (sak === undefined) {

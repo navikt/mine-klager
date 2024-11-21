@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
     defaultLocale: DEFAULT_LANGUAGE,
     localeDetection: false,
   },
+  // biome-ignore lint/suspicious/useAwait: Must return promise
+  redirects: async () => [
+    {
+      source: '/',
+      destination: `/${DEFAULT_LANGUAGE}`,
+      permanent: true,
+    },
+  ],
 };
 
 export default nextConfig;

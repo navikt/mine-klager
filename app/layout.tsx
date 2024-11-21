@@ -2,7 +2,7 @@ import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import '@/app/globals.css';
-import { DEFAULT_LANGUAGE, LANGUAGES } from '@/locales';
+import { LANGUAGES } from '@/locales';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
 
 export const metadata: Metadata = {
@@ -17,12 +17,12 @@ interface Props {
 const availableLanguages = LANGUAGES.map((locale) => ({
   locale,
   handleInApp: false,
-  url: locale === DEFAULT_LANGUAGE ? '/' : `/${locale}`,
+  url: `/${locale}`,
 }));
 
 const RootLayout = async ({ children }: Readonly<Props>) => {
   const Decorator = await fetchDecoratorReact({
-    env: 'prod',
+    env: 'dev',
     params: { availableLanguages },
   });
 
