@@ -1,7 +1,8 @@
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import './globals.css';
+import '@/app/globals.css';
+import { DEFAULT_LANGUAGE, LANGUAGES } from '@/locales';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
 
 export const metadata: Metadata = {
@@ -13,9 +14,16 @@ interface Props {
   children: React.ReactNode;
 }
 
+const availableLanguages = LANGUAGES.map((locale) => ({
+  locale,
+  handleInApp: false,
+  url: locale === DEFAULT_LANGUAGE ? '/' : `/${locale}`,
+}));
+
 const RootLayout = async ({ children }: Readonly<Props>) => {
   const Decorator = await fetchDecoratorReact({
     env: 'prod',
+    params: { availableLanguages },
   });
 
   return (
@@ -25,12 +33,15 @@ const RootLayout = async ({ children }: Readonly<Props>) => {
       </head>
       <body>
         <Decorator.Header />
-        <Page footer={<footer>Footer</footer>} contentBlockPadding="end">
+
+        <Page contentBlockPadding="end" className="pt-8">
           <PageBlock as="main" width="xl" gutters>
             {children}
           </PageBlock>
         </Page>
+
         <Decorator.Footer />
+
         <Decorator.Scripts loader={Script} />
       </body>
     </html>

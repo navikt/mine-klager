@@ -39,5 +39,8 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
+  },
+  "files.exclude": {
+    ".next": true
   }
 }

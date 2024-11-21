@@ -1,3 +1,8 @@
+export const API_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'https://klage-kodeverk-api.intern.dev.nav.no/kodeverk'
+    : 'http://klage-kodeverk-api/kodeverk';
+
 export interface Ytelse {
   id: string;
   navn: string;
@@ -20,7 +25,7 @@ export const getYtelseName = async (id: string): Promise<string> =>
   (await getYtelser()).find((ytelse) => ytelse.id === id)?.navn ?? id;
 
 const updateYtelser = async (): Promise<Ytelse[]> => {
-  const res = await fetch('https://klage-kodeverk-api.intern.dev.nav.no/kodeverk/ytelser/simple');
+  const res = await fetch(`${API_URL}/ytelser/simple`);
   ytelser = await res.json();
   return ytelser;
 };
