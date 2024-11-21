@@ -14,10 +14,6 @@ interface SakerPageProps {
 export default async function SakerPage({ params }: SakerPageProps) {
   const { lang } = await params;
 
-  // if (!isLanguage(lang)) {
-  //   return notFound();
-  // }
-
   const { active, finished } = await getSaker();
 
   return (

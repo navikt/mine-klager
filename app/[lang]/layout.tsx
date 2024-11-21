@@ -1,4 +1,4 @@
-import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
+import { type DecoratorLocale, fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import '@/app/globals.css';
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 
 interface Props {
   children: React.ReactNode;
+  params: Promise<{ lang: DecoratorLocale }>;
 }
 
 const availableLanguages = LANGUAGES.map((locale) => ({
@@ -20,14 +21,16 @@ const availableLanguages = LANGUAGES.map((locale) => ({
   url: `/${locale}`,
 }));
 
-const RootLayout = async ({ children }: Readonly<Props>) => {
+const RootLayout = async ({ children, params }: Readonly<Props>) => {
+  const { lang } = await params;
+
   const Decorator = await fetchDecoratorReact({
     env: 'dev',
-    params: { availableLanguages },
+    params: { language: lang, availableLanguages, logoutWarning: true },
   });
 
   return (
-    <html lang="no">
+    <html lang={lang}>
       <head>
         <Decorator.HeadAssets />
       </head>
