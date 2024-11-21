@@ -18,35 +18,37 @@ export default async function SakerPage({ params }: SakerPageProps) {
   // console.log({ lang, active, finished });
 
   return (
-    <VStack gap="8">
+    <>
       <Heading level="1" size="large" spacing>
         Mine klager og anker
       </Heading>
 
-      <section>
-        <Heading level="2" size="medium" spacing>
-          Aktive saker ({active.length})
-        </Heading>
+      <VStack gap="16">
+        <section>
+          <Heading level="2" size="medium" spacing>
+            Aktive saker ({active.length})
+          </Heading>
 
-        <VStack as="ul" gap="4">
-          {active.map((sak, index) => (
-            <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} />
-          ))}
-        </VStack>
-      </section>
+          <VStack as="ul" gap="4">
+            {active.map((sak, index) => (
+              <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} />
+            ))}
+          </VStack>
+        </section>
 
-      <section>
-        <Heading level="2" size="medium" spacing>
-          Ferdige saker ({finished.length})
-        </Heading>
+        <section>
+          <Heading level="2" size="medium" spacing>
+            Ferdige saker ({finished.length})
+          </Heading>
 
-        <VStack as="ul" gap="4">
-          {finished.map((sak, index) => (
-            <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} />
-          ))}
-        </VStack>
-      </section>
-    </VStack>
+          <VStack as="ul" gap="4">
+            {finished.map((sak, index) => (
+              <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} />
+            ))}
+          </VStack>
+        </section>
+      </VStack>
+    </>
   );
 }
 

@@ -34,7 +34,7 @@ const RootLayout = async ({ children }: Readonly<Props>) => {
       <body>
         <Decorator.Header />
 
-        <Page contentBlockPadding="end" className="pt-8">
+        <Page contentBlockPadding="end" className="pt-7">
           <PageBlock as="main" width="xl" gutters>
             {children}
           </PageBlock>

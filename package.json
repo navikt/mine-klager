@@ -9,10 +9,10 @@
     "lint": "biome check"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "7.5.2",
-    "@navikt/ds-css": "7.5.2",
-    "@navikt/ds-react": "7.5.2",
-    "@navikt/ds-tailwind": "7.5.2",
+    "@navikt/aksel-icons": "7.5.3",
+    "@navikt/ds-css": "7.5.3",
+    "@navikt/ds-react": "7.5.3",
+    "@navikt/ds-tailwind": "7.5.3",
     "@navikt/nav-dekoratoren-moduler": "3.1.1",
     "@navikt/oasis": "3.4.0",
     "date-fns": "4.1.0",
