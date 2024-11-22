@@ -1,4 +1,5 @@
 export const API_URL =
+  // biome-ignore lint/nursery/noProcessEnv: NextJS does not support import.meta.env
   process.env.NODE_ENV === 'development'
     ? 'https://kabal-api.intern.dev.nav.no/api/innsyn'
     : 'http://kabal-api/api/innsyn';

@@ -8,13 +8,13 @@ const nextConfig: NextConfig = {
   rewrites: async () => ({
     beforeFiles: [
       {
-        source: '/',
-        destination: `/${DEFAULT_LANGUAGE}`,
+        source: '/saker/:id',
+        destination: `/${DEFAULT_LANGUAGE}/saker/:id`,
         locale: false,
       },
       {
-        source: '/saker/:id',
-        destination: `/${DEFAULT_LANGUAGE}/saker/:id`,
+        source: '/',
+        destination: `/${DEFAULT_LANGUAGE}/`,
         locale: false,
       },
     ],

@@ -2,7 +2,7 @@ import { type DecoratorLocale, fetchDecoratorReact } from '@navikt/nav-dekorator
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import '@/app/globals.css';
-import { LANGUAGES } from '@/locales';
+import { DEFAULT_LANGUAGE, LANGUAGES } from '@/locales';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
 
 export const metadata: Metadata = {
@@ -15,18 +15,26 @@ interface Props {
   params: Promise<{ lang: DecoratorLocale }>;
 }
 
-const availableLanguages = LANGUAGES.map((locale) => ({
-  locale,
-  handleInApp: false,
-  url: `/${locale}`,
-}));
-
 const RootLayout = async ({ children, params }: Readonly<Props>) => {
   const { lang } = await params;
 
   const Decorator = await fetchDecoratorReact({
-    env: 'dev',
-    params: { language: lang, availableLanguages, logoutWarning: true },
+    // biome-ignore lint/nursery/noProcessEnv: NextJS does not support import.meta.env
+    env: process.env.NODE_ENV === 'development' ? 'dev' : 'prod',
+    params: {
+      language: lang,
+      availableLanguages: LANGUAGES.map((locale) => ({
+        locale,
+        handleInApp: true,
+      })),
+      logoutWarning: true,
+      breadcrumbs: [
+        {
+          title: 'Mine klager og anker',
+          url: lang === DEFAULT_LANGUAGE ? '/' : `/${lang}/`,
+        },
+      ],
+    },
   });
 
   return (
