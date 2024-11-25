@@ -6,7 +6,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
   },
   rewrites: async () => ({
-    beforeFiles: [
+    beforeFiles: [],
+    afterFiles: [],
+    fallback: [
       {
         source: '/saker/:id',
         destination: `/${DEFAULT_LANGUAGE}/saker/:id`,
@@ -18,8 +20,6 @@ const nextConfig: NextConfig = {
         locale: false,
       },
     ],
-    afterFiles: [],
-    fallback: [],
   }),
 };
 

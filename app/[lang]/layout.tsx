@@ -2,8 +2,9 @@ import { type DecoratorLocale, fetchDecoratorReact } from '@navikt/nav-dekorator
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import '@/app/globals.css';
-import { DEFAULT_LANGUAGE, LANGUAGES } from '@/locales';
+import { DEFAULT_LANGUAGE, LANGUAGES, isLanguage } from '@/locales';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Mine klager',
@@ -17,6 +18,10 @@ interface Props {
 
 const RootLayout = async ({ children, params }: Readonly<Props>) => {
   const { lang } = await params;
+
+  if (!isLanguage(lang)) {
+    return notFound();
+  }
 
   const Decorator = await fetchDecoratorReact({
     // biome-ignore lint/nursery/noProcessEnv: NextJS does not support import.meta.env
