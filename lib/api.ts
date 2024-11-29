@@ -72,8 +72,9 @@ interface GetSakerResponse {
 }
 
 export const getSaker = async (): Promise<GetSakerResponse> => {
-  const saker = await fetch(`${API_URL}/saker`);
-  return await saker.json();
+  const res = await fetch(`${API_URL}/saker`);
+
+  return res.json();
 };
 
 export const getSak = async (id: string): Promise<Sak | undefined> => {

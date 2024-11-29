@@ -1,7 +1,7 @@
 const ActiveList = lazy(() => import('@/app/[lang]/active'));
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { isLanguage } from '@/locales';
-import { Heading, Skeleton, VStack } from '@navikt/ds-react';
+import { Heading, Skeleton } from '@navikt/ds-react';
 import { notFound } from 'next/navigation';
 import { Suspense, lazy } from 'react';
 
@@ -24,21 +24,19 @@ export default async function SakerPage({ params }: SakerPageProps) {
         Mine klager og anker
       </Heading>
 
-      <VStack gap="16">
-        <Suspense
-          fallback={
-            <section>
-              <Heading level="2" size="medium" spacing>
-                Aktive saker (0)
-              </Heading>
+      <Suspense
+        fallback={
+          <section>
+            <Heading level="2" size="medium" spacing>
+              Aktive saker (0)
+            </Heading>
 
-              <Skeleton variant="rounded" height={200} width="100%" />
-            </section>
-          }
-        >
-          <ActiveList lang={lang} />
-        </Suspense>
-      </VStack>
+            <Skeleton variant="rounded" height={200} width="100%" />
+          </section>
+        }
+      >
+        <ActiveList lang={lang} />
+      </Suspense>
     </>
   );
 }

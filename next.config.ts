@@ -7,8 +7,7 @@ const nextConfig: NextConfig = {
   },
   rewrites: async () => ({
     beforeFiles: [],
-    afterFiles: [],
-    fallback: [
+    afterFiles: [
       {
         source: '/saker/:id',
         destination: `/${DEFAULT_LANGUAGE}/saker/:id`,
@@ -20,6 +19,7 @@ const nextConfig: NextConfig = {
         locale: false,
       },
     ],
+    fallback: [],
   }),
 };
 
