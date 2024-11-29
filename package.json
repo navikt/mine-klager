@@ -9,12 +9,12 @@
     "lint": "biome check"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "7.5.3",
-    "@navikt/ds-css": "7.5.3",
-    "@navikt/ds-react": "7.5.3",
-    "@navikt/ds-tailwind": "7.5.3",
+    "@navikt/aksel-icons": "7.6.0",
+    "@navikt/ds-css": "7.6.0",
+    "@navikt/ds-react": "7.6.0",
+    "@navikt/ds-tailwind": "7.6.0",
     "@navikt/nav-dekoratoren-moduler": "3.1.1",
-    "@navikt/oasis": "3.4.0",
+    "@navikt/oasis": "3.6.0",
     "date-fns": "4.1.0",
     "next": "15.0.3",
     "next-auth": "4.24.10",
@@ -23,13 +23,13 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/node": "22.9.1",
+    "@types/node": "22.10.1",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "autoprefixer": "10.4.20",
     "postcss": "8.4.49",
-    "stylelint": "16.10.0",
+    "stylelint": "16.11.0",
     "tailwindcss": "3.4.15",
-    "typescript": "5.6.3"
+    "typescript": "5.7.2"
   }
 }
