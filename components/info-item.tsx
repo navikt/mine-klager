@@ -10,9 +10,10 @@ export const InfoItem = ({ label, children }: InfoItemProps) => {
   const id = useId();
 
   return (
-    <HStack gap="1">
+    <HStack gap="1" align="center">
       <Label htmlFor={id}>{label}:</Label>
-      <span id={id}>{children}</span>
+
+      <div id={id}>{children}</div>
     </HStack>
   );
 };

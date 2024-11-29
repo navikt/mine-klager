@@ -1,9 +1,9 @@
+import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
-import { InfoItem } from '@/components/info-item';
 import { TimelineItem } from '@/components/timeline-item';
-import { SaksType, getSak } from '@/lib/api';
+import { getSak } from '@/lib/api';
+import { getSakTitle } from '@/lib/sak-title';
 import { DEFAULT_LANGUAGE, type Languages } from '@/locales';
-import { ParagraphIcon } from '@navikt/aksel-icons';
 import { HStack, Heading } from '@navikt/ds-react';
 import { notFound } from 'next/navigation';
 
@@ -19,7 +19,8 @@ export default async function SakPage({ params }: Props) {
     return notFound();
   }
 
-  const { typeId, saksnummer, events } = sak;
+  const { saksnummer, events, ytelseId } = sak;
+  const title = await getSakTitle(ytelseId);
 
   const path = `/saker/${id}`;
 
@@ -30,31 +31,23 @@ export default async function SakPage({ params }: Props) {
         path={path}
         breadcrumbs={[
           {
-            title: sak === undefined ? '' : TYPE_NAMES[sak.typeId],
+            title,
             url: lang === DEFAULT_LANGUAGE ? path : `/${lang}/saker/${id}`,
           },
         ]}
       />
 
       <Heading level="1" size="large" spacing>
-        {TYPE_NAMES[typeId]}
+        Sak
       </Heading>
 
-      <InfoItem label="Saksnummer">{saksnummer}</InfoItem>
+      <CopyItem label="Saksnummer">{saksnummer}</CopyItem>
 
-      <HStack as="ul" gap="4">
-        {events.map(({ type, date }) => (
-          <TimelineItem key={date} date={date} title={type} icon={<ParagraphIcon aria-hidden />} />
+      <HStack as="ul" gap="4" marginBlock="4 0">
+        {events.map((event) => (
+          <TimelineItem key={`${event.type}-${event.date}`} {...event} />
         ))}
       </HStack>
     </>
   );
 }
-
-const TYPE_NAMES: Record<SaksType, string> = {
-  [SaksType.KLAGE]: 'Klage',
-  [SaksType.ANKE]: 'Anke',
-  [SaksType.ANKE_I_TRYGDERETTEN]: 'Anke i Trygderetten',
-  [SaksType.BEHANDLING_ETTER_TRYGDERETTEN_OPPHEVET]: 'Behandling etter Trygderetten opphevet',
-  [SaksType.OMGJOERINGSKRAV]: 'Omgjøringskrav',
-};

@@ -1,25 +1,56 @@
+import { ParagraphIcon } from '@navikt/aksel-icons';
+
 export const API_URL =
   // biome-ignore lint/nursery/noProcessEnv: NextJS does not support import.meta.env
   process.env.NODE_ENV === 'development'
     ? 'https://kabal-api.intern.dev.nav.no/api/innsyn'
     : 'http://kabal-api/api/innsyn';
 
-export enum SaksType {
-  KLAGE = 'KLAGE',
-  ANKE = 'ANKE',
-  ANKE_I_TRYGDERETTEN = 'ANKE_I_TRYGDERETTEN',
-  BEHANDLING_ETTER_TRYGDERETTEN_OPPHEVET = 'BEHANDLING_ETTER_TRYGDERETTEN_OPPHEVET',
-  OMGJOERINGSKRAV = 'OMGJOERINGSKRAV',
-}
-
 export enum EventType {
-  MOTTATT_VEDTAKSINSTANS = 'MOTTATT_VEDTAKSINSTANS',
-  MOTTATT_KA = 'MOTTATT_KA',
-  FERDIG_KA = 'FERDIG_KA',
-  SENDT_TR = 'SENDT_TR',
+  KLAGE_MOTTATT_VEDTAKSINSTANS = 'KLAGE_MOTTATT_VEDTAKSINSTANS',
+  KLAGE_MOTTATT_KLAGEINSTANS = 'KLAGE_MOTTATT_KLAGEINSTANS',
+  KLAGE_AVSLUTTET_I_KLAGEINSTANS = 'KLAGE_AVSLUTTET_I_KLAGEINSTANS',
+  ANKE_MOTTATT_KLAGEINSTANS = 'ANKE_MOTTATT_KLAGEINSTANS',
+  ANKE_SENDT_TRYGDERETTEN = 'ANKE_SENDT_TRYGDERETTEN',
+  ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN = 'ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN',
+  ANKE_AVSLUTTET_I_TRYGDERETTEN = 'ANKE_AVSLUTTET_I_TRYGDERETTEN',
+  ANKE_AVSLUTTET_I_KLAGEINSTANS = 'ANKE_AVSLUTTET_I_KLAGEINSTANS',
 }
 
-interface SakEvent {
+export const EVENT_NAMES: Readonly<Record<EventType, string>> = {
+  [EventType.KLAGE_MOTTATT_VEDTAKSINSTANS]: 'Klage mottatt vedtaksinstans',
+  [EventType.KLAGE_MOTTATT_KLAGEINSTANS]: 'Klage mottatt klageinstans',
+  [EventType.KLAGE_AVSLUTTET_I_KLAGEINSTANS]: 'Klage avsluttet i klageinstans',
+  [EventType.ANKE_MOTTATT_KLAGEINSTANS]: 'Anke mottatt klageinstans',
+  [EventType.ANKE_SENDT_TRYGDERETTEN]: 'Anke sendt Trygderetten',
+  [EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN]: 'Anke kjennelse mottatt fra Trygderetten',
+  [EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN]: 'Anke avsluttet i Trygderetten',
+  [EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS]: 'Anke avsluttet i klageinstans',
+};
+
+export const EVENT_ICONS: Readonly<Record<EventType, typeof ParagraphIcon>> = {
+  [EventType.KLAGE_MOTTATT_VEDTAKSINSTANS]: ParagraphIcon,
+  [EventType.KLAGE_MOTTATT_KLAGEINSTANS]: ParagraphIcon,
+  [EventType.KLAGE_AVSLUTTET_I_KLAGEINSTANS]: ParagraphIcon,
+  [EventType.ANKE_MOTTATT_KLAGEINSTANS]: ParagraphIcon,
+  [EventType.ANKE_SENDT_TRYGDERETTEN]: ParagraphIcon,
+  [EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN]: ParagraphIcon,
+  [EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN]: ParagraphIcon,
+  [EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS]: ParagraphIcon,
+};
+
+export const EVENT_DESCRIPTIONS: Readonly<Record<EventType, string>> = {
+  [EventType.KLAGE_MOTTATT_VEDTAKSINSTANS]: 'Klage mottatt vedtaksinstans',
+  [EventType.KLAGE_MOTTATT_KLAGEINSTANS]: 'Klage mottatt klageinstans',
+  [EventType.KLAGE_AVSLUTTET_I_KLAGEINSTANS]: 'Klage avsluttet i klageinstans',
+  [EventType.ANKE_MOTTATT_KLAGEINSTANS]: 'Anke mottatt klageinstans',
+  [EventType.ANKE_SENDT_TRYGDERETTEN]: 'Anke sendt Trygderetten',
+  [EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN]: 'Anke kjennelse mottatt fra Trygderetten',
+  [EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN]: 'Anke avsluttet i Trygderetten',
+  [EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS]: 'Anke avsluttet i klageinstans',
+};
+
+export interface SakEvent {
   type: EventType;
   /**
    * DateTime
@@ -30,7 +61,6 @@ interface SakEvent {
 
 export interface Sak {
   id: string;
-  typeId: SaksType;
   saksnummer: string;
   ytelseId: string;
   innsendingsytelseId: string;
@@ -38,8 +68,7 @@ export interface Sak {
 }
 
 interface GetSakerResponse {
-  active: Sak[];
-  finished: Sak[];
+  saker: Sak[];
 }
 
 export const getSaker = async (): Promise<GetSakerResponse> => {
@@ -48,7 +77,7 @@ export const getSaker = async (): Promise<GetSakerResponse> => {
 };
 
 export const getSak = async (id: string): Promise<Sak | undefined> => {
-  const { active, finished } = await getSaker();
+  const { saker } = await getSaker();
 
-  return active.find((sak) => sak.id === id) ?? finished.find((sak) => sak.id === id);
+  return saker.find((sak) => sak.id === id);
 };

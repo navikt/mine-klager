@@ -8,16 +8,16 @@ interface ActiveListProps {
 }
 
 export const ActiveList = async ({ lang }: ActiveListProps) => {
-  const { active } = await getSaker();
+  const { saker } = await getSaker();
 
   return (
     <section>
       <Heading level="2" size="medium" spacing>
-        Aktive saker ({active.length})
+        Aktive saker ({saker.length})
       </Heading>
 
       <VStack as="ul" gap="4">
-        {active.map((sak, index) => (
+        {saker.map((sak, index) => (
           <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} />
         ))}
       </VStack>
