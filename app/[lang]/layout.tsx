@@ -1,15 +1,14 @@
 import { type DecoratorLocale, fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
-import type { Metadata } from 'next';
 import Script from 'next/script';
 import '@/app/globals.css';
 import { getLanguage } from '@/lib/get-language';
 import { DEFAULT_LANGUAGE, LANGUAGES } from '@/locales';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
 
-export const metadata: Metadata = {
-  title: 'Mine klager',
-  description: 'Oversikt over dine klager og anker',
-};
+// export const metadata: Metadata = {
+//   title: 'Mine klager',
+//   description: 'Oversikt over dine klager og anker',
+// };
 
 interface Props {
   children: React.ReactNode;

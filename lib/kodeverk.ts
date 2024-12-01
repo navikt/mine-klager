@@ -8,24 +8,14 @@ export interface Ytelse {
   navn: string;
 }
 
-let ytelser: Ytelse[] = [];
+export const getYtelseName = async (id: string): Promise<string> => {
+  const ytelser = await getYtelser();
 
-export const getYtelser = async (): Promise<Ytelse[]> => {
-  if (ytelser.length > 0) {
-    // biome-ignore lint/suspicious/useAwait: Update ytelser in the background.
-    updateYtelser();
-
-    return ytelser;
-  }
-
-  return updateYtelser();
+  return ytelser.find((ytelse) => ytelse.id === id)?.navn ?? id;
 };
 
-export const getYtelseName = async (id: string): Promise<string> =>
-  (await getYtelser()).find((ytelse) => ytelse.id === id)?.navn ?? id;
-
-const updateYtelser = async (): Promise<Ytelse[]> => {
+const getYtelser = async (): Promise<Ytelse[]> => {
   const res = await fetch(`${API_URL}/ytelser/simple`);
-  ytelser = await res.json();
-  return ytelser;
+
+  return await res.json();
 };

@@ -1,7 +1,14 @@
 import { getYtelseName } from '@/lib/kodeverk';
+import type { Languages } from '@/locales';
 
-export const getSakTitle = async (ytelseId: string) => {
+const PREFIX: Record<Languages, string> = {
+  nb: 'Klage på',
+  nn: 'Klage på',
+  en: 'Complaint about',
+};
+
+export const getSakTitle = async (ytelseId: string, lang: Languages) => {
   const ytelseName = await getYtelseName(ytelseId);
 
-  return `Klage på «${ytelseName}»`;
+  return `${PREFIX[lang]} «${ytelseName}»`;
 };

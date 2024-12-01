@@ -1,10 +1,17 @@
 import { DateTime } from '@/components/datetime';
 import { EVENT_DESCRIPTIONS, EVENT_ICONS, EVENT_NAMES, type SakEvent } from '@/lib/api';
+import type { Languages } from '@/locales';
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
-export const TimelineItem = ({ type, date }: SakEvent) => {
+interface TimelineItemProps {
+  sakEvent: SakEvent;
+  lang: Languages;
+}
+
+export const TimelineItem = ({ sakEvent, lang }: TimelineItemProps) => {
+  const { type, date } = sakEvent;
   const Icon = EVENT_ICONS[type];
-  const description = EVENT_DESCRIPTIONS[type];
+  const description = EVENT_DESCRIPTIONS[type][lang];
 
   return (
     <HStack as="li" gap="2" wrap={false} align="stretch">
@@ -16,7 +23,7 @@ export const TimelineItem = ({ type, date }: SakEvent) => {
 
       <VStack gap="2" flexGrow="1">
         <Heading level="2" size="xsmall">
-          {EVENT_NAMES[type]}
+          {EVENT_NAMES[type][lang]}
         </Heading>
 
         <DateTime date={date} />

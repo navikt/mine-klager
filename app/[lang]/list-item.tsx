@@ -14,7 +14,7 @@ interface SakListItemProps {
 
 export const SakListItem = ({ sak, lang }: SakListItemProps) => {
   const { id, saksnummer, events, ytelseId } = sak;
-  const title = getSakTitle(ytelseId);
+  const title = getSakTitle(ytelseId, lang);
   const lastEvent = events.at(-1);
   const mottattEvent =
     events.find((event) => event.type === EventType.KLAGE_MOTTATT_VEDTAKSINSTANS) ??
@@ -49,7 +49,8 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
                     'Ingen hendelser'
                   ) : (
                     <HStack gap="1">
-                      <DateTime id="last-event" date={lastEvent.date} /> - <span>{EVENT_NAMES[lastEvent.type]}</span>
+                      <DateTime id="last-event" date={lastEvent.date} /> -{' '}
+                      <span>{EVENT_NAMES[lastEvent.type][lang]}</span>
                     </HStack>
                   )}
                 </InfoItem>
