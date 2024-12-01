@@ -21,7 +21,7 @@ export default async function SakerPage({ params }: SakerPageProps) {
       <DecoratorUpdater lang={lang} />
 
       <Heading level="1" size="large" spacing>
-        Mine klager og anker
+        Mine klager og anker ({lang})
       </Heading>
 
       <Suspense
