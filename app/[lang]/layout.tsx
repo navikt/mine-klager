@@ -1,14 +1,10 @@
 import { type DecoratorLocale, fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
 import Script from 'next/script';
 import '@/app/globals.css';
+import { TITLE } from '@/app/[lang]/title';
 import { getLanguage } from '@/lib/get-language';
 import { DEFAULT_LANGUAGE, LANGUAGES } from '@/locales';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
-
-// export const metadata: Metadata = {
-//   title: 'Mine klager',
-//   description: 'Oversikt over dine klager og anker',
-// };
 
 interface Props {
   children: React.ReactNode;
@@ -30,7 +26,7 @@ const RootLayout = async ({ children, params }: Readonly<Props>) => {
       logoutWarning: true,
       breadcrumbs: [
         {
-          title: 'Mine klager og anker',
+          title: TITLE[lang],
           url: lang === DEFAULT_LANGUAGE ? '/' : `/${lang}/`,
         },
       ],

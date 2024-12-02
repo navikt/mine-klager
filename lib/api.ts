@@ -139,9 +139,12 @@ interface GetSakerResponse {
 export const getSaker = async (): Promise<GetSakerResponse> => {
   const res = await fetch(`${API_URL}/saker`);
 
+  // TODO: Remove delay.
+  const data = res.json();
+
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  return res.json();
+  return data;
 };
 
 export const getSak = async (id: string): Promise<Sak | undefined> => {

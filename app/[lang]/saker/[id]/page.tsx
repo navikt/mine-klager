@@ -4,8 +4,8 @@ import { TimelineItem } from '@/components/timeline-item';
 import { getSak } from '@/lib/api';
 import { getLanguage } from '@/lib/get-language';
 import { getSakTitle } from '@/lib/sak-title';
-import { DEFAULT_LANGUAGE, Languages } from '@/locales';
-import { HStack, Heading } from '@navikt/ds-react';
+import { DEFAULT_LANGUAGE, Languages, isLanguage } from '@/locales';
+import { HGrid, Heading } from '@navikt/ds-react';
 import { notFound } from 'next/navigation';
 
 interface MetadataProps {
@@ -47,7 +47,7 @@ export default async function SakPage({ params }: Props) {
   const { lang, id } = await params;
   const sak = await getSak(id);
 
-  if (sak === undefined) {
+  if (sak === undefined || !isLanguage(lang)) {
     return notFound();
   }
 
@@ -75,11 +75,11 @@ export default async function SakPage({ params }: Props) {
 
       <CopyItem label={CASE_NUMBER_LABEL[lang]}>{saksnummer}</CopyItem>
 
-      <HStack as="ul" gap="4" marginBlock="4 0">
+      <HGrid as="ul" columns={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 3, '2xl': 3 }} gap="4 0" marginBlock="4 0">
         {events.map((event) => (
           <TimelineItem key={`${event.type}-${event.date}`} sakEvent={event} lang={lang} />
         ))}
-      </HStack>
+      </HGrid>
     </>
   );
 }

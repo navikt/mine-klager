@@ -32,9 +32,9 @@ export const CaseListLoading = ({ lang }: CaseListLoadingProps) => (
     <Title caseCount={0} lang={lang} />
 
     <VStack as="ul" gap="4">
-      <Skeleton variant="rectangle" height={200} width="100%" className="rounded-medium shadow-medium" />
-      <Skeleton variant="rectangle" height={200} width="100%" className="rounded-medium shadow-medium" />
-      <Skeleton variant="rectangle" height={200} width="100%" className="rounded-medium shadow-medium" />
+      <Skeleton variant="rectangle" height={196} width="100%" className="rounded-medium shadow-medium" />
+      <Skeleton variant="rectangle" height={196} width="100%" className="rounded-medium shadow-medium" />
+      <Skeleton variant="rectangle" height={196} width="100%" className="rounded-medium shadow-medium" />
     </VStack>
   </>
 );
