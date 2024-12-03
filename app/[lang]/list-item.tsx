@@ -1,7 +1,7 @@
 import { DateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
 import { EVENT_NAMES, EventType, type Sak } from '@/lib/api';
-import { getSakTitle } from '@/lib/sak-title';
+import { getSakHeading } from '@/lib/sak-heading';
 import { DEFAULT_LANGUAGE, type Languages } from '@/locales';
 import { ParagraphIcon } from '@navikt/aksel-icons';
 import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -14,7 +14,7 @@ interface SakListItemProps {
 
 export const SakListItem = ({ sak, lang }: SakListItemProps) => {
   const { id, saksnummer, events, ytelseId } = sak;
-  const title = getSakTitle(ytelseId, lang);
+  const heading = getSakHeading(ytelseId, lang);
   const lastEvent = events.at(-1);
   const mottattEvent =
     events.find((event) => event.type === EventType.KLAGE_MOTTATT_VEDTAKSINSTANS) ??
@@ -36,7 +36,7 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
                 spacing
                 className="underline group-hover:text-text-action-hover group-hover:no-underline"
               >
-                {title}
+                {heading}
               </Heading>
 
               <VStack gap="2">

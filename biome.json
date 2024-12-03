@@ -93,6 +93,7 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
+      "jsxQuoteStyle": "double",
       "arrowParentheses": "always",
       "bracketSameLine": false
     },

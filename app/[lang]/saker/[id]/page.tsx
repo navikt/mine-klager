@@ -1,46 +1,35 @@
+import { AllEvents } from '@/app/[lang]/saker/[id]/all-events';
+import { LastEvent } from '@/app/[lang]/saker/[id]/last-event';
 import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
-import { TimelineItem } from '@/components/timeline-item';
 import { getSak } from '@/lib/api';
-import { getLanguage } from '@/lib/get-language';
-import { getSakTitle } from '@/lib/sak-title';
+import { getSakHeading } from '@/lib/sak-heading';
 import { DEFAULT_LANGUAGE, Languages, isLanguage } from '@/locales';
-import { HGrid, Heading } from '@navikt/ds-react';
+import { Heading, VStack } from '@navikt/ds-react';
 import { notFound } from 'next/navigation';
-
-interface MetadataProps {
-  params: Promise<{ lang: Languages }>;
-}
-
-const TITLE: Record<Languages, string> = {
-  [Languages.NB]: 'Min sak',
-  [Languages.NN]: 'Min sak',
-  [Languages.EN]: 'My case',
-};
-
-export async function generateMetadata({ params }: MetadataProps) {
-  const lang = await getLanguage(params);
-
-  return {
-    title: TITLE[lang],
-    lang,
-  };
-}
-
-const HEADING: Record<Languages, string> = {
-  [Languages.NB]: 'Sak',
-  [Languages.NN]: 'Sak',
-  [Languages.EN]: 'Case',
-};
-
-const CASE_NUMBER_LABEL: Record<Languages, string> = {
-  [Languages.NB]: 'Saksnummer',
-  [Languages.NN]: 'Saksnummer',
-  [Languages.EN]: 'Case number',
-};
 
 interface Props {
   params: Promise<{ id: string; lang: Languages }>;
+}
+
+export async function generateMetadata({ params }: Props) {
+  const { lang, id } = await params;
+  const sak = await getSak(id);
+
+  if (sak === undefined || !isLanguage(lang)) {
+    return {
+      title: FALLBACK_TITLE[lang],
+      lang,
+    };
+  }
+
+  const { ytelseId, saksnummer } = sak;
+  const heading = await getSakHeading(ytelseId, lang);
+
+  return {
+    title: `${heading} - ${saksnummer}`,
+    lang,
+  };
 }
 
 export default async function SakPage({ params }: Props) {
@@ -52,9 +41,11 @@ export default async function SakPage({ params }: Props) {
   }
 
   const { saksnummer, events, ytelseId } = sak;
-  const title = await getSakTitle(ytelseId, lang);
+  const heading = await getSakHeading(ytelseId, lang);
 
   const path = `/saker/${id}`;
+
+  const lastEvent = events.at(-1);
 
   return (
     <>
@@ -63,23 +54,35 @@ export default async function SakPage({ params }: Props) {
         path={path}
         breadcrumbs={[
           {
-            title,
+            title: heading,
             url: lang === DEFAULT_LANGUAGE ? path : `/${lang}/saker/${id}`,
           },
         ]}
       />
 
       <Heading level="1" size="large" spacing>
-        {HEADING[lang]}
+        {heading}
       </Heading>
 
-      <CopyItem label={CASE_NUMBER_LABEL[lang]}>{saksnummer}</CopyItem>
+      <VStack gap="4">
+        <CopyItem label={CASE_NUMBER_LABEL[lang]}>{saksnummer}</CopyItem>
 
-      <HGrid as="ul" columns={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 3, '2xl': 3 }} gap="4 0" marginBlock="4 0">
-        {events.map((event) => (
-          <TimelineItem key={`${event.type}-${event.date}`} sakEvent={event} lang={lang} />
-        ))}
-      </HGrid>
+        <LastEvent sak={sak} lastEvent={lastEvent} lang={lang} />
+
+        <AllEvents sak={sak} lang={lang} />
+      </VStack>
     </>
   );
 }
+
+const CASE_NUMBER_LABEL: Record<Languages, string> = {
+  [Languages.NB]: 'Saksnummer',
+  [Languages.NN]: 'Saksnummer',
+  [Languages.EN]: 'Case number',
+};
+
+const FALLBACK_TITLE: Record<Languages, string> = {
+  [Languages.NB]: 'Klage',
+  [Languages.NN]: 'Klage',
+  [Languages.EN]: 'Complaint',
+};

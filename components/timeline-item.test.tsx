@@ -11,7 +11,7 @@ describe('TimelineItem', () => {
       date: '2024-11-30',
     };
 
-    render(<TimelineItem sakEvent={sakEvent} lang={Languages.NB} />);
+    render(<TimelineItem sakEvent={sakEvent} saksnummer="123" lang={Languages.NB} />);
     expect(screen.getByRole('heading')).toBeDefined();
   });
 });

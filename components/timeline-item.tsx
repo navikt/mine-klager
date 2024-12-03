@@ -1,46 +1,53 @@
 import { DateTime } from '@/components/datetime';
-import { EVENT_DESCRIPTIONS, EVENT_ICONS, EVENT_NAMES, type SakEvent } from '@/lib/api';
+import { EventActions } from '@/components/event-actions';
+import { EventDescription } from '@/components/event-description';
+import { EventIcon } from '@/components/event-icon';
+import { EVENT_NAMES, type Sak, type SakEvent } from '@/lib/api';
 import type { Languages } from '@/locales';
-import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
+import { CalendarIcon, ChevronRightIcon } from '@navikt/aksel-icons';
+import { Box, HStack, Heading, Tag, VStack } from '@navikt/ds-react';
 
 interface TimelineItemProps {
   sakEvent: SakEvent;
+  sak: Sak;
   lang: Languages;
 }
 
-export const TimelineItem = ({ sakEvent, lang }: TimelineItemProps) => {
+export const TimelineItem = ({ sakEvent, sak, lang }: TimelineItemProps) => {
   const { type, date } = sakEvent;
-  const Icon = EVENT_ICONS[type];
 
   return (
-    <HStack asChild gap="2" wrap={false}>
-      <Box
-        as="li"
-        borderRadius="medium"
-        paddingBlock="4"
-        paddingInline="2"
-        className="transition-colors hover:bg-surface-hover"
-      >
-        <div
-          className="after:-translate-x-1/2 after:-z-10 relative bottom-0 z-0 after:absolute after:top-0 after:left-1/2 after:h-full after:w-05 after:bg-bg-subtle after:content-['']"
-          role="presentation"
-          aria-hidden
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-bg-subtle *:h-6 *:w-fit">
-            <Icon aria-hidden />
-          </div>
-        </div>
+    <Box
+      as="li"
+      borderRadius="medium"
+      paddingBlock="4"
+      paddingInline="2"
+      flexGrow="1"
+      className="group relative flex flex-row flex-nowrap transition-colors duration-200 hover:bg-surface-hover"
+    >
+      <EventIcon type={type} />
 
-        <VStack gap="2" flexGrow="1">
-          <Heading level="2" size="xsmall">
+      <VStack flexGrow="1" marginInline="2 0" className="z-10">
+        <HStack gap="2" wrap={false} align="start" justify="space-between" flexShrink="0">
+          <Heading level="3" size="xsmall" spacing>
             {EVENT_NAMES[type][lang]}
           </Heading>
 
-          <DateTime date={date} />
+          <Tag size="small" variant="neutral-moderate" icon={<CalendarIcon aria-hidden />}>
+            <DateTime date={date} />
+          </Tag>
+        </HStack>
 
-          <BodyShort size="small">{EVENT_DESCRIPTIONS[type][lang]}</BodyShort>
+        <VStack gap="4" flexGrow="1">
+          <EventDescription type={type} lang={lang} />
+
+          <HStack gap="2" align="center" justify="end" flexShrink="0" className="flex-row-reverse">
+            <EventActions sak={sak} eventType={sakEvent.type} lang={lang} />
+          </HStack>
         </VStack>
-      </Box>
-    </HStack>
+      </VStack>
+
+      <ChevronRightIcon className="-ml-8 z-0 h-full w-8 shrink-0 grow-0 self-center" aria-hidden />
+    </Box>
   );
 };
