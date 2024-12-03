@@ -1,6 +1,7 @@
 import { DateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
-import { EVENT_NAMES, EventType, type Sak } from '@/lib/api';
+import { EventType, type Sak } from '@/lib/api';
+import { EVENT_NAMES } from '@/lib/event-names';
 import { getSakHeading } from '@/lib/sak-heading';
 import { DEFAULT_LANGUAGE, type Languages } from '@/locales';
 import { ParagraphIcon } from '@navikt/aksel-icons';

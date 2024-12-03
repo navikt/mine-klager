@@ -1,4 +1,5 @@
 import { EventType, type Sak } from '@/lib/api';
+import { isDeployedToProd } from '@/lib/environment';
 import { Languages } from '@/locales';
 import { Button } from '@navikt/ds-react';
 
@@ -76,16 +77,18 @@ interface CaseType {
   caseType: CaseTypeEnum;
 }
 
+const KLANG_DOMAIN = isDeployedToProd ? 'https://klage.nav.no' : 'https://klage.intern.dev.nav.no';
+
 const SeeComplaint = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" size="small" variant="tertiary" as="a" href={`https://klage.nav.no/${lang}/`}>
+  <Button role="link" size="small" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
     {SEE_COMPLAINT[lang]}
   </Button>
 );
 
 const SeeAppeal = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" size="small" variant="tertiary" as="a" href={`https://klage.nav.no/${lang}/`}>
+  <Button role="link" size="small" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
     {SEE_APPEAL[lang]}
   </Button>
 );
@@ -97,7 +100,7 @@ const EttersendDokumentasjon = ({ sak, lang, caseType }: EventActionsProps & Cas
     size="small"
     variant="secondary"
     as="a"
-    href={`https://klage.nav.no/${lang}/ettersendelse/${caseType}/${sak.ytelseId}?saksnummer=${sak.saksnummer}`}
+    href={`${KLANG_DOMAIN}/${lang}/ettersendelse/${caseType}/${sak.ytelseId}?saksnummer=${sak.saksnummer}`}
   >
     {ETTERSEND_DOKUMENTASJON[lang]}
   </Button>

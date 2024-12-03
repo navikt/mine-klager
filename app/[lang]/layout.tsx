@@ -2,6 +2,7 @@ import { type DecoratorLocale, fetchDecoratorReact } from '@navikt/nav-dekorator
 import Script from 'next/script';
 import '@/app/globals.css';
 import { TITLE } from '@/app/[lang]/title';
+import { isDeployedToProd } from '@/lib/environment';
 import { getLanguage } from '@/lib/get-language';
 import { DEFAULT_LANGUAGE, LANGUAGES } from '@/locales';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
@@ -15,8 +16,7 @@ const RootLayout = async ({ children, params }: Readonly<Props>) => {
   const lang = await getLanguage(params);
 
   const Decorator = await fetchDecoratorReact({
-    // biome-ignore lint/nursery/noProcessEnv: NextJS does not support import.meta.env
-    env: process.env.NODE_ENV === 'development' ? 'dev' : 'prod',
+    env: isDeployedToProd ? 'prod' : 'dev',
     params: {
       language: lang,
       availableLanguages: LANGUAGES.map((locale) => ({

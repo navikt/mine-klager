@@ -64,8 +64,8 @@ const EVENT_DESCRIPTIONS: Readonly<Record<EventType, Record<Languages, string[]>
     [Languages.EN]: ['Appeal received by complaints body'],
   },
   [EventType.ANKE_SENDT_TRYGDERETTEN]: {
-    [Languages.NB]: ['Anke sendt Trygderetten'],
-    [Languages.NN]: ['Anke sendt Trygderetten'],
+    [Languages.NB]: ['Anke sendt til Trygderetten'],
+    [Languages.NN]: ['Anke sendt til Trygderetten'],
     [Languages.EN]: ['Appeal sent to the National Insurance Court'],
   },
   [EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN]: {

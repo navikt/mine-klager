@@ -1,7 +1,8 @@
-export const API_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'https://klage-kodeverk-api.intern.dev.nav.no/kodeverk'
-    : 'http://klage-kodeverk-api/kodeverk';
+import { isDeployedToProd } from '@/lib/environment';
+
+export const API_URL = isDeployedToProd
+  ? 'http://klage-kodeverk-api/kodeverk'
+  : 'https://klage-kodeverk-api.intern.dev.nav.no/kodeverk';
 
 export interface Ytelse {
   id: string;
