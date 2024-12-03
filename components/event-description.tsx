@@ -5,13 +5,14 @@ import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 interface EventDescriptionProps {
   type: EventType;
   lang: Languages;
+  marginRight?: boolean;
 }
 
-export const EventDescription = ({ type, lang }: EventDescriptionProps) => {
+export const EventDescription = ({ type, lang, marginRight = false }: EventDescriptionProps) => {
   const [description, ...readMore] = EVENT_DESCRIPTIONS[type][lang];
 
   return (
-    <VStack gap="2" flexGrow="1" marginInline="0 8">
+    <VStack gap="2" flexGrow="1" marginInline={marginRight ? '0 8' : undefined}>
       <BodyShort size="small">{description}</BodyShort>
 
       {readMore.length === 0 ? null : (
