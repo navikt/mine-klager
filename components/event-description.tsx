@@ -49,7 +49,9 @@ const EVENT_DESCRIPTIONS: Readonly<Record<EventType, Record<Languages, string[]>
     ],
   },
   [EventType.KLAGE_MOTTATT_KLAGEINSTANS]: {
-    [Languages.NB]: ['Klage mottatt klageinstans'],
+    [Languages.NB]: [
+      'Klagen din ble mottatt av Nav klageinstans. Klageinstansen vil behandle klagen din og gi deg en begrunnelse for vedtaket.',
+    ],
     [Languages.NN]: ['Klage mottatt klageinstans'],
     [Languages.EN]: ['Complaint received by complaints body'],
   },

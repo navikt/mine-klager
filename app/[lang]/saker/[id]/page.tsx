@@ -1,11 +1,12 @@
 import { AllEvents } from '@/app/[lang]/saker/[id]/all-events';
 import { LastEvent } from '@/app/[lang]/saker/[id]/last-event';
+import { NextEvent } from '@/app/[lang]/saker/[id]/next-event';
 import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { getSak } from '@/lib/api';
 import { getSakHeading } from '@/lib/sak-heading';
 import { DEFAULT_LANGUAGE, Languages, isLanguage } from '@/locales';
-import { Heading, VStack } from '@navikt/ds-react';
+import { HGrid, Heading, VStack } from '@navikt/ds-react';
 import { notFound } from 'next/navigation';
 
 interface Props {
@@ -67,7 +68,10 @@ export default async function SakPage({ params }: Props) {
       <VStack gap="4">
         <CopyItem label={CASE_NUMBER_LABEL[lang]}>{saksnummer}</CopyItem>
 
-        <LastEvent sak={sak} lastEvent={lastEvent} lang={lang} />
+        <HGrid gap="2" columns={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, '2xl': 2 }}>
+          <LastEvent sak={sak} lastEvent={lastEvent} lang={lang} />
+          <NextEvent lastEvent={lastEvent} lang={lang} />
+        </HGrid>
 
         <AllEvents sak={sak} lang={lang} />
       </VStack>

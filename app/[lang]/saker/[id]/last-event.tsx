@@ -21,7 +21,7 @@ export const LastEvent = ({ sak, lastEvent, lang }: LastEventProps) => {
   const { type, date } = lastEvent;
 
   return (
-    <Box as="section" width="fit-content">
+    <Box as="section">
       <Heading level="2" size="medium" spacing>
         {LAST_EVENT_LABEL[lang]}
       </Heading>
@@ -32,10 +32,10 @@ export const LastEvent = ({ sak, lastEvent, lang }: LastEventProps) => {
         background="surface-subtle"
         className="transition-colors duration-200 hover:bg-surface-hover"
       >
-        <HStack gap="8" align="start" justify="space-between" wrap={false}>
+        <HStack gap="2" align="start" justify="space-between" wrap={false}>
           <EventHeading type={type} lang={lang} />
 
-          <Tag size="small" variant="info-moderate" icon={<CalendarIcon aria-hidden />}>
+          <Tag size="small" variant="alt3-moderate" icon={<CalendarIcon aria-hidden />}>
             <DateTime date={date} />
           </Tag>
         </HStack>

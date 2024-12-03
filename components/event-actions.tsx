@@ -16,53 +16,58 @@ export const EventActions = (props: EventActionsProps) => {
     case EventType.KLAGE_MOTTATT_VEDTAKSINSTANS:
       return (
         <>
-          <SeeComplaint {...props} />
+          <ViewComplaint {...props} />
           <EttersendDokumentasjon {...props} caseType={CaseTypeEnum.KLAGE} />
         </>
       );
     case EventType.KLAGE_MOTTATT_KLAGEINSTANS:
       return (
         <>
-          <SeeComplaint {...props} />
+          <ViewComplaint {...props} />
           <EttersendDokumentasjon {...props} caseType={CaseTypeEnum.KLAGE} />
         </>
       );
     case EventType.KLAGE_AVSLUTTET_I_KLAGEINSTANS:
       return (
         <>
-          <SeeComplaint {...props} />
+          <ViewVedtak {...props} />
+          <ViewComplaint {...props} />
+          <Appeal {...props} />
         </>
       );
     case EventType.ANKE_MOTTATT_KLAGEINSTANS:
       return (
         <>
-          <SeeComplaint {...props} />
+          <ViewComplaint {...props} />
           <EttersendDokumentasjon {...props} caseType={CaseTypeEnum.ANKE} />
         </>
       );
     case EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS:
       return (
         <>
-          <SeeAppeal {...props} />
+          <ViewVedtak {...props} />
+          <ViewAppeal {...props} />
         </>
       );
     case EventType.ANKE_SENDT_TRYGDERETTEN:
       return (
         <>
-          <SeeAppeal {...props} />
+          <ViewAppeal {...props} />
           <EttersendDokumentasjon {...props} caseType={CaseTypeEnum.ANKE} />
         </>
       );
     case EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN:
       return (
         <>
-          <SeeAppeal {...props} />
+          <ViewVedtak {...props} />
+          <ViewAppeal {...props} />
         </>
       );
     case EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN:
       return (
         <>
-          <SeeAppeal {...props} />
+          <ViewVedtak {...props} />
+          <ViewAppeal {...props} />
         </>
       );
   }
@@ -79,17 +84,24 @@ interface CaseType {
 
 const KLANG_DOMAIN = isDeployedToProd ? 'https://klage.nav.no' : 'https://klage.intern.dev.nav.no';
 
-const SeeComplaint = ({ sak, lang }: EventActionsProps) => (
+const ViewVedtak = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" size="small" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
-    {SEE_COMPLAINT[lang]}
+  <Button role="link" size="small" variant="primary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
+    {VIEW_VEDTAK[lang]}
   </Button>
 );
 
-const SeeAppeal = ({ sak, lang }: EventActionsProps) => (
+const ViewComplaint = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
   <Button role="link" size="small" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
-    {SEE_APPEAL[lang]}
+    {VIEW_COMPLAINT[lang]}
+  </Button>
+);
+
+const ViewAppeal = ({ sak, lang }: EventActionsProps) => (
+  // biome-ignore lint/a11y/useSemanticElements: Button as link.
+  <Button role="link" size="small" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
+    {VIEW_APPEAL[lang]}
   </Button>
 );
 
@@ -106,7 +118,26 @@ const EttersendDokumentasjon = ({ sak, lang, caseType }: EventActionsProps & Cas
   </Button>
 );
 
-const SEE_COMPLAINT: Record<Languages, string> = {
+const Appeal = ({ sak, lang }: EventActionsProps) => (
+  // biome-ignore lint/a11y/useSemanticElements: Button as link.
+  <Button
+    role="link"
+    size="small"
+    variant="secondary"
+    as="a"
+    href={`${KLANG_DOMAIN}/${lang}/anke/${sak.ytelseId}?saksnummer=${sak.saksnummer}`}
+  >
+    {APPEAL[lang]}
+  </Button>
+);
+
+const VIEW_VEDTAK: Record<Languages, string> = {
+  [Languages.NB]: 'Se vedtak',
+  [Languages.NN]: 'Sjå vedtak',
+  [Languages.EN]: 'View decision',
+};
+
+const VIEW_COMPLAINT: Record<Languages, string> = {
   [Languages.NB]: 'Se klage',
   [Languages.NN]: 'Sjå klage',
   [Languages.EN]: 'View complaint',
@@ -118,8 +149,14 @@ const ETTERSEND_DOKUMENTASJON: Record<Languages, string> = {
   [Languages.EN]: 'Submit additional documentation',
 };
 
-const SEE_APPEAL: Record<Languages, string> = {
+const VIEW_APPEAL: Record<Languages, string> = {
   [Languages.NB]: 'Se anke',
   [Languages.NN]: 'Sjå anke',
   [Languages.EN]: 'View appeal',
+};
+
+const APPEAL: Record<Languages, string> = {
+  [Languages.NB]: 'Ank på klagevedtak',
+  [Languages.NN]: 'Ank på klagevedtak',
+  [Languages.EN]: 'Appeal the complaint decision',
 };
