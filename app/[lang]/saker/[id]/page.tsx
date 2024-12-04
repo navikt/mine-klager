@@ -52,7 +52,7 @@ export default async function SakPage({ params }: Props) {
   const path = `/saker/${id}`;
 
   const lastEvent = events.at(-1);
-  const previousEvents = events.slice(0, -1);
+  const previousEvents = events.slice(0, -1).toReversed();
 
   const fromDateString = events.findLast(
     (e) => e.type === EventType.KLAGE_MOTTATT_KLAGEINSTANS || EventType.ANKE_MOTTATT_KLAGEINSTANS,

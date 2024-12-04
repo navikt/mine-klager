@@ -1,5 +1,6 @@
+'use client';
 import { Languages } from '@/locales';
-import { Box, Heading } from '@navikt/ds-react';
+import { ExpansionCard } from '@navikt/ds-react';
 
 interface DocumentsProps {
   lang: Languages;
@@ -8,12 +9,16 @@ interface DocumentsProps {
 export const Documents = ({ lang }: DocumentsProps) => {
   const documents = [];
 
+  const heading = `${HEADING[lang]} (${documents.length})`;
+
   return (
-    <Box as="section">
-      <Heading level="2" size="medium" spacing>
-        {HEADING[lang]} ({documents.length})
-      </Heading>
-    </Box>
+    <ExpansionCard aria-label={heading} size="small">
+      <ExpansionCard.Header>
+        <ExpansionCard.Title>{heading}</ExpansionCard.Title>
+      </ExpansionCard.Header>
+
+      <ExpansionCard.Content>Dokumenter</ExpansionCard.Content>
+    </ExpansionCard>
   );
 };
 

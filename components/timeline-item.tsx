@@ -24,7 +24,7 @@ export const TimelineItem = ({ sakEvent, sak, lang }: TimelineItemProps) => {
       paddingBlock="2 0"
       paddingInline="2"
       flexGrow="1"
-      className="group relative flex flex-row flex-nowrap transition-colors duration-200  hover:bg-surface-hover"
+      className="group relative flex flex-row flex-nowrap transition-colors duration-200 hover:bg-surface-hover"
     >
       <EventIcon type={type} />
 
