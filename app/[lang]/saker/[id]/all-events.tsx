@@ -44,7 +44,7 @@ export const AllEvents = ({ sak, previousEvents, lang }: AllEventsProps) => {
 
       <ExpansionCard.Content>
         <VStack as="ul" gap="2" marginBlock="4 0" width="fit-content" className="flex-col-reverse">
-          {previousEvents.toReversed().map((event) => (
+          {previousEvents.map((event) => (
             <TimelineItem key={`${event.type}-${event.date}`} sakEvent={event} sak={sak} lang={lang} />
           ))}
         </VStack>
