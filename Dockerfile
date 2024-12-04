@@ -3,7 +3,7 @@
 # https://nextjs.org/docs/pages/building-your-application/deploying#docker-image
 # https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 
-FROM node:22-alpine AS base
+FROM node:18-alpine AS base
 
 WORKDIR /app
 

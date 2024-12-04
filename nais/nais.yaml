@@ -9,7 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "100M"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "7200"
 spec:
-  port: 8080
+  port: 3000
   image: {{ image }}
   resources:
     limits:
@@ -20,15 +20,6 @@ spec:
     min: 2
     max: 4
     cpuThresholdPercentage: 80
-  redis:
-    - instance: obo-cache
-      access: readwrite
-  # liveness:
-  #   path: /isAlive
-  #   initialDelay: 3
-  # readiness:
-  #   path: /isReady
-  #   initialDelay: 3
   tokenx:
     enabled: true
   idporten:
@@ -37,7 +28,7 @@ spec:
       enabled: true
       autoLogin: true
       # autoLoginIgnorePaths:
-      #   - /api/**
+        # - /api/**
   prometheus:
     enabled: true
   accessPolicy:
@@ -45,9 +36,10 @@ spec:
       rules:
         - application: kabal-api
         - application: klage-kodeverk-api
-        # - application: nav-dekoratoren
+        - application: nav-dekoratoren
+          namespace: personbruker
   ingresses:
-    - {{ingress}}
+  - {{ingress}}
   envFrom:
     - secret: slack-url
   observability:
