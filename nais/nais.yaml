@@ -19,7 +19,9 @@ spec:
   replicas:
     min: 2
     max: 4
-    cpuThresholdPercentage: 80
+    scalingStrategy:
+      cpu:
+        thresholdPercentage: 80
   liveness:
     path: /isAlive
     initialDelay: 0
