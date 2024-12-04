@@ -20,6 +20,16 @@ spec:
     min: 2
     max: 4
     cpuThresholdPercentage: 80
+  liveness:
+    path: /isAlive
+    initialDelay: 0
+    periodSeconds: 1
+    failureThreshold: 5
+  readiness:
+    path: /isReady
+    initialDelay: 0
+    periodSeconds: 1
+    failureThreshold: 5
   tokenx:
     enabled: true
   idporten:
