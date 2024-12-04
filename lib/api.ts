@@ -26,7 +26,11 @@ export interface Sak {
   id: string;
   saksnummer: string;
   ytelseId: string;
-  innsendingsytelseId: string;
+  /**
+   * DateTime
+   * @example 2021-09-01T12:00:00.000
+   */
+  varsletFrist: string;
   events: SakEvent[];
 }
 
