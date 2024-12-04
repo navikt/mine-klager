@@ -27,8 +27,6 @@ spec:
     sidecar:
       enabled: true
       autoLogin: true
-      # autoLoginIgnorePaths:
-        # - /api/**
   prometheus:
     enabled: true
   accessPolicy:

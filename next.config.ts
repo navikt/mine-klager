@@ -10,7 +10,10 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
   },
+  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://cdn.nav.no/klage/mine-klager' : undefined,
   output: 'standalone',
+  poweredByHeader: false,
+  deploymentId: process.env.VERSION ?? 'local',
   redirects: async () =>
     // Redirect all non-default languages to path with language prefix.
     PATHS.flatMap<Redirect>((path) =>
