@@ -86,21 +86,21 @@ const KLANG_DOMAIN = isDeployedToProd ? 'https://klage.nav.no' : 'https://klage.
 
 const ViewVedtak = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" size="small" variant="primary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
+  <Button role="link" variant="primary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
     {VIEW_VEDTAK[lang]}
   </Button>
 );
 
 const ViewComplaint = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" size="small" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
+  <Button role="link" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
     {VIEW_COMPLAINT[lang]}
   </Button>
 );
 
 const ViewAppeal = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" size="small" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
+  <Button role="link" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
     {VIEW_APPEAL[lang]}
   </Button>
 );
@@ -109,8 +109,7 @@ const EttersendDokumentasjon = ({ sak, lang, caseType }: EventActionsProps & Cas
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
   <Button
     role="link"
-    size="small"
-    variant="secondary"
+    variant="tertiary"
     as="a"
     href={`${KLANG_DOMAIN}/${lang}/ettersendelse/${caseType}/${sak.ytelseId}?saksnummer=${sak.saksnummer}`}
   >
@@ -122,8 +121,7 @@ const Appeal = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
   <Button
     role="link"
-    size="small"
-    variant="secondary"
+    variant="tertiary"
     as="a"
     href={`${KLANG_DOMAIN}/${lang}/anke/${sak.ytelseId}?saksnummer=${sak.saksnummer}`}
   >

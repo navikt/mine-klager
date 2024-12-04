@@ -2,8 +2,8 @@ import { getYtelseName } from '@/lib/kodeverk';
 import type { Languages } from '@/locales';
 
 const PREFIX: Record<Languages, string> = {
-  nb: 'Klage på',
-  nn: 'Klage på',
+  nb: 'Klage som gjelder',
+  nn: 'Klage som gjeld',
   en: 'Complaint about',
 };
 

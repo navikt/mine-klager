@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
   },
+  output: 'standalone',
   redirects: async () =>
     // Redirect all non-default languages to path with language prefix.
     PATHS.flatMap<Redirect>((path) =>

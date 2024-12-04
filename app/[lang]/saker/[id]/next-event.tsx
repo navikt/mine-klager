@@ -24,6 +24,7 @@ export const NextEvent = ({ lastEvent, lang }: NextEventProps) => {
         borderRadius="medium"
         padding="4"
         background="surface-subtle"
+        width="fit-content"
         className="transition-colors duration-200 hover:bg-surface-hover"
       >
         {NEXT_DESCRIPTION[type][lang].map((text) => (

@@ -1,22 +1,20 @@
+import { ISO_FORMAT, PRETTY_DATETIME_FORMAT, PRETTY_DATE_FORMAT, format } from '@/lib/date';
+import type { Languages } from '@/locales';
 import { Tooltip } from '@navikt/ds-react';
-import { format, parseISO } from 'date-fns';
-import { nb } from 'date-fns/locale/nb';
+import { parseISO } from 'date-fns';
 
 interface DateTimeProps {
   id?: string;
   date: string;
+  lang: Languages;
 }
-
-const PRETTY_DATETIME_FORMAT = `dd. MMM yyyy 'kl.' HH:mm:ss`;
-const PRETTY_DATE_FORMAT = 'dd. MMM yyyy';
-const ISO_FORMAT = 'yyyy-MM-ddTHH:mm:ss';
 
 const CLASSNAME = 'whitespace-nowrap';
 
-export const DateTime = ({ date, id }: DateTimeProps) => {
+export const DateTime = ({ date, id, lang }: DateTimeProps) => {
   const parsed = parseISO(date);
-  const iso = format(parsed, ISO_FORMAT);
-  const dateOnly = format(parsed, PRETTY_DATE_FORMAT, { locale: nb });
+  const iso = format(parsed, ISO_FORMAT, lang);
+  const dateOnly = format(parsed, PRETTY_DATE_FORMAT, lang);
 
   if (isZeroTime(parsed)) {
     return (
@@ -29,7 +27,7 @@ export const DateTime = ({ date, id }: DateTimeProps) => {
   }
 
   return (
-    <Tooltip content={format(parsed, PRETTY_DATETIME_FORMAT, { locale: nb })}>
+    <Tooltip content={format(parsed, PRETTY_DATETIME_FORMAT, lang)}>
       <time id={id} dateTime={iso} className={CLASSNAME}>
         {dateOnly}
       </time>

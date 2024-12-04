@@ -9,7 +9,7 @@ interface EventHeadingProps {
 }
 
 export const EventHeading = ({ type, lang }: EventHeadingProps) => (
-  <Heading level="3" size="xsmall" spacing>
+  <Heading level="3" size="small" spacing>
     {EVENT_NAMES[type][lang]}
   </Heading>
 );

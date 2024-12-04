@@ -14,7 +14,7 @@ export const CopyItem = ({ label, children }: InfoItemProps) => {
       <Label htmlFor={id}>{label}:</Label>
 
       <Tooltip content="Klikk for å kopiere saksnummeret" placement="top">
-        <CopyButton id={id} copyText={children} text={children} size="small" />
+        <CopyButton id={id} copyText={children} text={children} />
       </Tooltip>
     </HStack>
   );

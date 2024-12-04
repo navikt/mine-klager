@@ -30,13 +30,15 @@ export const LastEvent = ({ sak, lastEvent, lang }: LastEventProps) => {
         borderRadius="medium"
         padding="4"
         background="surface-subtle"
+        width="fit-content"
+        minWidth={{ xs: '100%', md: '75%', lg: '60%', xl: '100%' }}
         className="transition-colors duration-200 hover:bg-surface-hover"
       >
         <HStack gap="2" align="start" justify="space-between" wrap={false}>
           <EventHeading type={type} lang={lang} />
 
-          <Tag size="small" variant="alt3-moderate" icon={<CalendarIcon aria-hidden />}>
-            <DateTime date={date} />
+          <Tag variant="alt3-moderate" icon={<CalendarIcon aria-hidden />}>
+            <DateTime date={date} lang={lang} />
           </Tag>
         </HStack>
 

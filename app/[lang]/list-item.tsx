@@ -43,14 +43,18 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
               <VStack gap="2">
                 <InfoItem label="Saksnummer">{saksnummer}</InfoItem>
                 <InfoItem label="Mottatt">
-                  {mottattEvent === undefined ? 'Ukjent dato' : <DateTime id="mottatt" date={mottattEvent.date} />}
+                  {mottattEvent === undefined ? (
+                    'Ukjent dato'
+                  ) : (
+                    <DateTime id="mottatt" date={mottattEvent.date} lang={lang} />
+                  )}
                 </InfoItem>
                 <InfoItem label="Siste hendelse">
                   {lastEvent === undefined ? (
                     'Ingen hendelser'
                   ) : (
                     <HStack gap="1">
-                      <DateTime id="last-event" date={lastEvent.date} /> -{' '}
+                      <DateTime id="last-event" date={lastEvent.date} lang={lang} /> -{' '}
                       <span>{EVENT_NAMES[lastEvent.type][lang]}</span>
                     </HStack>
                   )}
