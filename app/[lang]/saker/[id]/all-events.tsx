@@ -3,7 +3,7 @@ import { DateTime } from '@/components/datetime';
 import { TimelineItem } from '@/components/timeline-item';
 import type { Sak, SakEvent } from '@/lib/api';
 import { Languages } from '@/locales';
-import { BodyShort, ExpansionCard, Tag, VStack } from '@navikt/ds-react';
+import { ExpansionCard, Tag, VStack } from '@navikt/ds-react';
 
 interface AllEventsProps {
   sak: Sak;
@@ -25,19 +25,19 @@ export const AllEvents = ({ sak, previousEvents, lang }: AllEventsProps) => {
 
         <ExpansionCard.Description>
           {firstEvent === undefined ? null : (
-            <BodyShort size="medium" color="text-subtle" spacing>
+            <>
               <span>{FROM[lang]} </span>
 
-              <Tag variant="neutral-moderate">
+              <Tag variant="neutral-moderate" size="small">
                 <DateTime date={firstEvent.date} lang={lang} />
               </Tag>
 
               <span> {TO[lang]} </span>
 
-              <Tag variant="neutral-moderate">
+              <Tag variant="neutral-moderate" size="small">
                 <DateTime date={(lastEvent ?? firstEvent).date} lang={lang} />
               </Tag>
-            </BodyShort>
+            </>
           )}
         </ExpansionCard.Description>
       </ExpansionCard.Header>

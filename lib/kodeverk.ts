@@ -1,4 +1,5 @@
 import { isDeployedToProd } from '@/lib/environment';
+import type { Languages } from '@/locales';
 
 export const API_URL = isDeployedToProd
   ? 'http://klage-kodeverk-api/kodeverk'
@@ -9,14 +10,16 @@ export interface Ytelse {
   navn: string;
 }
 
-export const getYtelseName = async (id: string): Promise<string> => {
-  const ytelser = await getYtelser();
+export const getYtelseName = async (id: string, lang: Languages): Promise<string> => {
+  const ytelser = await getYtelser(lang);
 
   return ytelser.find((ytelse) => ytelse.id === id)?.navn ?? id;
 };
 
-const getYtelser = async (): Promise<Ytelse[]> => {
-  const res = await fetch(`${API_URL}/ytelser/simple`);
+const OPTIONS: FetchRequestInit = { headers: { Accept: 'application/json' } };
+
+const getYtelser = async (lang: Languages): Promise<Ytelse[]> => {
+  const res = await fetch(`${API_URL}/ytelser/simple/${lang}`, OPTIONS);
 
   return await res.json();
 };

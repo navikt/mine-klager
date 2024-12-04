@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   const { ytelseId, saksnummer } = sak;
-  const ytelseName = await getYtelseName(ytelseId);
+  const ytelseName = await getYtelseName(ytelseId, lang);
 
   return {
     title: `${saksnummer} - ${ytelseName}`,

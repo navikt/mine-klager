@@ -9,7 +9,7 @@ interface EventActionsProps {
   lang: Languages;
 }
 
-export const EventActions = (props: EventActionsProps) => {
+export const LastEventActions = (props: EventActionsProps) => {
   const { eventType } = props;
 
   switch (eventType) {
@@ -54,6 +54,65 @@ export const EventActions = (props: EventActionsProps) => {
         <>
           <ViewAppeal {...props} />
           <EttersendDokumentasjon {...props} caseType={CaseTypeEnum.ANKE} />
+        </>
+      );
+    case EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN:
+      return (
+        <>
+          <ViewVedtak {...props} />
+          <ViewAppeal {...props} />
+        </>
+      );
+    case EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN:
+      return (
+        <>
+          <ViewVedtak {...props} />
+          <ViewAppeal {...props} />
+        </>
+      );
+  }
+};
+
+export const EventActions = (props: EventActionsProps) => {
+  const { eventType } = props;
+
+  switch (eventType) {
+    case EventType.KLAGE_MOTTATT_VEDTAKSINSTANS:
+      return (
+        <>
+          <ViewComplaint {...props} />
+        </>
+      );
+    case EventType.KLAGE_MOTTATT_KLAGEINSTANS:
+      return (
+        <>
+          <ViewComplaint {...props} />
+        </>
+      );
+    case EventType.KLAGE_AVSLUTTET_I_KLAGEINSTANS:
+      return (
+        <>
+          <ViewVedtak {...props} />
+          <ViewComplaint {...props} />
+        </>
+      );
+    case EventType.ANKE_MOTTATT_KLAGEINSTANS:
+      return (
+        <>
+          <ViewComplaint {...props} />
+        </>
+      );
+    case EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS:
+      return (
+        <>
+          <ViewVedtak {...props} />
+          <ViewAppeal {...props} />
+        </>
+      );
+    case EventType.ANKE_SENDT_TRYGDERETTEN:
+      return (
+        <>
+          <ViewAppeal {...props} />
         </>
       );
     case EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN:

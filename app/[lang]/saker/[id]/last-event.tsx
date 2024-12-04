@@ -1,5 +1,5 @@
 import { DateTime } from '@/components/datetime';
-import { EventActions } from '@/components/event-actions';
+import { LastEventActions } from '@/components/event-actions';
 import { EventDescription } from '@/components/event-description';
 import { EventHeading } from '@/components/event-heading';
 import type { Sak, SakEvent } from '@/lib/api';
@@ -32,6 +32,7 @@ export const LastEvent = ({ sak, lastEvent, lang }: LastEventProps) => {
         background="surface-subtle"
         width="fit-content"
         minWidth={{ xs: '100%', md: '75%', lg: '60%', xl: '100%' }}
+        flexGrow="1"
         className="transition-colors duration-200 hover:bg-surface-hover"
       >
         <HStack gap="2" align="start" justify="space-between" wrap={false}>
@@ -46,7 +47,7 @@ export const LastEvent = ({ sak, lastEvent, lang }: LastEventProps) => {
           <EventDescription type={type} lang={lang} />
 
           <HStack gap="2" align="center" justify="end" className="flex-row-reverse">
-            <EventActions sak={sak} eventType={type} lang={lang} />
+            <LastEventActions sak={sak} eventType={type} lang={lang} />
           </HStack>
         </VStack>
       </Box>

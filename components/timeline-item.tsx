@@ -21,7 +21,7 @@ export const TimelineItem = ({ sakEvent, sak, lang }: TimelineItemProps) => {
     <Box
       as="li"
       borderRadius="medium"
-      paddingBlock="2 0"
+      paddingBlock="2"
       paddingInline="2"
       flexGrow="1"
       className="group relative flex flex-row flex-nowrap transition-colors duration-200 hover:bg-surface-hover"
