@@ -1,7 +1,7 @@
-import { isDeployedToProd } from '@/lib/environment';
+import { isDeployed } from '@/lib/environment';
 import type { Languages } from '@/locales';
 
-export const API_URL = isDeployedToProd
+export const API_URL = isDeployed
   ? 'http://klage-kodeverk-api/kodeverk'
   : 'https://klage-kodeverk-api.intern.dev.nav.no/kodeverk';
 

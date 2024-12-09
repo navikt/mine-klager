@@ -9,7 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "100M"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "7200"
 spec:
-  port: 3000
+  port: 8080
   image: {{ image }}
   resources:
     limits:
@@ -24,14 +24,14 @@ spec:
         thresholdPercentage: 80
   liveness:
     path: /isAlive
-    initialDelay: 0
-    periodSeconds: 1
-    failureThreshold: 5
+    initialDelay: 5
+    periodSeconds: 3
+    failureThreshold: 10
   readiness:
     path: /isReady
-    initialDelay: 0
-    periodSeconds: 1
-    failureThreshold: 5
+    initialDelay: 5
+    periodSeconds: 3
+    failureThreshold: 10
   tokenx:
     enabled: true
   idporten:
@@ -49,7 +49,7 @@ spec:
         - application: nav-dekoratoren
           namespace: personbruker
   ingresses:
-  - {{ingress}}
+    - https://mine-klager.intern.dev.nav.no
   envFrom:
     - secret: slack-url
   observability:

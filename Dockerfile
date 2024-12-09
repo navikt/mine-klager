@@ -9,9 +9,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY ./public ./public
 COPY .next/standalone ./
 
-EXPOSE 3000
+EXPOSE 8080
 
-ENV PORT=3000
+ENV PORT=8080
 ENV HOSTNAME=0.0.0.0
 
 CMD ["node", "server.js"]
