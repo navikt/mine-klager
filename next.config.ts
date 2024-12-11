@@ -9,6 +9,7 @@ const PATHS: string[] = ['/saker/:id', INDEX_PATH];
 const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
+    authInterrupts: true,
   },
   assetPrefix: process.env.NODE_ENV === 'production' ? 'https://cdn.nav.no/klage/mine-klager' : undefined,
   output: 'standalone',

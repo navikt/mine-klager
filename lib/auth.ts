@@ -1,7 +1,12 @@
 import { requestOboToken, validateToken } from '@navikt/oasis';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 
-export const getOboToken = async (headers: ReadonlyHeaders) => {
+export enum Audience {
+  KABAL_API = 'kabal-api',
+  KODEVERK_API = 'klage-kodeverk-api',
+}
+
+export const getOboToken = async (audience: Audience, headers: ReadonlyHeaders) => {
   const authorization = headers.get('authorization');
 
   if (authorization === null) {
@@ -16,7 +21,7 @@ export const getOboToken = async (headers: ReadonlyHeaders) => {
     return null;
   }
 
-  const obo = await requestOboToken(token, `${process.env.NAIS_CLUSTER_NAME}:klage:kabal-api`);
+  const obo = await requestOboToken(token, `${process.env.NAIS_CLUSTER_NAME}:${audience}`);
 
   if (!obo.ok) {
     return null;

@@ -10,16 +10,19 @@ export interface Ytelse {
   navn: string;
 }
 
-export const getYtelseName = async (id: string, lang: Languages): Promise<string> => {
-  const ytelser = await getYtelser(lang);
+export const getYtelseName = async (token: string, id: string, lang: Languages): Promise<string> => {
+  const ytelser = await getYtelser(token, lang);
 
   return ytelser.find((ytelse) => ytelse.id === id)?.navn ?? id;
 };
 
 const OPTIONS = { headers: { Accept: 'application/json' } };
 
-const getYtelser = async (lang: Languages): Promise<Ytelse[]> => {
-  const res = await fetch(`${API_URL}/ytelser/simple/${lang}`, OPTIONS);
+const getYtelser = async (token: string, lang: Languages): Promise<Ytelse[]> => {
+  const res = await fetch(`${API_URL}/ytelser/simple/${lang}`, {
+    ...OPTIONS,
+    headers: { ...OPTIONS.headers, Authorization: `Bearer ${token}` },
+  });
 
   return await res.json();
 };

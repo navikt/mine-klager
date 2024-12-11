@@ -7,8 +7,8 @@ const PREFIX: Record<Languages, string> = {
   en: 'Complaint about',
 };
 
-export const getSakHeading = async (ytelseId: string, lang: Languages) => {
-  const ytelseName = await getYtelseName(ytelseId, lang);
+export const getSakHeading = async (token: string, ytelseId: string, lang: Languages) => {
+  const ytelseName = await getYtelseName(token, ytelseId, lang);
 
   return `${PREFIX[lang]} «${ytelseName}»`;
 };

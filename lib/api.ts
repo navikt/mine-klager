@@ -46,7 +46,7 @@ export const getSaker = async (token: string): Promise<GetSakerResponse> => {
   return res.json();
 };
 
-export const getSak = async (id: string, token: string): Promise<Sak | undefined> => {
+export const getSak = async (token: string, id: string): Promise<Sak | undefined> => {
   const { saker } = await getSaker(token);
 
   return saker.find((sak) => sak.id === id);

@@ -5,7 +5,7 @@ import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { InfoItem } from '@/components/info-item';
 import { EventType, type Sak, getSak } from '@/lib/api';
-import { getOboToken } from '@/lib/auth';
+import { Audience, getOboToken } from '@/lib/auth';
 import { PRETTY_DATE_FORMAT, format } from '@/lib/date';
 import { getYtelseName } from '@/lib/kodeverk';
 import { getSakHeading } from '@/lib/sak-heading';
@@ -21,23 +21,28 @@ interface Props {
 
 export async function generateMetadata({ params }: Props) {
   const { lang, id } = await params;
-  const token = await getOboToken(await headers());
 
-  if (token === null) {
+  const kabalToken = await getOboToken(Audience.KABAL_API, await headers());
+
+  if (kabalToken === null) {
     return { title: FALLBACK_TITLE[lang], lang };
   }
 
-  const sak = await getSak(id, token);
+  const sak = await getSak(kabalToken, id);
 
   if (sak === undefined || !isLanguage(lang)) {
-    return {
-      title: FALLBACK_TITLE[lang],
-      lang,
-    };
+    return { title: FALLBACK_TITLE[lang], lang };
   }
 
   const { ytelseId, saksnummer } = sak;
-  const ytelseName = await getYtelseName(ytelseId, lang);
+
+  const kodeverkToken = await getOboToken(Audience.KODEVERK_API, await headers());
+
+  if (kodeverkToken === null) {
+    return { title: FALLBACK_TITLE[lang], lang };
+  }
+
+  const ytelseName = await getYtelseName(kodeverkToken, ytelseId, lang);
 
   return {
     title: `${saksnummer} - ${ytelseName}`,
@@ -48,20 +53,21 @@ export async function generateMetadata({ params }: Props) {
 export default async function SakPage({ params }: Props) {
   const { lang, id } = await params;
 
-  const token = await getOboToken(await headers());
+  const kabalToken = await getOboToken(Audience.KABAL_API, await headers());
+  const kodeverkToken = await getOboToken(Audience.KODEVERK_API, await headers());
 
-  if (token === null) {
+  if (kabalToken === null || kodeverkToken === null) {
     return unauthorized();
   }
 
-  const sak = await getSak(id, token);
+  const sak = await getSak(kabalToken, id);
 
   if (sak === undefined || !isLanguage(lang)) {
     return notFound();
   }
 
   const { saksnummer, events, ytelseId } = sak;
-  const heading = await getSakHeading(ytelseId, lang);
+  const heading = await getSakHeading(kodeverkToken, ytelseId, lang);
 
   const path = `/saker/${id}`;
 

@@ -1,6 +1,6 @@
 import { SakListItem } from '@/app/[lang]/list-item';
 import { getSaker } from '@/lib/api';
-import { getOboToken } from '@/lib/auth';
+import { Audience, getOboToken } from '@/lib/auth';
 import { Languages } from '@/locales';
 import { Heading, Skeleton, VStack } from '@navikt/ds-react';
 import { headers } from 'next/headers';
@@ -11,7 +11,7 @@ interface CaseListProps {
 }
 
 export const CaseList = async ({ lang }: CaseListProps) => {
-  const token = await getOboToken(await headers());
+  const token = await getOboToken(Audience.KABAL_API, await headers());
 
   if (token === null) {
     return unauthorized();
