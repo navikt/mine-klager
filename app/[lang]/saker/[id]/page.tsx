@@ -1,26 +1,33 @@
 import { AllEvents } from '@/app/[lang]/saker/[id]/all-events';
 import { Documents } from '@/app/[lang]/saker/[id]/documents';
-import { LastEvent } from '@/app/[lang]/saker/[id]/last-event';
 import { NextEvent } from '@/app/[lang]/saker/[id]/next-event';
 import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { InfoItem } from '@/components/info-item';
-import { EventType, getSak } from '@/lib/api';
+import { EventType, type Sak, getSak } from '@/lib/api';
+import { getOboToken } from '@/lib/auth';
 import { PRETTY_DATE_FORMAT, format } from '@/lib/date';
 import { getYtelseName } from '@/lib/kodeverk';
 import { getSakHeading } from '@/lib/sak-heading';
 import { DEFAULT_LANGUAGE, Languages, isLanguage } from '@/locales';
 import { HGrid, HStack, Heading } from '@navikt/ds-react';
 import { addWeeks, parseISO } from 'date-fns';
-import { notFound } from 'next/navigation';
+import { headers } from 'next/headers';
+import { notFound, unauthorized } from 'next/navigation';
 
 interface Props {
-  params: Promise<{ id: string; lang: Languages }>;
+  params: Promise<{ id: string; lang: Languages; sak: Sak }>;
 }
 
 export async function generateMetadata({ params }: Props) {
   const { lang, id } = await params;
-  const sak = await getSak(id);
+  const token = await getOboToken(await headers());
+
+  if (token === null) {
+    return { title: FALLBACK_TITLE[lang], lang };
+  }
+
+  const sak = await getSak(id, token);
 
   if (sak === undefined || !isLanguage(lang)) {
     return {
@@ -40,7 +47,14 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function SakPage({ params }: Props) {
   const { lang, id } = await params;
-  const sak = await getSak(id);
+
+  const token = await getOboToken(await headers());
+
+  if (token === null) {
+    return unauthorized();
+  }
+
+  const sak = await getSak(id, token);
 
   if (sak === undefined || !isLanguage(lang)) {
     return notFound();
@@ -91,13 +105,15 @@ export default async function SakPage({ params }: Props) {
       </HStack>
 
       <HGrid gap="8 4" marginBlock="8 0" columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}>
-        <LastEvent lastEvent={lastEvent} sak={sak} lang={lang} />
-
-        <NextEvent lastEvent={lastEvent} lang={lang} />
+        {/* <LastEvent lastEvent={lastEvent} sak={sak} lang={lang} /> */}
 
         <AllEvents sak={sak} previousEvents={previousEvents} lang={lang} />
 
-        <Documents lang={lang} />
+        <HStack gap="8">
+          <NextEvent lastEvent={lastEvent} lang={lang} />
+
+          <Documents lang={lang} />
+        </HStack>
       </HGrid>
     </>
   );

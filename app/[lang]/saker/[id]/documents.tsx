@@ -12,7 +12,7 @@ export const Documents = ({ lang }: DocumentsProps) => {
   const heading = `${HEADING[lang]} (${documents.length})`;
 
   return (
-    <ExpansionCard aria-label={heading} size="small">
+    <ExpansionCard aria-label={heading} size="small" className="w-full">
       <ExpansionCard.Header>
         <ExpansionCard.Title>{heading}</ExpansionCard.Title>
 

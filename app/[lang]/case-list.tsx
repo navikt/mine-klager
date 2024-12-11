@@ -1,14 +1,23 @@
 import { SakListItem } from '@/app/[lang]/list-item';
 import { getSaker } from '@/lib/api';
+import { getOboToken } from '@/lib/auth';
 import { Languages } from '@/locales';
 import { Heading, Skeleton, VStack } from '@navikt/ds-react';
+import { headers } from 'next/headers';
+import { unauthorized } from 'next/navigation';
 
 interface CaseListProps {
   lang: Languages;
 }
 
 export const CaseList = async ({ lang }: CaseListProps) => {
-  const { saker } = await getSaker();
+  const token = await getOboToken(await headers());
+
+  if (token === null) {
+    return unauthorized();
+  }
+
+  const { saker } = await getSaker(token);
 
   return (
     <>

@@ -3,7 +3,7 @@ import { DEFAULT_LANGUAGE, isLanguage } from '@/locales';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const headers = new Headers(request.headers);
+  const headers = new Headers();
 
   headers.set(CURRENT_PATH_HEADER, request.nextUrl.pathname);
 

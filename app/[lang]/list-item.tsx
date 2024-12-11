@@ -1,6 +1,6 @@
 import { DateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
-import { EventType, type Sak } from '@/lib/api';
+import { EventType, type Sak, type SakEvent } from '@/lib/api';
 import { EVENT_NAMES } from '@/lib/event-names';
 import { getSakHeading } from '@/lib/sak-heading';
 import { DEFAULT_LANGUAGE, type Languages } from '@/locales';
@@ -17,9 +17,6 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
   const { id, saksnummer, events, ytelseId } = sak;
   const heading = getSakHeading(ytelseId, lang);
   const lastEvent = events.at(-1);
-  const mottattEvent =
-    events.find((event) => event.type === EventType.KLAGE_MOTTATT_VEDTAKSINSTANS) ??
-    events.find((event) => event.type === EventType.KLAGE_MOTTATT_KLAGEINSTANS);
 
   const pathPrefix = lang === DEFAULT_LANGUAGE ? '' : `/${lang}`;
 
@@ -42,13 +39,7 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
 
               <VStack gap="2">
                 <InfoItem label="Saksnummer">{saksnummer}</InfoItem>
-                <InfoItem label="Mottatt">
-                  {mottattEvent === undefined ? (
-                    'Ukjent dato'
-                  ) : (
-                    <DateTime id="mottatt" date={mottattEvent.date} lang={lang} />
-                  )}
-                </InfoItem>
+                <Mottatt events={events} lang={lang} />
                 <InfoItem label="Siste hendelse">
                   {lastEvent === undefined ? (
                     'Ingen hendelser'
@@ -66,4 +57,27 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
       </NextLink>
     </li>
   );
+};
+
+const Mottatt = ({ events, lang }: { events: SakEvent[]; lang: Languages }) => {
+  const mottattVedtaksinstans = events.find((event) => event.type === EventType.KLAGE_MOTTATT_VEDTAKSINSTANS);
+  const mottattKlageinstans = events.find((event) => event.type === EventType.KLAGE_MOTTATT_KLAGEINSTANS);
+
+  if (mottattVedtaksinstans !== undefined) {
+    return (
+      <InfoItem label="Mottatt vedtaksinstans">
+        <DateTime id="mottatt-vedtaksinstans" date={mottattVedtaksinstans.date} lang={lang} />
+      </InfoItem>
+    );
+  }
+
+  if (mottattKlageinstans !== undefined) {
+    return (
+      <InfoItem label="Mottatt klageinstans">
+        <DateTime id="mottatt-klageinstans" date={mottattKlageinstans.date} lang={lang} />
+      </InfoItem>
+    );
+  }
+
+  return <InfoItem label="Mottatt">Ukjent dato</InfoItem>;
 };

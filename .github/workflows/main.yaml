@@ -17,6 +17,7 @@ jobs:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
   
   deploy_to_prod:
+    if: false
     name: Prod
     permissions:
       contents: write

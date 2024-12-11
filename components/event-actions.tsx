@@ -213,7 +213,7 @@ const VIEW_APPEAL: Record<Languages, string> = {
 };
 
 const APPEAL: Record<Languages, string> = {
-  [Languages.NB]: 'Ank på klagevedtak',
-  [Languages.NN]: 'Ank på klagevedtak',
+  [Languages.NB]: 'Send anke på klagevedtak',
+  [Languages.NN]: 'Send anke på klagevedtak',
   [Languages.EN]: 'Appeal the complaint decision',
 };

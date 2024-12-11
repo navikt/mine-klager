@@ -1,9 +1,10 @@
 'use client';
-import { DateTime } from '@/components/datetime';
 import { TimelineItem } from '@/components/timeline-item';
 import type { Sak, SakEvent } from '@/lib/api';
 import { Languages } from '@/locales';
-import { ExpansionCard, Tag, VStack } from '@navikt/ds-react';
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
+import { Box, Button, Heading, VStack } from '@navikt/ds-react';
+import { useState } from 'react';
 
 interface AllEventsProps {
   sak: Sak;
@@ -12,61 +13,80 @@ interface AllEventsProps {
 }
 
 export const AllEvents = ({ sak, previousEvents, lang }: AllEventsProps) => {
-  const heading = `${HEADING[lang]} (${previousEvents.length})`;
+  const [expanded, setExpanded] = useState(false);
 
   const { events } = sak;
+
   const lastEvent = events.at(-1);
-  const firstEvent = events.at(0);
+
+  if (lastEvent === undefined) {
+    return null;
+  }
+
+  const toggleExpanded = () => setExpanded(!expanded);
 
   return (
-    <ExpansionCard aria-label={heading} size="small">
-      <ExpansionCard.Header>
-        <ExpansionCard.Title>{heading}</ExpansionCard.Title>
+    <section>
+      <Heading level="2" size="medium" spacing>
+        {HEADING[lang]}
+      </Heading>
 
-        <ExpansionCard.Description>
-          {firstEvent === undefined ? null : (
-            <>
-              <span>{FROM[lang]} </span>
+      <Box borderWidth="1" borderRadius="large" padding="4" height="fit-content">
+        {/* biome-ignore lint/nursery/noStaticElementInteractions: Expandable */}
+        <div
+          onClick={toggleExpanded}
+          className="cursor-pointer"
+          onKeyDown={({ key }) => {
+            if (key === 'Enter' || key === ' ') {
+              toggleExpanded();
+            }
 
-              <Tag variant="neutral-moderate" size="small">
-                <DateTime date={firstEvent.date} lang={lang} />
-              </Tag>
+            if (key === 'Escape') {
+              setExpanded(false);
+            }
+          }}
+        >
+          <TimelineItem sakEvent={lastEvent} sak={sak} lang={lang} />
+        </div>
 
-              <span> {TO[lang]} </span>
+        <Button
+          variant={expanded ? 'tertiary-neutral' : 'tertiary'}
+          onClick={toggleExpanded}
+          icon={expanded ? <ChevronUpIcon aria-hidden /> : <ChevronDownIcon aria-hidden />}
+          className="mt-3 w-full"
+          title={expanded ? COLLAPSE[lang] : SHOW_ALL[lang]}
+        >
+          {expanded ? COLLAPSE[lang] : `${SHOW_ALL[lang]} (${previousEvents.length})`}
+        </Button>
 
-              <Tag variant="neutral-moderate" size="small">
-                <DateTime date={(lastEvent ?? firstEvent).date} lang={lang} />
-              </Tag>
-            </>
-          )}
-        </ExpansionCard.Description>
-      </ExpansionCard.Header>
-
-      <ExpansionCard.Content>
-        <VStack as="ul" gap="2" marginBlock="4 0" width="fit-content" className="flex-col-reverse">
-          {previousEvents.map((event) => (
-            <TimelineItem key={`${event.type}-${event.date}`} sakEvent={event} sak={sak} lang={lang} />
-          ))}
-        </VStack>
-      </ExpansionCard.Content>
-    </ExpansionCard>
+        {expanded ? (
+          <div>
+            <VStack as="ul" gap="2" marginBlock="4 0" width="fit-content" className="flex-col-reverse">
+              {previousEvents.map((event) => (
+                <TimelineItem key={`${event.type}-${event.date}`} sakEvent={event} sak={sak} lang={lang} />
+              ))}
+            </VStack>
+          </div>
+        ) : null}
+      </Box>
+    </section>
   );
 };
 
 const HEADING: Record<Languages, string> = {
-  [Languages.NB]: 'Tidligere hendelser',
-  [Languages.NN]: 'Tidlegare hendingar',
-  [Languages.EN]: 'Previous events',
+  [Languages.NB]: 'Hendelser',
+  [Languages.NN]: 'Hendingar',
+  [Languages.EN]: 'Events',
 };
 
-const FROM: Record<Languages, string> = {
-  [Languages.NB]: 'Fra',
-  [Languages.NN]: 'Frå',
-  [Languages.EN]: 'From',
+const SHOW_ALL: Record<Languages, string> = {
+  [Languages.NB]: 'Vis resterende hendelser',
+  [Languages.NN]: 'Vis resterande hendingar',
+  [Languages.EN]: 'Show remaining events',
 };
 
-const TO: Record<Languages, string> = {
-  [Languages.NB]: 'til',
-  [Languages.NN]: 'til',
-  [Languages.EN]: 'to',
+const COLLAPSE: Record<Languages, string> = {
+  [Languages.NB]: 'Skjul eldre hendelser',
+  [Languages.NN]: 'Skjul eldre hendingar',
+  [Languages.EN]: 'Hide older events',
 };

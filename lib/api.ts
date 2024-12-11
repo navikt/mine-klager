@@ -38,19 +38,16 @@ interface GetSakerResponse {
   saker: Sak[];
 }
 
-export const getSaker = async (): Promise<GetSakerResponse> => {
-  const res = await fetch(`${API_URL}/saker`);
+export const getSaker = async (token: string): Promise<GetSakerResponse> => {
+  const res = await fetch(`${API_URL}/saker`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
-  // TODO: Remove delay.
-  const data = res.json();
-
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  return data;
+  return res.json();
 };
 
-export const getSak = async (id: string): Promise<Sak | undefined> => {
-  const { saker } = await getSaker();
+export const getSak = async (id: string, token: string): Promise<Sak | undefined> => {
+  const { saker } = await getSaker(token);
 
   return saker.find((sak) => sak.id === id);
 };

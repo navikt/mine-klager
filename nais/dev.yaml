@@ -1,1 +1,2 @@
-ingress:  https://mine-klager.intern.dev.nav.no
+ingresses:
+  - https://mine-klager.intern.dev.nav.no
