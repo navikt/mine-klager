@@ -1,5 +1,9 @@
+import { getOboToken } from '@/lib/auth';
 import { isDeployed } from '@/lib/environment';
+import type { ApiResponse } from '@/lib/types';
 import type { Languages } from '@/locales';
+import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
+import { Audience } from './types';
 
 export const API_URL = isDeployed
   ? 'http://klage-kodeverk-api/kodeverk'
@@ -10,19 +14,37 @@ export interface Ytelse {
   navn: string;
 }
 
-export const getYtelseName = async (token: string, id: string, lang: Languages): Promise<string> => {
-  const ytelser = await getYtelser(token, lang);
+export const getYtelseName = async (headers: ReadonlyHeaders, id: string, lang: Languages): ApiResponse<string> => {
+  const response = await getYtelser(headers, lang);
 
-  return ytelser.find((ytelse) => ytelse.id === id)?.navn ?? id;
+  if (!response.ok) {
+    return response;
+  }
+
+  return {
+    ok: true,
+    error: undefined,
+    value: response.value.find((ytelse) => ytelse.id === id)?.navn ?? id,
+  };
 };
 
 const OPTIONS = { headers: { Accept: 'application/json' } };
 
-const getYtelser = async (token: string, lang: Languages): Promise<Ytelse[]> => {
-  const res = await fetch(`${API_URL}/ytelser/simple/${lang}`, {
-    ...OPTIONS,
-    headers: { ...OPTIONS.headers, Authorization: `Bearer ${token}` },
-  });
+const getYtelser = async (headers: ReadonlyHeaders, lang: Languages): ApiResponse<Ytelse[]> => {
+  try {
+    const token = await getOboToken(Audience.KODEVERK_API, headers);
 
-  return await res.json();
+    const res = await fetch(`${API_URL}/ytelser/simple/${lang}`, {
+      ...OPTIONS,
+      headers: { ...OPTIONS.headers, Authorization: `Bearer ${token}` },
+    });
+
+    if (!res.ok) {
+      return { ok: false, error: new Error('Failed to fetch ytelser'), value: undefined };
+    }
+
+    return { ok: true, error: undefined, value: await res.json() };
+  } catch (error) {
+    return { ok: false, error, value: undefined };
+  }
 };

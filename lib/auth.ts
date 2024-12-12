@@ -1,37 +1,28 @@
+'use server';
+import { type Audience, UnauthorizedError } from '@/lib/types';
 import { requestOboToken, validateToken } from '@navikt/oasis';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-
-export enum Audience {
-  KABAL_API = 'kabal-api',
-  KODEVERK_API = 'klage-kodeverk-api',
-}
 
 export const getOboToken = async (audience: Audience, headers: ReadonlyHeaders) => {
   const authorization = headers.get('authorization');
 
   if (authorization === null) {
-    return null;
+    throw new UnauthorizedError('Missing authorization header');
   }
 
-  const token = getAccessToken(authorization);
+  const [, token] = authorization.split(' ');
 
   const validation = await validateToken(token);
 
   if (!validation.ok) {
-    return null;
+    throw new UnauthorizedError('Invalid token');
   }
 
-  const obo = await requestOboToken(token, `${process.env.NAIS_CLUSTER_NAME}:${audience}`);
+  const obo = await requestOboToken(token, `${process.env.NAIS_CLUSTER_NAME}:klage:${audience}`);
 
   if (!obo.ok) {
-    return null;
+    throw new UnauthorizedError(`Failed to get on-behalf-of token for audience ${audience}`);
   }
 
   return obo.token;
-};
-
-const getAccessToken = (authorization: string) => {
-  const [, token] = authorization.split(' ');
-
-  return token;
 };

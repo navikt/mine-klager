@@ -1,23 +1,31 @@
 import { SakListItem } from '@/app/[lang]/list-item';
 import { getSaker } from '@/lib/api';
-import { Audience, getOboToken } from '@/lib/auth';
+import { UnauthorizedError } from '@/lib/types';
 import { Languages } from '@/locales';
 import { Heading, Skeleton, VStack } from '@navikt/ds-react';
 import { headers } from 'next/headers';
-import { unauthorized } from 'next/navigation';
 
 interface CaseListProps {
   lang: Languages;
 }
 
 export const CaseList = async ({ lang }: CaseListProps) => {
-  const token = await getOboToken(Audience.KABAL_API, await headers());
+  const sakerResponse = await getSaker(await headers());
 
-  if (token === null) {
-    return unauthorized();
+  if (!sakerResponse.ok) {
+    if (sakerResponse.error instanceof UnauthorizedError) {
+      return (
+        <>
+          <h1>Unauthorized</h1>
+          <p>{sakerResponse.error.message}</p>
+        </>
+      );
+    }
+
+    return <h1>Something went wrong</h1>;
   }
 
-  const { saker } = await getSaker(token);
+  const { saker } = sakerResponse.value;
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { EventType } from '@/lib/api';
+import { EventType } from '@/lib/types';
 import { Languages } from '@/locales';
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 

@@ -4,16 +4,18 @@ import { NextEvent } from '@/app/[lang]/saker/[id]/next-event';
 import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { InfoItem } from '@/components/info-item';
-import { EventType, type Sak, getSak } from '@/lib/api';
-import { Audience, getOboToken } from '@/lib/auth';
+import { getSak } from '@/lib/api';
 import { PRETTY_DATE_FORMAT, format } from '@/lib/date';
 import { getYtelseName } from '@/lib/kodeverk';
 import { getSakHeading } from '@/lib/sak-heading';
+import { EventType } from '@/lib/types';
+import type { Sak } from '@/lib/types';
+import { UnauthorizedError } from '@/lib/types';
 import { DEFAULT_LANGUAGE, Languages, isLanguage } from '@/locales';
 import { HGrid, HStack, Heading } from '@navikt/ds-react';
 import { addWeeks, parseISO } from 'date-fns';
 import { headers } from 'next/headers';
-import { notFound, unauthorized } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
 interface Props {
   params: Promise<{ id: string; lang: Languages; sak: Sak }>;
@@ -22,30 +24,24 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { lang, id } = await params;
 
-  const kabalToken = await getOboToken(Audience.KABAL_API, await headers());
+  const h = await headers();
 
-  if (kabalToken === null) {
+  const sakResponse = await getSak(h, id);
+
+  if (!sakResponse.ok || sakResponse.value === undefined || !isLanguage(lang)) {
     return { title: FALLBACK_TITLE[lang], lang };
   }
 
-  const sak = await getSak(kabalToken, id);
+  const { ytelseId, saksnummer } = sakResponse.value;
 
-  if (sak === undefined || !isLanguage(lang)) {
+  const ytelseNameResponse = await getYtelseName(h, ytelseId, lang);
+
+  if (!ytelseNameResponse.ok) {
     return { title: FALLBACK_TITLE[lang], lang };
   }
-
-  const { ytelseId, saksnummer } = sak;
-
-  const kodeverkToken = await getOboToken(Audience.KODEVERK_API, await headers());
-
-  if (kodeverkToken === null) {
-    return { title: FALLBACK_TITLE[lang], lang };
-  }
-
-  const ytelseName = await getYtelseName(kodeverkToken, ytelseId, lang);
 
   return {
-    title: `${saksnummer} - ${ytelseName}`,
+    title: `${saksnummer} - ${ytelseNameResponse.value}`,
     lang,
   };
 }
@@ -53,21 +49,29 @@ export async function generateMetadata({ params }: Props) {
 export default async function SakPage({ params }: Props) {
   const { lang, id } = await params;
 
-  const kabalToken = await getOboToken(Audience.KABAL_API, await headers());
-  const kodeverkToken = await getOboToken(Audience.KODEVERK_API, await headers());
+  const h = await headers();
 
-  if (kabalToken === null || kodeverkToken === null) {
-    return unauthorized();
+  const sakResponse = await getSak(h, id);
+
+  if (!sakResponse.ok) {
+    if (sakResponse.error instanceof UnauthorizedError) {
+      return (
+        <>
+          <h1>Unauthorized</h1>
+          <p>{sakResponse.error.message}</p>
+        </>
+      );
+    }
+
+    return <h1>Unknown error</h1>;
   }
 
-  const sak = await getSak(kabalToken, id);
-
-  if (sak === undefined || !isLanguage(lang)) {
+  if (sakResponse.value === undefined || !isLanguage(lang)) {
     return notFound();
   }
 
-  const { saksnummer, events, ytelseId } = sak;
-  const heading = await getSakHeading(kodeverkToken, ytelseId, lang);
+  const { saksnummer, events, ytelseId } = sakResponse.value;
+  const heading = await getSakHeading(h, ytelseId, lang);
 
   const path = `/saker/${id}`;
 
@@ -113,7 +117,7 @@ export default async function SakPage({ params }: Props) {
       <HGrid gap="8 4" marginBlock="8 0" columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}>
         {/* <LastEvent lastEvent={lastEvent} sak={sak} lang={lang} /> */}
 
-        <AllEvents sak={sak} previousEvents={previousEvents} lang={lang} />
+        <AllEvents sak={sakResponse.value} previousEvents={previousEvents} lang={lang} />
 
         <HStack gap="8">
           <NextEvent lastEvent={lastEvent} lang={lang} />

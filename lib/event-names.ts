@@ -1,5 +1,5 @@
-import { EventType } from '@/lib/api';
 import { Languages } from '@/locales';
+import { EventType } from './types';
 
 export const EVENT_NAMES: Readonly<Record<EventType, Record<Languages, string>>> = {
   [EventType.KLAGE_MOTTATT_VEDTAKSINSTANS]: {

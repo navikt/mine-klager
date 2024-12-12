@@ -1,6 +1,6 @@
 'use client';
 import { TimelineItem } from '@/components/timeline-item';
-import type { Sak, SakEvent } from '@/lib/api';
+import type { Sak, SakEvent } from '@/lib/types';
 import { Languages } from '@/locales';
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { Box, Button, Heading, VStack } from '@navikt/ds-react';

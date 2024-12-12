@@ -1,5 +1,6 @@
-import { EventType, type Sak } from '@/lib/api';
 import { isDeployedToProd } from '@/lib/environment';
+import { EventType } from '@/lib/types';
+import type { Sak } from '@/lib/types';
 import { Languages } from '@/locales';
 import { Button } from '@navikt/ds-react';
 

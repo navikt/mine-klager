@@ -1,4 +1,5 @@
-import { EventType, type SakEvent } from '@/lib/api';
+import { EventType } from '@/lib/types';
+import type { SakEvent } from '@/lib/types';
 import { Languages } from '@/locales';
 import { BodyShort, Box, Heading, VStack } from '@navikt/ds-react';
 

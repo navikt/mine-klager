@@ -2,7 +2,7 @@ import { DateTime } from '@/components/datetime';
 import { LastEventActions } from '@/components/event-actions';
 import { EventDescription } from '@/components/event-description';
 import { EventHeading } from '@/components/event-heading';
-import type { Sak, SakEvent } from '@/lib/api';
+import type { Sak, SakEvent } from '@/lib/types';
 import { Languages } from '@/locales';
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { Box, HStack, Heading, Tag, VStack } from '@navikt/ds-react';

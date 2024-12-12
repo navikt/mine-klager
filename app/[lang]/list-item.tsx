@@ -1,15 +1,14 @@
 import { DateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
-import { EventType, type Sak, type SakEvent } from '@/lib/api';
-import { Audience, getOboToken } from '@/lib/auth';
 import { EVENT_NAMES } from '@/lib/event-names';
 import { getSakHeading } from '@/lib/sak-heading';
+import { EventType } from '@/lib/types';
+import type { Sak, SakEvent } from '@/lib/types';
 import { DEFAULT_LANGUAGE, type Languages } from '@/locales';
 import { ParagraphIcon } from '@navikt/aksel-icons';
 import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
 import { headers } from 'next/headers';
 import NextLink from 'next/link';
-import { unauthorized } from 'next/navigation';
 
 interface SakListItemProps {
   sak: Sak;
@@ -19,13 +18,7 @@ interface SakListItemProps {
 export const SakListItem = async ({ sak, lang }: SakListItemProps) => {
   const { id, saksnummer, events, ytelseId } = sak;
 
-  const token = await getOboToken(Audience.KODEVERK_API, await headers());
-
-  if (token === null) {
-    return unauthorized();
-  }
-
-  const heading = getSakHeading(token, ytelseId, lang);
+  const heading = getSakHeading(await headers(), ytelseId, lang);
   const lastEvent = events.at(-1);
 
   const pathPrefix = lang === DEFAULT_LANGUAGE ? '' : `/${lang}`;
