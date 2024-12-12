@@ -23,9 +23,7 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { lang, id } = await params;
 
-  const h = await headers();
-
-  const sakResponse = await getSak(h, id);
+  const sakResponse = await getSak(await headers(), id);
 
   if (!sakResponse.ok || sakResponse.value === undefined || !isLanguage(lang)) {
     return { title: FALLBACK_TITLE[lang], lang };
@@ -33,7 +31,7 @@ export async function generateMetadata({ params }: Props) {
 
   const { ytelseId, saksnummer } = sakResponse.value;
 
-  const ytelseNameResponse = await getYtelseName(h, ytelseId, lang);
+  const ytelseNameResponse = await getYtelseName(ytelseId, lang);
 
   if (!ytelseNameResponse.ok) {
     return { title: FALLBACK_TITLE[lang], lang };
@@ -48,9 +46,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function SakPage({ params }: Props) {
   const { lang, id } = await params;
 
-  const h = await headers();
-
-  const sakResponse = await getSak(h, id);
+  const sakResponse = await getSak(await headers(), id);
 
   if (!sakResponse.ok) {
     if (sakResponse.error instanceof UnauthorizedError) {
@@ -70,7 +66,7 @@ export default async function SakPage({ params }: Props) {
   }
 
   const { saksnummer, events, ytelseId, varsletBehandlingstid, mottattKlageinstans } = sakResponse.value;
-  const heading = await getSakHeading(h, ytelseId, lang);
+  const heading = await getSakHeading(ytelseId, lang);
 
   const path = `/saker/${id}`;
 

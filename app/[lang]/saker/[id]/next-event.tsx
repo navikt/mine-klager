@@ -1,3 +1,4 @@
+import { DateTime } from '@/components/datetime';
 import { EventType } from '@/lib/types';
 import type { SakEvent } from '@/lib/types';
 import { Languages } from '@/locales';
@@ -36,6 +37,52 @@ export const NextEvent = ({ lastEvent, lang }: NextEventProps) => {
       </Box>
     </VStack>
   );
+};
+
+// TODO replace with link to svarbrev: https://nav-it.slack.com/archives/G01CTUC8LSU/p1733843246505869
+
+const KLAGE_MOTTATT_KLAGEINSTANS_TEXTS = (lang: Languages, date: string) => {
+  const dateTime = <DateTime date={date} lang={lang} />;
+
+  if (lang === Languages.NB) {
+    return (
+      <>
+        <BodyShort spacing>Nav klageinstans skal behandle klagen din, og vil da vurdere saken din på nytt.</BodyShort>
+        <BodyShort spacing>
+          Klageinstansen har tilgang til alle dokumentene i saken din. Dersom klageinstansen mangler opplysninger, vil
+          de innhente disse.
+        </BodyShort>
+        <BodyShort spacing>
+          Når klageinstansen er ferdige med behandlingen av klagen din, vil du få avgjørelsen sendt til deg på den måten
+          du har valgt å motta brev fra Nav på.
+        </BodyShort>
+        <BodyShort spacing>
+          Du kan lese mer om gangen i en klagesak og få informasjon om klageinstansen sin saksbehandlingstid i brevet du
+          fikk fra klageinstansen den {dateTime}.
+        </BodyShort>
+      </>
+    );
+  }
+
+  if (lang === Languages.NN) {
+    return (
+      <>
+        <BodyShort spacing>Nav klageinstans skal behandle klagen din, og vil da vurdere saka di på nytt.</BodyShort>
+        <BodyShort spacing>
+          Klageinstansen har tilgang til alle dokumenta i saka di. Dersom klageinstansen manglar opplysningar, vil dei
+          hente inn desse.
+        </BodyShort>
+        <BodyShort spacing>
+          Når klageinstansen er ferdige med behandlinga av saka di, vil du få avgjerda sendt til deg på den måten du har
+          valgt å motta brev frå Nav på.
+        </BodyShort>
+        <BodyShort spacing>
+          Du kan lese meir om gongen i ei klagesak og få informasjon om klageinstansen si saksbehandlingstid i brevet du
+          fekk frå klageinstansen den {dateTime}.
+        </BodyShort>
+      </>
+    );
+  }
 };
 
 const NEXT_DESCRIPTION: Record<EventType, Record<Languages, string[]>> = {

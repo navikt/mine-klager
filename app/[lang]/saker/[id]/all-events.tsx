@@ -80,9 +80,9 @@ const HEADING: Record<Languages, string> = {
 };
 
 const SHOW_ALL: Record<Languages, string> = {
-  [Languages.NB]: 'Vis resterende hendelser',
-  [Languages.NN]: 'Vis resterande hendingar',
-  [Languages.EN]: 'Show remaining events',
+  [Languages.NB]: 'Vis eldre hendelser',
+  [Languages.NN]: 'Vis eldre hendingar',
+  [Languages.EN]: 'Show older events',
 };
 
 const COLLAPSE: Record<Languages, string> = {

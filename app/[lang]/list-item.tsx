@@ -7,7 +7,6 @@ import type { Sak, SakEvent } from '@/lib/types';
 import { DEFAULT_LANGUAGE, type Languages } from '@/locales';
 import { ParagraphIcon } from '@navikt/aksel-icons';
 import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
-import { headers } from 'next/headers';
 import NextLink from 'next/link';
 
 interface SakListItemProps {
@@ -15,10 +14,10 @@ interface SakListItemProps {
   lang: Languages;
 }
 
-export const SakListItem = async ({ sak, lang }: SakListItemProps) => {
+export const SakListItem = ({ sak, lang }: SakListItemProps) => {
   const { id, saksnummer, events, ytelseId } = sak;
 
-  const heading = getSakHeading(await headers(), ytelseId, lang);
+  const heading = getSakHeading(ytelseId, lang);
   const lastEvent = events.at(-1);
 
   const pathPrefix = lang === DEFAULT_LANGUAGE ? '' : `/${lang}`;

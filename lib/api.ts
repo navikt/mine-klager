@@ -1,7 +1,8 @@
 'use server';
 import { getOboToken } from '@/lib/auth';
-import { isLocal } from '@/lib/environment';
+import { isDeployed, isLocal } from '@/lib/environment';
 import type { ApiResponse, Sak } from '@/lib/types';
+import { saker } from '@/mockdata/saker';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { Audience } from './types';
 
@@ -12,6 +13,10 @@ interface GetSakerResponse {
 }
 
 export const getSaker = async (headers: ReadonlyHeaders): ApiResponse<GetSakerResponse> => {
+  if (!isDeployed) {
+    return { ok: true, error: undefined, value: { saker: saker } };
+  }
+
   try {
     const token = await getOboToken(Audience.KABAL_API, headers);
 
