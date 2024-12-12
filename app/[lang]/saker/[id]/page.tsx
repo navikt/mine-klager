@@ -8,12 +8,11 @@ import { getSak } from '@/lib/api';
 import { PRETTY_DATE_FORMAT, format } from '@/lib/date';
 import { getYtelseName } from '@/lib/kodeverk';
 import { getSakHeading } from '@/lib/sak-heading';
-import { EventType } from '@/lib/types';
+import { BehandlingstidUnitType } from '@/lib/types';
 import type { Sak } from '@/lib/types';
 import { UnauthorizedError } from '@/lib/types';
 import { DEFAULT_LANGUAGE, Languages, isLanguage } from '@/locales';
 import { HGrid, HStack, Heading } from '@navikt/ds-react';
-import { addWeeks, parseISO } from 'date-fns';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
@@ -70,22 +69,13 @@ export default async function SakPage({ params }: Props) {
     return notFound();
   }
 
-  const { saksnummer, events, ytelseId } = sakResponse.value;
+  const { saksnummer, events, ytelseId, varsletBehandlingstid, mottattKlageinstans } = sakResponse.value;
   const heading = await getSakHeading(h, ytelseId, lang);
 
   const path = `/saker/${id}`;
 
   const lastEvent = events.at(-1);
   const previousEvents = events.slice(0, -1);
-
-  const fromDateString = events.findLast(
-    (e) => e.type === EventType.KLAGE_MOTTATT_KLAGEINSTANS || EventType.ANKE_MOTTATT_KLAGEINSTANS,
-  )?.date;
-
-  const fromDate = fromDateString === undefined ? undefined : parseISO(fromDateString);
-  const from = fromDate === undefined ? null : ` ${FROM[lang]} ${format(fromDate, PRETTY_DATE_FORMAT, lang)}`;
-  const expectedDeadline =
-    fromDate === undefined ? null : ` (${format(addWeeks(fromDate, 12), PRETTY_DATE_FORMAT, lang)})`;
 
   return (
     <>
@@ -107,11 +97,16 @@ export default async function SakPage({ params }: Props) {
       <HStack gap="2">
         <CopyItem label={CASE_NUMBER_LABEL[lang]}>{saksnummer}</CopyItem>
 
-        <InfoItem label={DEADLINE_LABEL[lang]}>
-          {WEEKS[lang](12)}
-          {from}
-          {expectedDeadline}
-        </InfoItem>
+        {varsletBehandlingstid === null ? null : (
+          <InfoItem label={DEADLINE_LABEL[lang]}>
+            {varsletBehandlingstid.varsletBehandlingstidUnitTypeId === BehandlingstidUnitType.WEEKS
+              ? WEEKS[lang](varsletBehandlingstid.varsletBehandlingstidUnits)
+              : MONTHS[lang](varsletBehandlingstid.varsletBehandlingstidUnits)}
+            {FROM[lang]}
+            {format(new Date(mottattKlageinstans), PRETTY_DATE_FORMAT, lang)}(
+            {format(new Date(varsletBehandlingstid.varsletFrist), PRETTY_DATE_FORMAT, lang)})
+          </InfoItem>
+        )}
       </HStack>
 
       <HGrid gap="8 4" marginBlock="8 0" columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}>
@@ -147,7 +142,7 @@ const WEEKS: Record<Languages, (n: number) => string> = {
   [Languages.EN]: (n) => (n === 1 ? `${n.toString(10)} week` : `${n.toString(10)} weeks`),
 };
 
-const _MONTHS: Record<Languages, (n: number) => string> = {
+const MONTHS: Record<Languages, (n: number) => string> = {
   [Languages.NB]: (n) => (n === 1 ? `${n.toString(10)} måned` : `${n.toString(10)} måneder`),
   [Languages.NN]: (n) => (n === 1 ? `${n.toString(10)} månad` : `${n.toString(10)} månadar`),
   [Languages.EN]: (n) => (n === 1 ? `${n.toString(10)} month` : `${n.toString(10)} months`),

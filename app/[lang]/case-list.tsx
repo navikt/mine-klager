@@ -22,7 +22,12 @@ export const CaseList = async ({ lang }: CaseListProps) => {
       );
     }
 
-    return <h1>Something went wrong</h1>;
+    return (
+      <>
+        <h1>Something went wrong</h1>
+        {sakerResponse.error instanceof Error ? <p>{sakerResponse.error.message}</p> : null}
+      </>
+    );
   }
 
   const { saker } = sakerResponse.value;

@@ -10,7 +10,23 @@ interface ErrorResponse {
 }
 
 export type ApiResponse<T> = Promise<SuccessResponse<T> | ErrorResponse>;
+
 export class UnauthorizedError extends Error {}
+
+export enum BehandlingstidUnitType {
+  WEEKS = '1',
+  MONTHS = '2',
+}
+
+export interface Frist {
+  varsletBehandlingstidUnits: number;
+  varsletBehandlingstidUnitTypeId: BehandlingstidUnitType;
+  /**
+   * Date
+   * @example 2021-09-01
+   */
+  varsletFrist: string;
+}
 
 export interface SakEvent {
   type: EventType;
@@ -31,6 +47,12 @@ export interface Sak {
    */
   varsletFrist: string;
   events: SakEvent[];
+  varsletBehandlingstid: Frist | null;
+  /**
+   * Date
+   * @example 2021-09-01
+   */
+  mottattKlageinstans: string;
 }
 
 export enum Audience {
