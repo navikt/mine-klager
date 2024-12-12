@@ -27,6 +27,11 @@ spec:
   prometheus:
     enabled: true
   accessPolicy:
+    inbound:
+      rules:
+        - application: tokenx-token-generator
+          namespace: klage
+          cluster: dev-gcp
     outbound:
       rules:
         - application: kabal-api
