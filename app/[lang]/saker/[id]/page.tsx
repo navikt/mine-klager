@@ -12,7 +12,7 @@ import { BehandlingstidUnitType } from '@/lib/types';
 import type { Sak } from '@/lib/types';
 import { UnauthorizedError } from '@/lib/types';
 import { DEFAULT_LANGUAGE, Languages, isLanguage } from '@/locales';
-import { HGrid, HStack, Heading } from '@navikt/ds-react';
+import { HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
@@ -110,11 +110,11 @@ export default async function SakPage({ params }: Props) {
 
         <AllEvents sak={sakResponse.value} previousEvents={previousEvents} lang={lang} />
 
-        <HStack gap="8">
+        <VStack gap="8">
           <NextEvent lastEvent={lastEvent} lang={lang} />
 
           <Documents lang={lang} />
-        </HStack>
+        </VStack>
       </HGrid>
     </>
   );

@@ -1,4 +1,3 @@
-'use server';
 import { getOboToken } from '@/lib/auth';
 import { isDeployed, isLocal } from '@/lib/environment';
 import type { ApiResponse, Sak } from '@/lib/types';

@@ -1,4 +1,3 @@
-'use server';
 import { type Audience, UnauthorizedError } from '@/lib/types';
 import { requestOboToken, validateToken } from '@navikt/oasis';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';

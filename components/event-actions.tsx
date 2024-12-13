@@ -103,26 +103,26 @@ export const EventActions = (props: EventActionsProps) => {
           <ViewComplaint {...props} />
         </>
       );
-    case EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS:
-      return (
-        <>
-          <ViewVedtak {...props} />
-          <ViewAppeal {...props} />
-        </>
-      );
+    // case EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS:
+    //   return (
+    //     <>
+    //       <ViewVedtak {...props} />
+    //       <ViewAppeal {...props} />
+    //     </>
+    //   );
     case EventType.ANKE_SENDT_TRYGDERETTEN:
       return (
         <>
           <ViewAppeal {...props} />
         </>
       );
-    case EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN:
-      return (
-        <>
-          <ViewVedtak {...props} />
-          <ViewAppeal {...props} />
-        </>
-      );
+    // case EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN:
+    //   return (
+    //     <>
+    //       <ViewVedtak {...props} />
+    //       <ViewAppeal {...props} />
+    //     </>
+    //   );
     case EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN:
       return (
         <>
@@ -146,21 +146,21 @@ const KLANG_DOMAIN = isDeployedToProd ? 'https://klage.nav.no' : 'https://klage.
 
 const ViewVedtak = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" variant="primary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
+  <Button role="link" variant="primary" as="a" href={`${KLANG_DOMAIN}/${lang}/`} onClick={(e) => e.stopPropagation()}>
     {VIEW_VEDTAK[lang]}
   </Button>
 );
 
 const ViewComplaint = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
+  <Button role="link" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`} onClick={(e) => e.stopPropagation()}>
     {VIEW_COMPLAINT[lang]}
   </Button>
 );
 
 const ViewAppeal = ({ sak, lang }: EventActionsProps) => (
   // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`}>
+  <Button role="link" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`} onClick={(e) => e.stopPropagation()}>
     {VIEW_APPEAL[lang]}
   </Button>
 );
@@ -172,6 +172,7 @@ const EttersendDokumentasjon = ({ sak, lang, caseType }: EventActionsProps & Cas
     variant="tertiary"
     as="a"
     href={`${KLANG_DOMAIN}/${lang}/ettersendelse/${caseType}/${sak.ytelseId}?saksnummer=${sak.saksnummer}`}
+    onClick={(e) => e.stopPropagation()}
   >
     {ETTERSEND_DOKUMENTASJON[lang]}
   </Button>
@@ -184,6 +185,7 @@ const Appeal = ({ sak, lang }: EventActionsProps) => (
     variant="tertiary"
     as="a"
     href={`${KLANG_DOMAIN}/${lang}/anke/${sak.ytelseId}?saksnummer=${sak.saksnummer}`}
+    onClick={(e) => e.stopPropagation()}
   >
     {APPEAL[lang]}
   </Button>

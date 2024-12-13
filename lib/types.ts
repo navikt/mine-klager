@@ -35,6 +35,7 @@ export interface SakEvent {
    * @example 2021-09-01T12:00:00.000
    */
   date: string; // DateTime
+  relevantJournalpostId: string | null;
 }
 
 export interface Sak {
@@ -45,7 +46,6 @@ export interface Sak {
    * DateTime
    * @example 2021-09-01T12:00:00.000
    */
-  varsletFrist: string;
   events: SakEvent[];
   varsletBehandlingstid: Frist | null;
   /**
