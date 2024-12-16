@@ -200,7 +200,7 @@ const NEXT_DESCRIPTION: Record<SimpleEvent, Record<Languages, string[]>> = {
       'Dersom dei ikkje gir deg medhald, vil klagen bli send vidare til Nav klageinstans.',
     ],
     [Languages.EN]: [
-      'The decision-making body has received your complaint and is reviewing it.',
+      'Nav has received your complaint and is reviewing it.',
       'If they rule in your favor, you will receive a new decision.',
       'If they do not rule in your favor, the complaint will be sent to Nav Appeals.',
     ],
@@ -232,7 +232,7 @@ const NEXT_DESCRIPTION: Record<SimpleEvent, Record<Languages, string[]>> = {
     ],
     [Languages.EN]: [
       'Nav Appeals has concluded the processing of your appeal.',
-      'If they rule in your favor, you will receive a new decision that the decision-making body will implement.',
+      'If they rule in your favor, you will receive a new decision that Nav will implement.',
       'If they do not rule in your favor, the appeal will be sent to the National Insurance Court.',
     ],
   },
@@ -251,7 +251,7 @@ const NEXT_DESCRIPTION: Record<SimpleEvent, Record<Languages, string[]>> = {
     ],
     [Languages.EN]: [
       'The National Insurance Court is processing your appeal.',
-      'If they rule in your favor, you will receive a new decision that the decision-making body will implement.',
+      'If they rule in your favor, you will receive a new decision that Nav will implement.',
       'If they do not rule in your favor, you will receive a judgment that concludes the case.',
       'If you still disagree with the judgment of the National Insurance Court, you can appeal to the Court of Appeal.',
     ],
@@ -271,7 +271,7 @@ const NEXT_DESCRIPTION: Record<SimpleEvent, Record<Languages, string[]>> = {
     ],
     [Languages.EN]: [
       'The National Insurance Court has decided on your appeal.',
-      'If they rule in your favor, you will receive a new decision that the decision-making body will implement.',
+      'If they rule in your favor, you will receive a new decision that Nav will implement.',
       'If they do not rule in your favor, you will receive a judgment that concludes the case.',
       'If you still disagree with the judgment of the National Insurance Court, you can appeal to the Court of Appeal.',
     ],
@@ -291,7 +291,7 @@ const NEXT_DESCRIPTION: Record<SimpleEvent, Record<Languages, string[]>> = {
     ],
     [Languages.EN]: [
       'The National Insurance Court has concluded the processing of your appeal.',
-      'If they rule in your favor, you will receive a new decision that the decision-making body will implement.',
+      'If they rule in your favor, you will receive a new decision that Nav will implement.',
       'If they do not rule in your favor, you will receive a judgment that concludes the case.',
       'If you still disagree with the judgment of the National Insurance Court, you can appeal to the Court of Appeal.',
     ],

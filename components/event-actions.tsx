@@ -103,26 +103,26 @@ export const EventActions = (props: EventActionsProps) => {
           <ViewComplaint {...props} />
         </>
       );
-    // case EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS:
-    //   return (
-    //     <>
-    //       <ViewVedtak {...props} />
-    //       <ViewAppeal {...props} />
-    //     </>
-    //   );
+    case EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS:
+      return (
+        <>
+          <ViewVedtak {...props} />
+          <ViewAppeal {...props} />
+        </>
+      );
     case EventType.ANKE_SENDT_TRYGDERETTEN:
       return (
         <>
           <ViewAppeal {...props} />
         </>
       );
-    // case EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN:
-    //   return (
-    //     <>
-    //       <ViewVedtak {...props} />
-    //       <ViewAppeal {...props} />
-    //     </>
-    //   );
+    case EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN:
+      return (
+        <>
+          <ViewVedtak {...props} />
+          <ViewAppeal {...props} />
+        </>
+      );
     case EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN:
       return (
         <>

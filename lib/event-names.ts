@@ -4,23 +4,23 @@ import { EventType } from './types';
 export const EVENT_NAMES: Readonly<Record<EventType, Record<Languages, string>>> = {
   [EventType.KLAGE_MOTTATT_VEDTAKSINSTANS]: {
     [Languages.NB]: 'Klage mottatt vedtaksinstans',
-    [Languages.NN]: 'Klage mottatt vedtaksinstans',
-    [Languages.EN]: 'Complaint received by decision-making body',
+    [Languages.NN]: 'Klage motteke vedtaksinstans',
+    [Languages.EN]: 'Complaint received by Nav',
   },
   [EventType.KLAGE_MOTTATT_KLAGEINSTANS]: {
     [Languages.NB]: 'Klage mottatt klageinstans',
-    [Languages.NN]: 'Klage mottatt klageinstans',
-    [Languages.EN]: 'Complaint received by complaints body',
+    [Languages.NN]: 'Klage motteke klageinstans',
+    [Languages.EN]: 'Complaint received by Nav Appeals',
   },
   [EventType.KLAGE_AVSLUTTET_I_KLAGEINSTANS]: {
-    [Languages.NB]: 'Klage avsluttet i klageinstans',
-    [Languages.NN]: 'Klage avsluttet i klageinstans',
-    [Languages.EN]: 'Complaint concluded by complaints body',
+    [Languages.NB]: 'Klage avsluttet hos klageinstans',
+    [Languages.NN]: 'Klage avslutta hjå klageinstans',
+    [Languages.EN]: 'Complaint concluded by Nav Appeals',
   },
   [EventType.ANKE_MOTTATT_KLAGEINSTANS]: {
     [Languages.NB]: 'Anke mottatt klageinstans',
-    [Languages.NN]: 'Anke mottatt klageinstans',
-    [Languages.EN]: 'Appeal received by complaints body',
+    [Languages.NN]: 'Anke motteke klageinstans',
+    [Languages.EN]: 'Appeal received by Nav Appeals',
   },
   [EventType.ANKE_SENDT_TRYGDERETTEN]: {
     [Languages.NB]: 'Anke sendt til Trygderetten',
@@ -28,19 +28,19 @@ export const EVENT_NAMES: Readonly<Record<EventType, Record<Languages, string>>>
     [Languages.EN]: 'Appeal sent to the National Insurance Court',
   },
   [EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN]: {
-    [Languages.NB]: 'Anke kjennelse mottatt fra Trygderetten',
-    [Languages.NN]: 'Anke kjennelse mottatt fra Trygderetten',
+    [Languages.NB]: 'Kjennelse mottatt fra Trygderetten',
+    [Languages.NN]: 'Kjennelse mottatt fra Trygderetten',
     [Languages.EN]: 'Appeal decision received from the National Insurance Court',
   },
   [EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN]: {
-    [Languages.NB]: 'Anke avsluttet i Trygderetten',
-    [Languages.NN]: 'Anke avsluttet i Trygderetten',
+    [Languages.NB]: 'Anke avsluttet hos Trygderetten',
+    [Languages.NN]: 'Anke avslutta hjå Trygderetten',
     [Languages.EN]: 'Appeal concluded by the National Insurance Court',
   },
   [EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS]: {
-    [Languages.NB]: 'Anke avsluttet i klageinstans',
-    [Languages.NN]: 'Anke avsluttet i klageinstans',
-    [Languages.EN]: 'Appeal concluded by complaints body',
+    [Languages.NB]: 'Anke avsluttet hos klageinstans',
+    [Languages.NN]: 'Anke avslutta hjå klageinstans',
+    [Languages.EN]: 'Appeal concluded by Nav Appeals',
   },
 };
 
