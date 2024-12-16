@@ -1,46 +1,38 @@
-import { getOboToken } from '@/lib/auth';
 import { isDeployed, isLocal } from '@/lib/environment';
-import type { ApiResponse, Sak } from '@/lib/types';
+import { fetchWithTraceparent } from '@/lib/fetch';
+import { getLanguageFromHeaders } from '@/lib/get-language';
+import { getOboToken } from '@/lib/get-obo-token';
+import type { GetSakerResponse, Sak } from '@/lib/types';
+import { validateResponse } from '@/lib/validate-response';
+import { Languages } from '@/locales';
 import { saker } from '@/mockdata/saker';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { Audience } from './types';
 
 const API_URL = isLocal ? 'https://kabal-api.intern.dev.nav.no/api/innsyn' : 'http://kabal-api/api/innsyn';
 
-interface GetSakerResponse {
-  saker: Sak[];
-}
-
-export const getSaker = async (headers: ReadonlyHeaders): ApiResponse<GetSakerResponse> => {
+export const getSaker = async (headers: ReadonlyHeaders): Promise<GetSakerResponse> => {
   if (!isDeployed) {
-    return { ok: true, error: undefined, value: { saker: saker } };
+    return saker;
   }
 
-  try {
-    const token = await getOboToken(Audience.KABAL_API, headers);
+  const token = await getOboToken(Audience.KABAL_API, headers);
 
-    const res = await fetch(`${API_URL}/saker`, { headers: { Authorization: `Bearer ${token}` } });
+  const res = await fetchWithTraceparent(`${API_URL}/saker`, { headers: { Authorization: `Bearer ${token}` } });
 
-    if (!res.ok) {
-      return { ok: false, error: new Error('Failed to fetch saker'), value: undefined };
-    }
+  await validateResponse(res, getLanguageFromHeaders(headers), FAILED_TO_FETCH);
 
-    return { ok: true, error: undefined, value: await res.json() };
-  } catch (error) {
-    return { ok: false, error, value: undefined };
-  }
+  return await res.json();
 };
 
-export const getSak = async (headers: ReadonlyHeaders, id: string): ApiResponse<Sak | undefined> => {
+export const getSak = async (headers: ReadonlyHeaders, id: string): Promise<Sak | undefined> => {
   const response = await getSaker(headers);
 
-  if (!response.ok) {
-    return response;
-  }
+  return response.saker.find((sak) => sak.id === id);
+};
 
-  return {
-    ok: true,
-    error: undefined,
-    value: response.value.saker.find((sak) => sak.id === id),
-  };
+const FAILED_TO_FETCH: Record<Languages, string> = {
+  [Languages.NB]: 'Kunne ikke hente saker',
+  [Languages.NN]: 'Kunne ikkje hente saker',
+  [Languages.EN]: 'Failed to fetch cases',
 };

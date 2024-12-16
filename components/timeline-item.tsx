@@ -41,7 +41,7 @@ export const TimelineItem = ({ sakEvent, sak, lang }: TimelineItemProps) => {
           <EventDescription type={type} lang={lang} />
 
           <HStack gap="2" align="center" justify="end" flexShrink="0" className="flex-row-reverse">
-            <EventActions sak={sak} eventType={sakEvent.type} lang={lang} />
+            <EventActions sak={sak} event={sakEvent} lang={lang} />
           </HStack>
         </VStack>
       </VStack>

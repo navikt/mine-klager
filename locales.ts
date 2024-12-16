@@ -9,4 +9,4 @@ export const LANGUAGES = Object.values(Languages);
 export const DEFAULT_LANGUAGE = Languages.NB;
 export const NON_DEFAULT_LANGUAGES = LANGUAGES.filter((lang) => lang !== DEFAULT_LANGUAGE);
 
-export const isLanguage = (value: string): value is Languages => LANGUAGES.includes(value as Languages);
+export const isLanguage = (value: string | null): value is Languages => LANGUAGES.includes(value as Languages);

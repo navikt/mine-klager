@@ -47,7 +47,7 @@ export const LastEvent = ({ sak, lastEvent, lang }: LastEventProps) => {
           <EventDescription type={type} lang={lang} />
 
           <HStack gap="2" align="center" justify="end" className="flex-row-reverse">
-            <LastEventActions sak={sak} eventType={type} lang={lang} />
+            <LastEventActions sak={sak} event={lastEvent} lang={lang} />
           </HStack>
         </VStack>
       </Box>

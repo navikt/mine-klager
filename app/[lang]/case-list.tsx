@@ -1,6 +1,6 @@
 import { SakListItem } from '@/app/[lang]/list-item';
+import { BrowserDebugLog } from '@/components/browser-debug-log';
 import { getSaker } from '@/lib/api';
-import { UnauthorizedError } from '@/lib/types';
 import { Languages } from '@/locales';
 import { Heading, Skeleton, VStack } from '@navikt/ds-react';
 import { headers } from 'next/headers';
@@ -12,28 +12,11 @@ interface CaseListProps {
 export const CaseList = async ({ lang }: CaseListProps) => {
   const sakerResponse = await getSaker(await headers());
 
-  if (!sakerResponse.ok) {
-    if (sakerResponse.error instanceof UnauthorizedError) {
-      return (
-        <>
-          <h1>Unauthorized</h1>
-          <p>{sakerResponse.error.message}</p>
-        </>
-      );
-    }
-
-    return (
-      <>
-        <h1>Something went wrong</h1>
-        {sakerResponse.error instanceof Error ? <p>{sakerResponse.error.message}</p> : null}
-      </>
-    );
-  }
-
-  const { saker } = sakerResponse.value;
+  const { saker } = sakerResponse;
 
   return (
     <>
+      <BrowserDebugLog label="Saker" value={saker} />
       <Title caseCount={saker.length} lang={lang} />
 
       <VStack as="ul" gap="4">

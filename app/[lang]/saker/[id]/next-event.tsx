@@ -1,4 +1,3 @@
-import { DateTime } from '@/components/datetime';
 import { EventType } from '@/lib/types';
 import type { SakEvent } from '@/lib/types';
 import { Languages } from '@/locales';
@@ -15,6 +14,10 @@ export const NextEvent = ({ lastEvent, lang }: NextEventProps) => {
   }
 
   const { type } = lastEvent;
+
+  if (type === EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS || type === EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN) {
+    return null;
+  }
 
   return (
     <VStack as="section">
@@ -35,9 +38,10 @@ export const NextEvent = ({ lastEvent, lang }: NextEventProps) => {
   );
 };
 
-// TODO replace date with link to svarbrev: https://nav-it.slack.com/archives/G01CTUC8LSU/p1733843246505869
+// TODO: replace date with link to svarbrev. If not possible use date with svarbrev date (not event date)
+// https://nav-it.slack.com/archives/G01CTUC8LSU/p1733843246505869
 const KlageMottattKlageinstans = (lang: Languages, date: string) => {
-  const dateTime = <DateTime date={date} lang={lang} />;
+  // const dateTime = <DateTime date={date} lang={lang} />;
 
   if (lang === Languages.NB) {
     return (
@@ -53,7 +57,8 @@ const KlageMottattKlageinstans = (lang: Languages, date: string) => {
         </BodyShort>
         <BodyShort spacing>
           Du kan lese mer om gangen i en klagesak og få informasjon om klageinstansen sin saksbehandlingstid i brevet du
-          fikk fra klageinstansen den {dateTime}.
+          fikk fra klageinstansen.
+          {/* den {dateTime}. */}
         </BodyShort>
       </>
     );
@@ -73,7 +78,8 @@ const KlageMottattKlageinstans = (lang: Languages, date: string) => {
         </BodyShort>
         <BodyShort spacing>
           Du kan lese meir om gongen i ei klagesak og få informasjon om klageinstansen si saksbehandlingstid i brevet du
-          fekk frå klageinstansen den {dateTime}.
+          {/* fekk frå klageinstansen */}
+          {/* den {dateTime}. */}
         </BodyShort>
       </>
     );
@@ -92,16 +98,18 @@ const KlageMottattKlageinstans = (lang: Languages, date: string) => {
         </BodyShort>
         <BodyShort spacing>
           You can read more about the process in a complaint case and get information about Nav Appeals's processing
-          time in the letter you received from Nav Appeals on {dateTime}.
+          time in the letter you received from Nav Appeals.
+          {/* on {dateTime}. */}
         </BodyShort>
       </>
     );
   }
 };
 
-// TODO replace with link to svarbrev: https://nav-it.slack.com/archives/G01CTUC8LSU/p1733843246505869
+// TODO: replace date with link to svarbrev. If not possible use date with svarbrev date (not event date)
+// https://nav-it.slack.com/archives/G01CTUC8LSU/p1733843246505869
 const AnkeMottattKlageinstans = (lang: Languages, date: string) => {
-  const dateTime = <DateTime date={date} lang={lang} />;
+  // const dateTime = <DateTime date={date} lang={lang} />;
 
   if (lang === Languages.NB) {
     return (
@@ -117,7 +125,8 @@ const AnkeMottattKlageinstans = (lang: Languages, date: string) => {
         </BodyShort>
         <BodyShort spacing>
           Du kan lese mer om gangen i en ankesak og få informasjon om klageinstansen sin saksbehandlingstid i brevet du
-          fikk fra klageinstansen den {dateTime}.
+          fikk fra klageinstansen.
+          {/* den {dateTime}. */}
         </BodyShort>
       </>
     );
@@ -137,7 +146,8 @@ const AnkeMottattKlageinstans = (lang: Languages, date: string) => {
         </BodyShort>
         <BodyShort spacing>
           Du kan lese meir om gongen i ei ankesak og få informasjon om klageinstansen si saksbehandlingstid i brevet du
-          fekk frå klageinstansen den
+          fekk frå klageinstansen.
+          {/* den {dateTime}. */}
         </BodyShort>
       </>
     );
@@ -156,14 +166,13 @@ const AnkeMottattKlageinstans = (lang: Languages, date: string) => {
         </BodyShort>
         <BodyShort spacing>
           You can read more about the process in an appeal case and get information about Nav Appeals's processing time
-          in the letter you received from Nav Appeals on {dateTime}.
+          in the letter you received from Nav Appeals.
+          {/* on {dateTime}. */}
         </BodyShort>
       </>
     );
   }
 };
-
-type SimpleEvent = Exclude<EventType, EventType.KLAGE_MOTTATT_KLAGEINSTANS | EventType.ANKE_MOTTATT_KLAGEINSTANS>;
 
 const NextDescription = ({ type, lang, date }: { type: EventType; lang: Languages; date: string }) => {
   switch (type) {
@@ -171,9 +180,6 @@ const NextDescription = ({ type, lang, date }: { type: EventType; lang: Language
       return KlageMottattKlageinstans(lang, date);
     case EventType.ANKE_MOTTATT_KLAGEINSTANS:
       return AnkeMottattKlageinstans(lang, date);
-    case EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS:
-    case EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN:
-      return null;
     default:
       return (
         <>
@@ -186,6 +192,8 @@ const NextDescription = ({ type, lang, date }: { type: EventType; lang: Language
       );
   }
 };
+
+type SimpleEvent = Exclude<EventType, EventType.KLAGE_MOTTATT_KLAGEINSTANS | EventType.ANKE_MOTTATT_KLAGEINSTANS>;
 
 const NEXT_DESCRIPTION: Record<SimpleEvent, Record<Languages, string[]>> = {
   [EventType.KLAGE_MOTTATT_VEDTAKSINSTANS]: {

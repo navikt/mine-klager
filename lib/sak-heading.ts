@@ -10,9 +10,5 @@ const PREFIX: Record<Languages, string> = {
 export const getSakHeading = async (ytelseId: string, lang: Languages) => {
   const ytelseName = await getYtelseName(ytelseId, lang);
 
-  if (!ytelseName.ok) {
-    return `${PREFIX[lang]} ${ytelseId}`;
-  }
-
-  return `${PREFIX[lang]} «${ytelseName.value}»`;
+  return `${PREFIX[lang]} «${ytelseName}»`;
 };

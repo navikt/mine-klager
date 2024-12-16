@@ -1,5 +1,4 @@
 import { AllEvents } from '@/app/[lang]/saker/[id]/all-events';
-import { Documents } from '@/app/[lang]/saker/[id]/documents';
 import { NextEvent } from '@/app/[lang]/saker/[id]/next-event';
 import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
@@ -10,7 +9,6 @@ import { getYtelseName } from '@/lib/kodeverk';
 import { getSakHeading } from '@/lib/sak-heading';
 import { BehandlingstidUnitType } from '@/lib/types';
 import type { Sak } from '@/lib/types';
-import { UnauthorizedError } from '@/lib/types';
 import { DEFAULT_LANGUAGE, Languages, isLanguage } from '@/locales';
 import { HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
 import { headers } from 'next/headers';
@@ -23,22 +21,18 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { lang, id } = await params;
 
-  const sakResponse = await getSak(await headers(), id);
+  const sak = await getSak(await headers(), id);
 
-  if (!sakResponse.ok || sakResponse.value === undefined || !isLanguage(lang)) {
+  if (sak === undefined || !isLanguage(lang)) {
     return { title: FALLBACK_TITLE[lang], lang };
   }
 
-  const { ytelseId, saksnummer } = sakResponse.value;
+  const { ytelseId, saksnummer } = sak;
 
-  const ytelseNameResponse = await getYtelseName(ytelseId, lang);
-
-  if (!ytelseNameResponse.ok) {
-    return { title: FALLBACK_TITLE[lang], lang };
-  }
+  const ytelseName = await getYtelseName(ytelseId, lang);
 
   return {
-    title: `${saksnummer} - ${ytelseNameResponse.value}`,
+    title: `${saksnummer} - ${ytelseName}`,
     lang,
   };
 }
@@ -46,26 +40,13 @@ export async function generateMetadata({ params }: Props) {
 export default async function SakPage({ params }: Props) {
   const { lang, id } = await params;
 
-  const sakResponse = await getSak(await headers(), id);
+  const sak = await getSak(await headers(), id);
 
-  if (!sakResponse.ok) {
-    if (sakResponse.error instanceof UnauthorizedError) {
-      return (
-        <>
-          <h1>Unauthorized</h1>
-          <p>{sakResponse.error.message}</p>
-        </>
-      );
-    }
-
-    return <h1>Unknown error</h1>;
-  }
-
-  if (sakResponse.value === undefined || !isLanguage(lang)) {
+  if (sak === undefined || !isLanguage(lang)) {
     return notFound();
   }
 
-  const { saksnummer, events, ytelseId, varsletBehandlingstid, mottattKlageinstans } = sakResponse.value;
+  const { saksnummer, events, ytelseId, varsletBehandlingstid, mottattKlageinstans } = sak;
   const heading = await getSakHeading(ytelseId, lang);
 
   const path = `/saker/${id}`;
@@ -108,12 +89,12 @@ export default async function SakPage({ params }: Props) {
       <HGrid gap="8 4" marginBlock="8 0" columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}>
         {/* <LastEvent lastEvent={lastEvent} sak={sak} lang={lang} /> */}
 
-        <AllEvents sak={sakResponse.value} previousEvents={previousEvents} lang={lang} />
+        <AllEvents sak={sak} previousEvents={previousEvents} lang={lang} />
 
         <VStack gap="8">
           <NextEvent lastEvent={lastEvent} lang={lang} />
 
-          <Documents lang={lang} />
+          {/* <Documents lang={lang} /> */}
         </VStack>
       </HGrid>
     </>

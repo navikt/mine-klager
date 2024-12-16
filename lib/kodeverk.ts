@@ -1,6 +1,8 @@
 import { isDeployed } from '@/lib/environment';
-import type { ApiResponse } from '@/lib/types';
-import type { Languages } from '@/locales';
+import { fetchWithTraceparent } from '@/lib/fetch';
+import { validateResponse } from '@/lib/validate-response';
+import { Languages } from '@/locales';
+import { ytelserSimple } from '@/mockdata/ytelser-simple';
 
 export const API_URL = isDeployed
   ? 'http://klage-kodeverk-api/kodeverk'
@@ -11,32 +13,28 @@ export interface Ytelse {
   navn: string;
 }
 
-export const getYtelseName = async (id: string, lang: Languages): ApiResponse<string> => {
+export const getYtelseName = async (id: string, lang: Languages): Promise<string> => {
   const response = await getYtelser(lang);
 
-  if (!response.ok) {
-    return response;
-  }
-
-  const value = response.value.find((ytelse) => ytelse.id === id)?.navn ?? id;
-
-  return { ok: true, error: undefined, value };
+  return response.find((ytelse) => ytelse.id === id)?.navn ?? id;
 };
 
 const OPTIONS = { headers: { Accept: 'application/json' } };
 
-const getYtelser = async (lang: Languages): ApiResponse<Ytelse[]> => {
-  try {
-    const res = await fetch(`${API_URL}/ytelser/simple/${lang}`, OPTIONS);
-
-    if (!res.ok) {
-      return { ok: false, error: new Error('Failed to fetch ytelser'), value: undefined };
-    }
-
-    const value = await res.json();
-
-    return { ok: true, error: undefined, value };
-  } catch (error) {
-    return { ok: false, error, value: undefined };
+const getYtelser = async (lang: Languages): Promise<Ytelse[]> => {
+  if (isDeployed) {
+    return ytelserSimple;
   }
+
+  const res = await fetchWithTraceparent(`${API_URL}/ytelser/simple/${lang}`, OPTIONS);
+
+  await validateResponse(res, lang, FAILED_TO_FETCH);
+
+  return await res.json();
+};
+
+const FAILED_TO_FETCH: Record<Languages, string> = {
+  [Languages.NB]: 'Kunne ikke hente ytelser',
+  [Languages.NN]: 'Kunne ikkje hente ytelser',
+  [Languages.EN]: 'Failed to fetch ytelser',
 };

@@ -1,19 +1,20 @@
 import { isDeployedToProd } from '@/lib/environment';
 import { EventType } from '@/lib/types';
-import type { Sak } from '@/lib/types';
+import type { Sak, SakEvent } from '@/lib/types';
 import { Languages } from '@/locales';
-import { Button } from '@navikt/ds-react';
+import { ExternalLinkIcon } from '@navikt/aksel-icons';
+import { Button, type ButtonProps } from '@navikt/ds-react';
 
 interface EventActionsProps {
   sak: Sak;
-  eventType: EventType;
+  event: SakEvent;
   lang: Languages;
 }
 
 export const LastEventActions = (props: EventActionsProps) => {
-  const { eventType } = props;
+  const { type } = props.event;
 
-  switch (eventType) {
+  switch (type) {
     case EventType.KLAGE_MOTTATT_VEDTAKSINSTANS:
       return (
         <>
@@ -75,9 +76,9 @@ export const LastEventActions = (props: EventActionsProps) => {
 };
 
 export const EventActions = (props: EventActionsProps) => {
-  const { eventType } = props;
+  const { type } = props.event;
 
-  switch (eventType) {
+  switch (type) {
     case EventType.KLAGE_MOTTATT_VEDTAKSINSTANS:
       return (
         <>
@@ -144,25 +145,48 @@ interface CaseType {
 
 const KLANG_DOMAIN = isDeployedToProd ? 'https://klage.nav.no' : 'https://klage.intern.dev.nav.no';
 
-const ViewVedtak = ({ sak, lang }: EventActionsProps) => (
-  // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" variant="primary" as="a" href={`${KLANG_DOMAIN}/${lang}/`} onClick={(e) => e.stopPropagation()}>
+interface PdfLinkProps extends Omit<EventActionsProps, 'lang' | 'sak'> {
+  variant: ButtonProps['variant'];
+  children: string;
+}
+
+const PdfLink = ({ variant, event, children }: PdfLinkProps) => {
+  if (event.relevantJournalpostId === null) {
+    return null;
+  }
+
+  return (
+    // biome-ignore lint/a11y/useSemanticElements: Button as link.
+    <Button
+      role="link"
+      icon={<ExternalLinkIcon aria-hidden />}
+      variant={variant}
+      as="a"
+      href={`/pdf/${event.relevantJournalpostId}`}
+      target="_blank"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {children}
+    </Button>
+  );
+};
+
+const ViewVedtak = ({ lang, event }: EventActionsProps) => (
+  <PdfLink variant="primary" event={event}>
     {VIEW_VEDTAK[lang]}
-  </Button>
+  </PdfLink>
 );
 
-const ViewComplaint = ({ sak, lang }: EventActionsProps) => (
-  // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`} onClick={(e) => e.stopPropagation()}>
+const ViewComplaint = ({ lang, event }: EventActionsProps) => (
+  <PdfLink variant="tertiary" event={event}>
     {VIEW_COMPLAINT[lang]}
-  </Button>
+  </PdfLink>
 );
 
-const ViewAppeal = ({ sak, lang }: EventActionsProps) => (
-  // biome-ignore lint/a11y/useSemanticElements: Button as link.
-  <Button role="link" variant="tertiary" as="a" href={`${KLANG_DOMAIN}/${lang}/`} onClick={(e) => e.stopPropagation()}>
+const ViewAppeal = ({ lang, event }: EventActionsProps) => (
+  <PdfLink variant="tertiary" event={event}>
     {VIEW_APPEAL[lang]}
-  </Button>
+  </PdfLink>
 );
 
 const EttersendDokumentasjon = ({ sak, lang, caseType }: EventActionsProps & CaseType) => (

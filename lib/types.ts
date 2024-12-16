@@ -1,18 +1,3 @@
-interface SuccessResponse<T> {
-  ok: true;
-  error: undefined;
-  value: T;
-}
-interface ErrorResponse {
-  ok: false;
-  error: unknown;
-  value: undefined;
-}
-
-export type ApiResponse<T> = Promise<SuccessResponse<T> | ErrorResponse>;
-
-export class UnauthorizedError extends Error {}
-
 export enum BehandlingstidUnitType {
   WEEKS = '1',
   MONTHS = '2',
@@ -68,4 +53,7 @@ export enum EventType {
   ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN = 'ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN',
   ANKE_AVSLUTTET_I_TRYGDERETTEN = 'ANKE_AVSLUTTET_I_TRYGDERETTEN',
   ANKE_AVSLUTTET_I_KLAGEINSTANS = 'ANKE_AVSLUTTET_I_KLAGEINSTANS',
+}
+export interface GetSakerResponse {
+  saker: Sak[];
 }

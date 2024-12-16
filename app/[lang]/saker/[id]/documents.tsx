@@ -7,7 +7,7 @@ interface DocumentsProps {
 }
 
 export const Documents = ({ lang }: DocumentsProps) => {
-  const documents = [];
+  const documents: unknown[] = [];
 
   const heading = `${HEADING[lang]} (${documents.length})`;
 
@@ -26,6 +26,6 @@ export const Documents = ({ lang }: DocumentsProps) => {
 
 const HEADING: Record<Languages, string> = {
   [Languages.NB]: 'Sakens dokumenter',
-  [Languages.NN]: 'Sak si dokument',
+  [Languages.NN]: 'Sakens dokument',
   [Languages.EN]: 'Case documents',
 };
