@@ -1,5 +1,4 @@
 import { SakListItem } from '@/app/[lang]/list-item';
-import { BrowserDebugLog } from '@/components/browser-debug-log';
 import { getSaker } from '@/lib/api';
 import { Languages } from '@/locales';
 import { Heading, Skeleton, VStack } from '@navikt/ds-react';
@@ -16,7 +15,6 @@ export const CaseList = async ({ lang }: CaseListProps) => {
 
   return (
     <>
-      <BrowserDebugLog label="Saker" value={saker} />
       <Title caseCount={saker.length} lang={lang} />
 
       <VStack as="ul" gap="4">

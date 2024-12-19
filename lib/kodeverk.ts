@@ -1,8 +1,10 @@
+import { browserLog } from '@/lib/browser-log';
 import { isDeployed } from '@/lib/environment';
-import { fetchWithTraceparent } from '@/lib/fetch';
+import { fetchWithTraceparent, generateTraceParent } from '@/lib/fetch';
 import { validateResponse } from '@/lib/validate-response';
 import { Languages } from '@/locales';
 import { ytelserSimple } from '@/mockdata/ytelser-simple';
+import { logger } from '@navikt/next-logger';
 
 export const API_URL = isDeployed
   ? 'http://klage-kodeverk-api/kodeverk'
@@ -19,14 +21,19 @@ export const getYtelseName = async (id: string, lang: Languages): Promise<string
   return response.find((ytelse) => ytelse.id === id)?.navn ?? id;
 };
 
-const OPTIONS = { headers: { Accept: 'application/json' } };
-
 const getYtelser = async (lang: Languages): Promise<Ytelse[]> => {
   if (isDeployed) {
     return ytelserSimple;
   }
 
-  const res = await fetchWithTraceparent(`${API_URL}/ytelser/simple/${lang}`, OPTIONS);
+  const url = `${API_URL}/ytelser/simple/${lang}`;
+  const traceparent = generateTraceParent();
+  const options = { headers: { Accept: 'application/json', traceparent } };
+
+  const res = await fetchWithTraceparent(url, options);
+  logger.debug({ msg: url, status: res.status, 'x-traceparent': traceparent });
+
+  browserLog.debug(`Response from ${url}:`, res);
 
   await validateResponse(res, lang, FAILED_TO_FETCH);
 

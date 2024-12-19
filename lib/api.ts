@@ -1,11 +1,13 @@
+import { browserLog } from '@/lib/browser-log';
 import { isDeployed, isLocal } from '@/lib/environment';
-import { fetchWithTraceparent } from '@/lib/fetch';
+import { fetchWithTraceparent, generateTraceParent } from '@/lib/fetch';
 import { getLanguageFromHeaders } from '@/lib/get-language';
 import { getOboToken } from '@/lib/get-obo-token';
 import type { GetSakerResponse, Sak } from '@/lib/types';
 import { validateResponse } from '@/lib/validate-response';
 import { Languages } from '@/locales';
 import { saker } from '@/mockdata/saker';
+import { logger } from '@navikt/next-logger';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { Audience } from './types';
 
@@ -18,11 +20,25 @@ export const getSaker = async (headers: ReadonlyHeaders): Promise<GetSakerRespon
 
   const token = await getOboToken(Audience.KABAL_API, headers);
 
-  const res = await fetchWithTraceparent(`${API_URL}/saker`, { headers: { Authorization: `Bearer ${token}` } });
+  const url = `${API_URL}/saker`;
+
+  const traceparent = generateTraceParent();
+  const res = await fetchWithTraceparent(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      traceparent,
+    },
+  });
+
+  logger.debug({ msg: url, status: res.status, 'x-traceparent': traceparent });
 
   await validateResponse(res, getLanguageFromHeaders(headers), FAILED_TO_FETCH);
 
-  return await res.json();
+  const json = await res.json();
+
+  browserLog.debug(`Response from ${url}:`, json);
+
+  return json;
 };
 
 export const getSak = async (headers: ReadonlyHeaders, id: string): Promise<Sak | undefined> => {
