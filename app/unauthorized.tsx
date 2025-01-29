@@ -1,6 +1,6 @@
 import { Decorator } from '@/components/decorator';
 import { getLanguageFromHeaders } from '@/lib/get-language';
-import { Languages as Language } from '@/locales';
+import { Language } from '@/locales';
 import { Alert, Button } from '@navikt/ds-react';
 import { headers } from 'next/headers';
 

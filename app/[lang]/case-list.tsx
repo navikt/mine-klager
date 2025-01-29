@@ -2,12 +2,12 @@ import { Disclaimer } from '@/app/[lang]/disclaimer';
 import { SakListItem } from '@/app/[lang]/list-item';
 import { getSaker } from '@/lib/api';
 import { UNIT } from '@/lib/dictionary';
-import { Languages, type Translation } from '@/locales';
+import { Language, type Translation } from '@/locales';
 import { Heading, Skeleton, VStack } from '@navikt/ds-react';
 import { headers } from 'next/headers';
 
 interface CaseListProps {
-  lang: Languages;
+  lang: Language;
 }
 
 export const CaseList = async ({ lang }: CaseListProps) => {
@@ -31,7 +31,7 @@ export const CaseList = async ({ lang }: CaseListProps) => {
 };
 
 interface CaseListLoadingProps {
-  lang: Languages;
+  lang: Language;
 }
 
 export const CaseListLoading = ({ lang }: CaseListLoadingProps) => (
@@ -47,14 +47,14 @@ export const CaseListLoading = ({ lang }: CaseListLoadingProps) => (
 );
 
 const HEADING: Translation = {
-  [Languages.NB]: `Mine klager og anker hos ${UNIT.klageinstans.nb}`,
-  [Languages.NN]: `Mine klagar og ankar hos ${UNIT.klageinstans.nn}`,
-  [Languages.EN]: `My complaints and appeals with ${UNIT.klageinstans.en}`,
+  [Language.NB]: `Mine klager og anker hos ${UNIT.klageinstans.nb}`,
+  [Language.NN]: `Mine klagar og ankar hos ${UNIT.klageinstans.nn}`,
+  [Language.EN]: `My complaints and appeals with ${UNIT.klageinstans.en}`,
 };
 
 interface TitleProps {
   caseCount: number;
-  lang: Languages;
+  lang: Language;
 }
 
 const Title = ({ caseCount, lang }: TitleProps) => (

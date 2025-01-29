@@ -1,5 +1,6 @@
 import { AllEvents } from '@/app/[lang]/saker/[id]/all-events';
 import { WhatHappensNow } from '@/app/[lang]/saker/[id]/what-happens-now';
+import { Actions } from '@/components/actions/actions';
 import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { InfoItem } from '@/components/info-item';
@@ -11,13 +12,19 @@ import { getYtelseName } from '@/lib/kodeverk';
 import { getSakHeading } from '@/lib/sak-heading';
 import { BehandlingstidUnitType } from '@/lib/types';
 import type { Frist, Sak } from '@/lib/types';
-import { DEFAULT_LANGUAGE, Languages, type Translation, isLanguage } from '@/locales';
-import { HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
+import { DEFAULT_LANGUAGE, Language, type Translation, isLanguage } from '@/locales';
+import { HGrid, HStack, Heading } from '@navikt/ds-react';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
+interface Params {
+  id: string;
+  lang: Language;
+  sak: Sak;
+}
+
 interface Props {
-  params: Promise<{ id: string; lang: Languages; sak: Sak }>;
+  params: Promise<Params>;
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -43,9 +50,9 @@ export async function generateMetadata({ params }: Props) {
 }
 
 const UNKNOWN: Translation = {
-  [Languages.NB]: 'Ukjent',
-  [Languages.NN]: 'Ukjent',
-  [Languages.EN]: 'Unknown',
+  [Language.NB]: 'Ukjent',
+  [Language.NN]: 'Ukjent',
+  [Language.EN]: 'Unknown',
 };
 
 export default async function SakPage({ params }: Props) {
@@ -63,6 +70,7 @@ export default async function SakPage({ params }: Props) {
   const path = `/saker/${id}`;
 
   const lastEvent = events.at(-1);
+  const hasLastEvent = lastEvent !== undefined;
 
   return (
     <>
@@ -97,12 +105,12 @@ export default async function SakPage({ params }: Props) {
         )}
       </HStack>
 
+      {hasLastEvent ? <Actions sak={sak} sakEvent={lastEvent} lang={lang} /> : null}
+
       <HGrid gap="8 4" marginBlock="8 0" columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}>
         <AllEvents sak={sak} lang={lang} />
 
-        <VStack gap="8">
-          <WhatHappensNow lastEvent={lastEvent} lang={lang} />
-        </VStack>
+        {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} /> : null}
       </HGrid>
     </>
   );
@@ -111,7 +119,7 @@ export default async function SakPage({ params }: Props) {
 const formatBehandlingstid = (
   { varsletBehandlingstidUnitTypeId, varsletBehandlingstidUnits, varsletFrist }: Frist,
   mottattKlageinstans: string,
-  lang: Languages,
+  lang: Language,
 ) => {
   const unit =
     varsletBehandlingstidUnitTypeId === BehandlingstidUnitType.WEEKS
@@ -127,43 +135,43 @@ const formatBehandlingstid = (
 };
 
 const CASE_NUMBER_LABEL: Translation = {
-  [Languages.NB]: 'Saksnummer',
-  [Languages.NN]: 'Saksnummer',
-  [Languages.EN]: 'Case number',
+  [Language.NB]: 'Saksnummer',
+  [Language.NN]: 'Saksnummer',
+  [Language.EN]: 'Case number',
 };
 
 const CASE_NUMBER_TOOLTIP: Translation = {
-  [Languages.NB]: 'Klikk for å kopiere saksnummeret',
-  [Languages.NN]: 'Klikk for å kopiere saksnummeret',
-  [Languages.EN]: 'Click to copy the case number',
+  [Language.NB]: 'Klikk for å kopiere saksnummeret',
+  [Language.NN]: 'Klikk for å kopiere saksnummeret',
+  [Language.EN]: 'Click to copy the case number',
 };
 
 const DEADLINE_LABEL: Translation = {
-  [Languages.NB]: 'Varslet frist',
-  [Languages.NN]: 'Varsla frist',
-  [Languages.EN]: 'Deadline',
+  [Language.NB]: 'Varslet frist',
+  [Language.NN]: 'Varsla frist',
+  [Language.EN]: 'Deadline',
 };
 
-const WEEKS: Record<Languages, (n: number) => string> = {
-  [Languages.NB]: (n) => (n === 1 ? `${n.toString(10)} uke` : `${n.toString(10)} uker`),
-  [Languages.NN]: (n) => (n === 1 ? `${n.toString(10)} veke` : `${n.toString(10)} veker`),
-  [Languages.EN]: (n) => (n === 1 ? `${n.toString(10)} week` : `${n.toString(10)} weeks`),
+const WEEKS: Record<Language, (n: number) => string> = {
+  [Language.NB]: (n) => (n === 1 ? `${n.toString(10)} uke` : `${n.toString(10)} uker`),
+  [Language.NN]: (n) => (n === 1 ? `${n.toString(10)} veke` : `${n.toString(10)} veker`),
+  [Language.EN]: (n) => (n === 1 ? `${n.toString(10)} week` : `${n.toString(10)} weeks`),
 };
 
-const MONTHS: Record<Languages, (n: number) => string> = {
-  [Languages.NB]: (n) => (n === 1 ? `${n.toString(10)} måned` : `${n.toString(10)} måneder`),
-  [Languages.NN]: (n) => (n === 1 ? `${n.toString(10)} månad` : `${n.toString(10)} månadar`),
-  [Languages.EN]: (n) => (n === 1 ? `${n.toString(10)} month` : `${n.toString(10)} months`),
+const MONTHS: Record<Language, (n: number) => string> = {
+  [Language.NB]: (n) => (n === 1 ? `${n.toString(10)} måned` : `${n.toString(10)} måneder`),
+  [Language.NN]: (n) => (n === 1 ? `${n.toString(10)} månad` : `${n.toString(10)} månadar`),
+  [Language.EN]: (n) => (n === 1 ? `${n.toString(10)} month` : `${n.toString(10)} months`),
 };
 
 const FROM: Translation = {
-  [Languages.NB]: 'fra',
-  [Languages.NN]: 'frå',
-  [Languages.EN]: 'from',
+  [Language.NB]: 'fra',
+  [Language.NN]: 'frå',
+  [Language.EN]: 'from',
 };
 
 const FALLBACK_TITLE: Translation = {
-  [Languages.NB]: 'Klage',
-  [Languages.NN]: 'Klage',
-  [Languages.EN]: 'Complaint',
+  [Language.NB]: 'Klage',
+  [Language.NN]: 'Klage',
+  [Language.EN]: 'Complaint',
 };

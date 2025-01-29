@@ -1,12 +1,12 @@
 import { ISO_FORMAT, PRETTY_DATE_FORMAT, format, longFormat } from '@/lib/date';
-import type { Languages } from '@/locales';
+import type { Language } from '@/locales';
 import { Tooltip } from '@navikt/ds-react';
 import { parseISO } from 'date-fns';
 
 interface DateTimeProps {
   id?: string;
   date: string;
-  lang: Languages;
+  lang: Language;
 }
 
 const CLASSNAME = 'whitespace-nowrap';
@@ -18,7 +18,7 @@ export const DateTime = ({ date, id, lang }: DateTimeProps) => {
 
   if (isZeroTime(parsed)) {
     return (
-      <Tooltip content={dateOnly}>
+      <Tooltip content={dateOnly} describesChild>
         <time id={id} dateTime={iso} className={CLASSNAME}>
           {dateOnly}
         </time>
@@ -27,7 +27,7 @@ export const DateTime = ({ date, id, lang }: DateTimeProps) => {
   }
 
   return (
-    <Tooltip content={longFormat(parsed, lang)}>
+    <Tooltip content={longFormat(parsed, lang)} describesChild>
       <time id={id} dateTime={iso} className={CLASSNAME}>
         {dateOnly}
       </time>

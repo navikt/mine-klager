@@ -2,7 +2,7 @@
 
 import { browserLog } from '@/lib/browser-log';
 import { UNIT } from '@/lib/dictionary';
-import { DEFAULT_LANGUAGE, Languages, type Translation, isLanguage } from '@/locales';
+import { DEFAULT_LANGUAGE, Language, type Translation, isLanguage } from '@/locales';
 import { onLanguageSelect, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import type { DecoratorLocale } from '@navikt/nav-dekoratoren-moduler/ssr';
 import { configureLogger } from '@navikt/next-logger';
@@ -20,9 +20,9 @@ interface BreadcrumbsProps {
 }
 
 const TITLE: Translation = {
-  [Languages.NB]: `Mine klager og anker hos ${UNIT.klageinstans.nb}`,
-  [Languages.NN]: `Mine klagar og ankar hos ${UNIT.klageinstans.nn}`,
-  [Languages.EN]: `My complaints and appeals with ${UNIT.klageinstans.en}`,
+  [Language.NB]: `Mine klager og anker hos ${UNIT.klageinstans.nb}`,
+  [Language.NN]: `Mine klagar og ankar hos ${UNIT.klageinstans.nn}`,
+  [Language.EN]: `My complaints and appeals with ${UNIT.klageinstans.en}`,
 };
 
 export const DecoratorUpdater = ({ lang, breadcrumbs = [], path }: BreadcrumbsProps) => {

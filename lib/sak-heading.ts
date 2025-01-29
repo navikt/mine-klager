@@ -1,6 +1,6 @@
 import { getYtelseName } from '@/lib/kodeverk';
 import { CaseType } from '@/lib/types';
-import type { Languages, Translation } from '@/locales';
+import type { Language, Translation } from '@/locales';
 
 const KLAGE_PREFIX: Translation = {
   nb: 'Klage som gjelder',
@@ -26,7 +26,7 @@ const PREFIX: Record<CaseType, Translation> = {
   [CaseType.OMGJØRING]: OMGJØRING_PREFIX,
 };
 
-export const getSakHeading = async (type: CaseType, innsendingsytelseId: string | null, lang: Languages) => {
+export const getSakHeading = async (type: CaseType, innsendingsytelseId: string | null, lang: Language) => {
   if (innsendingsytelseId === null) {
     return `${PREFIX[type][lang]} «${innsendingsytelseId}»`;
   }

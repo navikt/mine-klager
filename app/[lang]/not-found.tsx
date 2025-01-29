@@ -2,7 +2,7 @@ import { DecoratorUpdater } from '@/components/decorator-updater';
 import { getCurrentPath } from '@/lib/current-path';
 import { UNIT } from '@/lib/dictionary';
 import { getLanguageFromHeaders } from '@/lib/get-language';
-import { Languages, type Translation } from '@/locales';
+import { Language, type Translation } from '@/locales';
 import { BodyShort, Heading } from '@navikt/ds-react';
 import { headers } from 'next/headers';
 import NextLink from 'next/link';
@@ -14,7 +14,7 @@ export default async function NotFound() {
   return (
     <>
       <DecoratorUpdater
-        lang={Languages.NB}
+        lang={Language.NB}
         path={path}
         breadcrumbs={[
           {
@@ -36,13 +36,13 @@ export default async function NotFound() {
 }
 
 const HEADING: Translation = {
-  [Languages.NB]: 'Fant ikke siden',
-  [Languages.NN]: 'Fant ikkje sida',
-  [Languages.EN]: 'Page not found',
+  [Language.NB]: 'Fant ikke siden',
+  [Language.NN]: 'Fant ikkje sida',
+  [Language.EN]: 'Page not found',
 };
 
 const BODY: Translation = {
-  [Languages.NB]: `Gå til «Mine klager og anker hos ${UNIT.klageinstans.nb}».`,
-  [Languages.NN]: `Gå til «Mine klagar og ankar hos ${UNIT.klageinstans.nn}».`,
-  [Languages.EN]: `Go to «My complaints and appeals with ${UNIT.klageinstans.en}».`,
+  [Language.NB]: `Gå til «Mine klager og anker hos ${UNIT.klageinstans.nb}».`,
+  [Language.NN]: `Gå til «Mine klagar og ankar hos ${UNIT.klageinstans.nn}».`,
+  [Language.EN]: `Go to «My complaints and appeals with ${UNIT.klageinstans.en}».`,
 };

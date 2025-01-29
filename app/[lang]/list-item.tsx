@@ -5,13 +5,13 @@ import { InfoItem } from '@/components/info-item';
 import { EVENT_NAMES } from '@/lib/event-names';
 import { getSakHeading } from '@/lib/sak-heading';
 import type { Sak } from '@/lib/types';
-import { DEFAULT_LANGUAGE, Languages, type Translation } from '@/locales';
+import { DEFAULT_LANGUAGE, Language, type Translation } from '@/locales';
 import { Box, HStack, Heading, Stack, VStack } from '@navikt/ds-react';
 import NextLink from 'next/link';
 
 interface SakListItemProps {
   sak: Sak;
-  lang: Languages;
+  lang: Language;
 }
 
 export const SakListItem = ({ sak, lang }: SakListItemProps) => {
@@ -23,15 +23,17 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
   const pathPrefix = lang === DEFAULT_LANGUAGE ? '' : `/${lang}`;
 
   return (
-    <li className="group duration-200 ease-in-out hover:bg-surface-hover">
-      <NextLink href={`${pathPrefix}/saker/${id}`} className="block text-text-default no-underline">
-        <Box as="section" shadow="small" padding={{ xs: '4', sm: '4', md: '6' }} borderRadius="medium">
-          <Stack
-            gap={{ xs: '4', sm: '4', md: '6' }}
-            direction={{ xs: 'column', sm: 'row' }}
-            align="center"
-            wrap={false}
-          >
+    <Box asChild shadow="small" borderRadius="medium" background="bg-default">
+      <li className="group transition duration-200 ease-in-out hover:bg-surface-hover hover:shadow-medium">
+        <Stack
+          gap={{ xs: '4', sm: '4', md: '6' }}
+          padding={{ xs: '4', sm: '4', md: '6' }}
+          direction={{ xs: 'column', sm: 'row' }}
+          align="center"
+          wrap={false}
+          asChild
+        >
+          <NextLink href={`${pathPrefix}/saker/${id}`} className="text-text-default no-underline">
             <CaseIcon
               typeId={typeId}
               className="h-8 w-fit shrink-0 text-text-subtle group-hover:text-text-action-hover md:h-12"
@@ -64,27 +66,27 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
                 </InfoItem>
               </VStack>
             </VStack>
-          </Stack>
-        </Box>
-      </NextLink>
-    </li>
+          </NextLink>
+        </Stack>
+      </li>
+    </Box>
   );
 };
 
 const CASE_NUMBER: Translation = {
-  [Languages.NB]: 'Saksnummer',
-  [Languages.NN]: 'Saksnummer',
-  [Languages.EN]: 'Case number',
+  [Language.NB]: 'Saksnummer',
+  [Language.NN]: 'Saksnummer',
+  [Language.EN]: 'Case number',
 };
 
 const LAST_EVENT: Translation = {
-  [Languages.NB]: 'Siste hendelse',
-  [Languages.NN]: 'Siste hending',
-  [Languages.EN]: 'Last event',
+  [Language.NB]: 'Siste hendelse',
+  [Language.NN]: 'Siste hending',
+  [Language.EN]: 'Last event',
 };
 
 const NO_EVENTS: Translation = {
-  [Languages.NB]: 'Ingen hendelser',
-  [Languages.NN]: 'Ingen hendingar',
-  [Languages.EN]: 'No events',
+  [Language.NB]: 'Ingen hendelser',
+  [Language.NN]: 'Ingen hendingar',
+  [Language.EN]: 'No events',
 };

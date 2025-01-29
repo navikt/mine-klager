@@ -3,7 +3,7 @@ import { getFromKabal } from '@/lib/fetch';
 import { getLanguageFromHeaders } from '@/lib/get-language';
 import type { GetSakerResponse, Sak } from '@/lib/types';
 import { validateResponse } from '@/lib/validate-response';
-import { Languages, type Translation } from '@/locales';
+import { Language, type Translation } from '@/locales';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 
 const SAKER_API_URL = isLocal ? 'https://mine-klager.intern.dev.nav.no/api/saker' : 'http://kabal-api/api/innsyn/saker';
@@ -23,7 +23,7 @@ export const getSak = async (headers: ReadonlyHeaders, id: string): Promise<Sak 
 };
 
 const FAILED_TO_FETCH: Translation = {
-  [Languages.NB]: 'Kunne ikke hente saker',
-  [Languages.NN]: 'Kunne ikkje hente saker',
-  [Languages.EN]: 'Failed to fetch cases',
+  [Language.NB]: 'Kunne ikke hente saker',
+  [Language.NN]: 'Kunne ikkje hente saker',
+  [Language.EN]: 'Failed to fetch cases',
 };

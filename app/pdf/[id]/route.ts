@@ -2,7 +2,7 @@ import { isLocal } from '@/lib/environment';
 import { getFromKabal } from '@/lib/fetch';
 import { getLanguageFromHeaders } from '@/lib/get-language';
 import { validateResponse } from '@/lib/validate-response';
-import { Languages, type Translation } from '@/locales';
+import { Language, type Translation } from '@/locales';
 import type { NextRequest } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<Params
 }
 
 const ERROR_MESSAGE: Translation = {
-  [Languages.NB]: 'Kunne ikke hente dokument',
-  [Languages.NN]: 'Kunne ikkje hente dokument',
-  [Languages.EN]: 'Failed to fetch document',
+  [Language.NB]: 'Kunne ikke hente dokument',
+  [Language.NN]: 'Kunne ikkje hente dokument',
+  [Language.EN]: 'Failed to fetch document',
 };
