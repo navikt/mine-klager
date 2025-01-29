@@ -1,10 +1,14 @@
 import { LANGUAGE_HEADER } from '@/lib/custom-headers';
-import { DEFAULT_LANGUAGE, type Languages, isLanguage } from '@/locales';
+import { DEFAULT_LANGUAGE, type Language, isLanguage } from '@/locales';
 import type { DecoratorLocale } from '@navikt/nav-dekoratoren-moduler/ssr';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { headers } from 'next/headers';
 
-export const getLanguage = async (params: Promise<{ lang: DecoratorLocale }>): Promise<Languages> => {
+interface Params {
+  lang: DecoratorLocale;
+}
+
+export const getLanguage = async (params: Promise<Params>): Promise<Language> => {
   const { lang } = await params;
 
   if (isLanguage(lang)) {
@@ -14,7 +18,7 @@ export const getLanguage = async (params: Promise<{ lang: DecoratorLocale }>): P
   return DEFAULT_LANGUAGE;
 };
 
-export const getDecoratorLanguage = async (): Promise<Languages> => {
+export const getDecoratorLanguage = async (): Promise<Language> => {
   const headerList = await headers();
   const decoratorLocale = headerList.get(LANGUAGE_HEADER);
 
@@ -25,7 +29,7 @@ export const getDecoratorLanguage = async (): Promise<Languages> => {
   return DEFAULT_LANGUAGE;
 };
 
-export const getLanguageFromHeaders = (headers: ReadonlyHeaders): Languages => {
+export const getLanguageFromHeaders = (headers: ReadonlyHeaders): Language => {
   const langHeader = headers.get(LANGUAGE_HEADER);
 
   return isLanguage(langHeader) ? langHeader : DEFAULT_LANGUAGE;

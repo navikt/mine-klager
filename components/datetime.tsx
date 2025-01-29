@@ -1,12 +1,12 @@
 import { ISO_FORMAT, PRETTY_DATE_FORMAT, format, longFormat } from '@/lib/date';
-import type { Languages } from '@/locales';
+import type { Language } from '@/locales';
 import { Tooltip } from '@navikt/ds-react';
 import { parseISO } from 'date-fns';
 
 interface DateTimeProps {
   id?: string;
   date: string;
-  lang: Languages;
+  lang: Language;
 }
 
 const CLASSNAME = 'whitespace-nowrap';

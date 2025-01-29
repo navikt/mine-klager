@@ -5,13 +5,13 @@ import { InfoItem } from '@/components/info-item';
 import { EVENT_NAMES } from '@/lib/event-names';
 import { getSakHeading } from '@/lib/sak-heading';
 import type { Sak } from '@/lib/types';
-import { DEFAULT_LANGUAGE, Languages, type Translation } from '@/locales';
+import { DEFAULT_LANGUAGE, Language, type Translation } from '@/locales';
 import { Box, HStack, Heading, Stack, VStack } from '@navikt/ds-react';
 import NextLink from 'next/link';
 
 interface SakListItemProps {
   sak: Sak;
-  lang: Languages;
+  lang: Language;
 }
 
 export const SakListItem = ({ sak, lang }: SakListItemProps) => {
@@ -72,19 +72,19 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
 };
 
 const CASE_NUMBER: Translation = {
-  [Languages.NB]: 'Saksnummer',
-  [Languages.NN]: 'Saksnummer',
-  [Languages.EN]: 'Case number',
+  [Language.NB]: 'Saksnummer',
+  [Language.NN]: 'Saksnummer',
+  [Language.EN]: 'Case number',
 };
 
 const LAST_EVENT: Translation = {
-  [Languages.NB]: 'Siste hendelse',
-  [Languages.NN]: 'Siste hending',
-  [Languages.EN]: 'Last event',
+  [Language.NB]: 'Siste hendelse',
+  [Language.NN]: 'Siste hending',
+  [Language.EN]: 'Last event',
 };
 
 const NO_EVENTS: Translation = {
-  [Languages.NB]: 'Ingen hendelser',
-  [Languages.NN]: 'Ingen hendingar',
-  [Languages.EN]: 'No events',
+  [Language.NB]: 'Ingen hendelser',
+  [Language.NN]: 'Ingen hendingar',
+  [Language.EN]: 'No events',
 };

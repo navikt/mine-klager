@@ -1,15 +1,14 @@
 'use client';
-import { LastEventItem } from '@/components/timeline/last-event';
 import { TimelineItem } from '@/components/timeline/timeline-item';
 import type { Sak } from '@/lib/types';
-import { Languages, type Translation } from '@/locales';
+import { Language, type Translation } from '@/locales';
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { Alert, Box, Button, Heading, VStack } from '@navikt/ds-react';
 import { useState } from 'react';
 
 interface AllEventsProps {
   sak: Sak;
-  lang: Languages;
+  lang: Language;
 }
 
 export const AllEvents = ({ sak, lang }: AllEventsProps) => {
@@ -34,7 +33,7 @@ export const AllEvents = ({ sak, lang }: AllEventsProps) => {
 
       <Box borderWidth="1" borderRadius="large" padding="4" height="fit-content">
         <VStack gap="3">
-          <LastEventItem sakEvent={lastEvent} sak={sak} lang={lang} />
+          <TimelineItem as="section" sakEvent={lastEvent} lang={lang} />
 
           {hasPreviousEvents ? (
             <Button
@@ -54,7 +53,7 @@ export const AllEvents = ({ sak, lang }: AllEventsProps) => {
           {hasPreviousEvents && expanded ? (
             <VStack as="ul" gap="2" width="fit-content" className="flex-col-reverse">
               {previousEvents.map((event) => (
-                <TimelineItem key={`${event.type}-${event.date}`} sakEvent={event} lang={lang} />
+                <TimelineItem as="li" key={`${event.type}-${event.date}`} sakEvent={event} lang={lang} />
               ))}
             </VStack>
           ) : null}
@@ -65,25 +64,25 @@ export const AllEvents = ({ sak, lang }: AllEventsProps) => {
 };
 
 const HEADING: Translation = {
-  [Languages.NB]: 'Hendelser',
-  [Languages.NN]: 'Hendingar',
-  [Languages.EN]: 'Events',
+  [Language.NB]: 'Hendelser',
+  [Language.NN]: 'Hendingar',
+  [Language.EN]: 'Events',
 };
 
 const SHOW_ALL: Translation = {
-  [Languages.NB]: 'Vis eldre hendelser',
-  [Languages.NN]: 'Vis eldre hendingar',
-  [Languages.EN]: 'Show older events',
+  [Language.NB]: 'Vis eldre hendelser',
+  [Language.NN]: 'Vis eldre hendingar',
+  [Language.EN]: 'Show older events',
 };
 
 const COLLAPSE: Translation = {
-  [Languages.NB]: 'Skjul eldre hendelser',
-  [Languages.NN]: 'Skjul eldre hendingar',
-  [Languages.EN]: 'Hide older events',
+  [Language.NB]: 'Skjul eldre hendelser',
+  [Language.NN]: 'Skjul eldre hendingar',
+  [Language.EN]: 'Hide older events',
 };
 
 const NO_PREVIOUS_EVENTS: Translation = {
-  [Languages.NB]: 'Ingen tidligere hendelser',
-  [Languages.NN]: 'Ingen tidlegare hendingar',
-  [Languages.EN]: 'No previous events',
+  [Language.NB]: 'Ingen tidligere hendelser',
+  [Language.NN]: 'Ingen tidlegare hendingar',
+  [Language.EN]: 'No previous events',
 };

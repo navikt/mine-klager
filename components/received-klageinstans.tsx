@@ -2,11 +2,11 @@ import { DateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
 import { UNIT } from '@/lib/dictionary';
 import type { Sak } from '@/lib/types';
-import { Languages, type Translation } from '@/locales';
+import { Language, type Translation } from '@/locales';
 
 interface MottattProps {
   sak: Sak;
-  lang: Languages;
+  lang: Language;
 }
 
 export const ReceivedKlageinstans = ({ sak, lang }: MottattProps) => (
@@ -16,7 +16,7 @@ export const ReceivedKlageinstans = ({ sak, lang }: MottattProps) => (
 );
 
 const RECEIVED_KLAGEINSTANS: Translation = {
-  [Languages.NB]: `Mottatt ${UNIT.klageinstans.nb}`,
-  [Languages.NN]: `Mottatt ${UNIT.klageinstans.nn}`,
-  [Languages.EN]: `Received by ${UNIT.klageinstans.en}`,
+  [Language.NB]: `Mottatt ${UNIT.klageinstans.nb}`,
+  [Language.NN]: `Mottatt ${UNIT.klageinstans.nn}`,
+  [Language.EN]: `Received by ${UNIT.klageinstans.en}`,
 };

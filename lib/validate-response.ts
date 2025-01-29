@@ -1,7 +1,7 @@
-import type { Languages, Translation } from '@/locales';
+import type { Language, Translation } from '@/locales';
 import { unauthorized } from 'next/navigation';
 
-export const validateResponse = async (res: Response, lang: Languages, message: Translation) => {
+export const validateResponse = async (res: Response, lang: Language, message: Translation) => {
   if (!res.ok) {
     if (res.status === 401) {
       unauthorized();

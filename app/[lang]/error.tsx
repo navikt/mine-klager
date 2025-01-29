@@ -1,5 +1,5 @@
 'use client'; // Error boundaries must be Client Components
-import { DEFAULT_LANGUAGE, Languages, type Translation, isLanguage } from '@/locales';
+import { DEFAULT_LANGUAGE, Language, type Translation, isLanguage } from '@/locales';
 import { Alert, Button, HStack, Heading, Page } from '@navikt/ds-react';
 import { PageBlock } from '@navikt/ds-react/Page';
 import { useEffect } from 'react';
@@ -47,19 +47,19 @@ const getLanguage = (pathname: string) => {
 };
 
 const WRONG: Translation = {
-  [Languages.NB]: 'Noe gikk galt',
-  [Languages.NN]: 'Noko gjekk gale',
-  [Languages.EN]: 'Something went wrong',
+  [Language.NB]: 'Noe gikk galt',
+  [Language.NN]: 'Noko gjekk gale',
+  [Language.EN]: 'Something went wrong',
 };
 
 const GO_BACK: Translation = {
-  [Languages.NB]: 'Gå tilbake',
-  [Languages.NN]: 'Gå tilbake',
-  [Languages.EN]: 'Go back',
+  [Language.NB]: 'Gå tilbake',
+  [Language.NN]: 'Gå tilbake',
+  [Language.EN]: 'Go back',
 };
 
 const REFRESH: Translation = {
-  [Languages.NB]: 'Oppdater',
-  [Languages.NN]: 'Oppdater',
-  [Languages.EN]: 'Refresh',
+  [Language.NB]: 'Oppdater',
+  [Language.NN]: 'Oppdater',
+  [Language.EN]: 'Refresh',
 };

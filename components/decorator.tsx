@@ -2,7 +2,7 @@ import Script from 'next/script';
 import '@/app/globals.css';
 import { TITLE } from '@/app/[lang]/title';
 import { isDeployedToProd } from '@/lib/environment';
-import { DEFAULT_LANGUAGE, LANGUAGES, type Languages as Language } from '@/locales';
+import { DEFAULT_LANGUAGE, LANGUAGES, type Language } from '@/locales';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
 

@@ -3,9 +3,13 @@ import '@/app/globals.css';
 import { Decorator } from '@/components/decorator';
 import { getLanguage } from '@/lib/get-language';
 
+interface Params {
+  lang: DecoratorLocale;
+}
+
 interface Props {
   children: React.ReactNode;
-  params: Promise<{ lang: DecoratorLocale }>;
+  params: Promise<Params>;
 }
 
 const RootLayout = async ({ children, params }: Readonly<Props>) => {

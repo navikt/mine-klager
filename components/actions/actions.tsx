@@ -1,24 +1,19 @@
-import { Appeal, EttersendDokumentasjonAnke, EttersendDokumentasjonKlage } from '@/components/timeline/event-actions';
-import { TimelineItemContent } from '@/components/timeline/timeline-item-content';
-import type { Sak, SakEvent } from '@/lib/types';
-import { EventType } from '@/lib/types';
-import type { Languages } from '@/locales';
+import { Appeal } from '@/components/actions/appeal';
+import { EttersendDokumentasjonAnke, EttersendDokumentasjonKlage } from '@/components/actions/ettersendelse';
+import { EventType, type Sak, type SakEvent } from '@/lib/types';
+import type { Language } from '@/locales';
 import { HStack } from '@navikt/ds-react';
 
-interface LastEventItemProps {
-  sakEvent: SakEvent;
+interface ActionsProps {
   sak: Sak;
-  lang: Languages;
+  sakEvent: SakEvent;
+  lang: Language;
 }
 
-export const LastEventItem = (props: LastEventItemProps) => (
-  <TimelineItemContent as="section" {...props}>
-    <LastEventActions {...props} />
-  </TimelineItemContent>
-);
+export const Actions = (props: ActionsProps): React.ReactNode => {
+  const { sakEvent } = props;
 
-const LastEventActions = (props: LastEventItemProps): React.ReactNode => {
-  switch (props.sakEvent.type) {
+  switch (sakEvent.type) {
     case EventType.KLAGE_MOTTATT_VEDTAKSINSTANS:
     case EventType.KLAGE_MOTTATT_KLAGEINSTANS:
       return (
@@ -47,7 +42,7 @@ const LastEventActions = (props: LastEventItemProps): React.ReactNode => {
 };
 
 const ActionContainer = ({ children }: { children: React.ReactNode }) => (
-  <HStack gap="2" align="center" justify="end" flexShrink="0" className="flex-row-reverse">
+  <HStack gap="2" align="center" justify="start" flexShrink="0" marginBlock="8 0">
     {children}
   </HStack>
 );

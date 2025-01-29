@@ -3,11 +3,11 @@ import { InfoItem } from '@/components/info-item';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { UNIT } from '@/lib/dictionary';
 import { CaseType, EventType, type Sak } from '@/lib/types';
-import { Languages, type Translation } from '@/locales';
+import { Language, type Translation } from '@/locales';
 
 interface MottattProps {
   sak: Sak;
-  lang: Languages;
+  lang: Language;
 }
 
 export const Received = ({ sak, lang }: MottattProps) => {
@@ -27,7 +27,7 @@ export const Received = ({ sak, lang }: MottattProps) => {
 };
 
 const RECEIVED_VEDTAKSINSTANS: Translation = {
-  [Languages.NB]: `Mottatt ${UNIT.vedtaksinstans.nb}`,
-  [Languages.NN]: `Mottatt ${UNIT.vedtaksinstans.nn}`,
-  [Languages.EN]: `Received by ${UNIT.vedtaksinstans.en}`,
+  [Language.NB]: `Mottatt ${UNIT.vedtaksinstans.nb}`,
+  [Language.NN]: `Mottatt ${UNIT.vedtaksinstans.nn}`,
+  [Language.EN]: `Received by ${UNIT.vedtaksinstans.en}`,
 };
