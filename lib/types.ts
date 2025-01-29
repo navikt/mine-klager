@@ -50,7 +50,10 @@ export interface Sak {
   typeId: CaseType;
   saksnummer: string;
   ytelseId: string;
-  innsendingsytelseId: string;
+  /**
+   * Practically impossible for this to be `null`.
+   */
+  innsendingsytelseId: string | null;
   events: SakEvent[];
   varsletBehandlingstid: Frist | null;
   /**

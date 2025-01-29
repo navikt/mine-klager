@@ -31,13 +31,22 @@ export async function generateMetadata({ params }: Props) {
 
   const { innsendingsytelseId, saksnummer } = sak;
 
-  const ytelseName = await getYtelseName(innsendingsytelseId, lang);
+  const ytelseName =
+    innsendingsytelseId === null
+      ? `${UNKNOWN[lang]} (${innsendingsytelseId})`
+      : await getYtelseName(innsendingsytelseId, lang);
 
   return {
     title: `${saksnummer} - ${ytelseName}`,
     lang,
   };
 }
+
+const UNKNOWN: Translation = {
+  [Languages.NB]: 'Ukjent',
+  [Languages.NN]: 'Ukjent',
+  [Languages.EN]: 'Unknown',
+};
 
 export default async function SakPage({ params }: Props) {
   const { lang, id } = await params;

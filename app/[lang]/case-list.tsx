@@ -1,6 +1,7 @@
 import { Disclaimer } from '@/app/[lang]/disclaimer';
 import { SakListItem } from '@/app/[lang]/list-item';
 import { getSaker } from '@/lib/api';
+import { UNIT } from '@/lib/dictionary';
 import { Languages, type Translation } from '@/locales';
 import { Heading, Skeleton, VStack } from '@navikt/ds-react';
 import { headers } from 'next/headers';
@@ -46,9 +47,9 @@ export const CaseListLoading = ({ lang }: CaseListLoadingProps) => (
 );
 
 const HEADING: Translation = {
-  [Languages.NB]: 'Mine klager og anker hos Nav klageinstans',
-  [Languages.NN]: 'Mine klagar og ankar hos Nav klageinstans',
-  [Languages.EN]: 'My complaints and appeals with Nav Complaints Unit (Nav klageinstans)',
+  [Languages.NB]: `Mine klager og anker hos ${UNIT.klageinstans.nb}`,
+  [Languages.NN]: `Mine klagar og ankar hos ${UNIT.klageinstans.nn}`,
+  [Languages.EN]: `My complaints and appeals with ${UNIT.klageinstans.en}`,
 };
 
 interface TitleProps {
