@@ -26,7 +26,11 @@ const PREFIX: Record<CaseType, Translation> = {
   [CaseType.OMGJØRING]: OMGJØRING_PREFIX,
 };
 
-export const getSakHeading = async (type: CaseType, innsendingsytelseId: string, lang: Languages) => {
+export const getSakHeading = async (type: CaseType, innsendingsytelseId: string | null, lang: Languages) => {
+  if (innsendingsytelseId === null) {
+    return `${PREFIX[type][lang]} «${innsendingsytelseId}»`;
+  }
+
   const ytelseName = await getYtelseName(innsendingsytelseId, lang);
 
   return `${PREFIX[type][lang]} «${ytelseName}»`;

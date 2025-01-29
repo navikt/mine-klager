@@ -14,8 +14,7 @@ export interface Frist {
 }
 
 export enum EventDocumentType {
-  SVARBREV_KLAGE = 'SVARBREV_KLAGE',
-  SVARBREV_ANKE = 'SVARBREV_ANKE',
+  SVARBREV = 'SVARBREV',
 }
 
 export interface EventDocument {
@@ -50,7 +49,10 @@ export interface Sak {
   typeId: CaseType;
   saksnummer: string;
   ytelseId: string;
-  innsendingsytelseId: string;
+  /**
+   * Practically impossible for this to be `null`.
+   */
+  innsendingsytelseId: string | null;
   events: SakEvent[];
   varsletBehandlingstid: Frist | null;
   /**

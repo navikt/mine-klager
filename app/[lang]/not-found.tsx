@@ -1,5 +1,6 @@
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { getCurrentPath } from '@/lib/current-path';
+import { UNIT } from '@/lib/dictionary';
 import { getLanguageFromHeaders } from '@/lib/get-language';
 import { Languages, type Translation } from '@/locales';
 import { BodyShort, Heading } from '@navikt/ds-react';
@@ -41,7 +42,7 @@ const HEADING: Translation = {
 };
 
 const BODY: Translation = {
-  [Languages.NB]: 'Gå til «Mine klager og anker hos Nav klageinstans».',
-  [Languages.NN]: 'Gå til «Mine klagar og ankar hos Nav klageinstans».',
-  [Languages.EN]: 'Go to «My complaints and appeals with Nav Complaints Unit (Nav klageinstans)».',
+  [Languages.NB]: `Gå til «Mine klager og anker hos ${UNIT.klageinstans.nb}».`,
+  [Languages.NN]: `Gå til «Mine klagar og ankar hos ${UNIT.klageinstans.nn}».`,
+  [Languages.EN]: `Go to «My complaints and appeals with ${UNIT.klageinstans.en}».`,
 };

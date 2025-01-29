@@ -1,6 +1,7 @@
 import { DateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
+import { UNIT } from '@/lib/dictionary';
 import { CaseType, EventType, type Sak } from '@/lib/types';
 import { Languages, type Translation } from '@/locales';
 
@@ -26,7 +27,7 @@ export const Received = ({ sak, lang }: MottattProps) => {
 };
 
 const RECEIVED_VEDTAKSINSTANS: Translation = {
-  [Languages.NB]: 'Mottatt vedtaksinstans',
-  [Languages.NN]: 'Mottatt vedtaksinstans',
-  [Languages.EN]: 'Received by Nav',
+  [Languages.NB]: `Mottatt ${UNIT.vedtaksinstans.nb}`,
+  [Languages.NN]: `Mottatt ${UNIT.vedtaksinstans.nn}`,
+  [Languages.EN]: `Received by ${UNIT.vedtaksinstans.en}`,
 };

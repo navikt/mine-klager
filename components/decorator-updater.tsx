@@ -1,6 +1,7 @@
 'use client';
 
 import { browserLog } from '@/lib/browser-log';
+import { UNIT } from '@/lib/dictionary';
 import { DEFAULT_LANGUAGE, Languages, type Translation, isLanguage } from '@/locales';
 import { onLanguageSelect, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import type { DecoratorLocale } from '@navikt/nav-dekoratoren-moduler/ssr';
@@ -19,9 +20,9 @@ interface BreadcrumbsProps {
 }
 
 const TITLE: Translation = {
-  [Languages.NB]: 'Mine klager og anker hos Nav klageinstans',
-  [Languages.NN]: 'Mine klagar og ankar hos Nav klageinstans',
-  [Languages.EN]: 'My complaints and appeals with Nav Complaints Unit (Nav klageinstans)',
+  [Languages.NB]: `Mine klager og anker hos ${UNIT.klageinstans.nb}`,
+  [Languages.NN]: `Mine klagar og ankar hos ${UNIT.klageinstans.nn}`,
+  [Languages.EN]: `My complaints and appeals with ${UNIT.klageinstans.en}`,
 };
 
 export const DecoratorUpdater = ({ lang, breadcrumbs = [], path }: BreadcrumbsProps) => {
