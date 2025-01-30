@@ -1,0 +1,49 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: mine-klager
+  namespace: klage
+  labels:
+    team: klage
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-buffer-size: 8k
+spec:
+  port: 3000
+  image: {{ image }}
+  replicas:
+    min: 2
+    max: 4
+  liveness:
+    path: /isAlive
+  readiness:
+    path: /isReady
+  tokenx:
+    enabled: true
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
+      autoLogin: true
+  prometheus:
+    enabled: true
+  accessPolicy:
+    inbound:
+      rules:
+        - application: tokenx-token-generator
+          namespace: klage
+          cluster: dev-gcp
+    outbound:
+      rules:
+        - application: kabal-api
+        - application: klage-kodeverk-api
+        - application: nav-dekoratoren
+          namespace: personbruker
+  envFrom:
+    - secret: slack-url
+  observability:
+    tracing:
+      enabled: true
+  ingresses:
+  {{#each ingresses as |url|}}
+    - {{url}}
+  {{/each}}
