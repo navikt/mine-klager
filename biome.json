@@ -33,6 +33,9 @@
         "useConsistentCurlyBraces": {
           "level": "off",
           "fix": "none"
+        },
+        "noProcessEnv": {
+          "level": "off"
         }
       },
       "correctness": {
@@ -69,12 +72,7 @@
         "noConsole": {
           "level": "off",
           "options": {
-            "allow": [
-              "debug",
-              "info",
-              "warn",
-              "error"
-            ]
+            "allow": ["debug", "info", "warn", "error"]
           }
         },
         "noReactSpecificProps": {
@@ -98,6 +96,7 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
+      "jsxQuoteStyle": "double",
       "arrowParentheses": "always",
       "bracketSameLine": false
     },
@@ -106,9 +105,6 @@
     }
   },
   "files": {
-    "ignore": [
-      "dist/**",
-      ".next"
-    ]
+    "ignore": ["dist/**", ".next/**"]
   }
 }
