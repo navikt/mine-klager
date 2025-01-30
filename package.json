@@ -3,30 +3,42 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack | pino-pretty",
     "build": "next build",
     "start": "next start",
+    "typecheck": "tsc",
     "lint": "biome check"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^7.5.1",
-    "@navikt/ds-css": "^7.5.1",
-    "@navikt/ds-react": "^7.5.1",
-    "@navikt/ds-tailwind": "^7.5.1",
-    "@navikt/nav-dekoratoren-moduler": "3.1.1",
-    "next": "15.0.3",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "@grafana/faro-react": "1.12.3",
+    "@grafana/faro-web-sdk": "1.12.3",
+    "@grafana/faro-web-tracing": "1.12.3",
+    "@navikt/aksel-icons": "7.10.0",
+    "@navikt/ds-css": "7.10.0",
+    "@navikt/ds-react": "7.10.0",
+    "@navikt/ds-tailwind": "7.10.0",
+    "@navikt/nav-dekoratoren-moduler": "3.2.0",
+    "@navikt/next-logger": "1.35.0",
+    "@navikt/oasis": "3.6.0",
+    "date-fns": "4.1.0",
+    "next": "15.1.6",
+    "next-auth": "4.24.11",
+    "pino": "9.6.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@testing-library/react": "16.2.0",
+    "@types/bun": "1.2.1",
+    "@types/node": "22.12.0",
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3",
     "autoprefixer": "10.4.20",
-    "postcss": "^8",
-    "stylelint": "16.10.0",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "pino-pretty": "13.0.0",
+    "postcss": "8.5.1",
+    "stylelint": "16.14.1",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.7.3"
   }
 }
