@@ -14,8 +14,6 @@ const nextConfig: NextConfig = {
   assetPrefix: process.env.NODE_ENV === 'production' ? 'https://cdn.nav.no/klage/mine-klager' : undefined,
   output: 'standalone',
   poweredByHeader: false,
-  // deploymentId: process.env.VERSION ?? 'local',
-  // generateBuildId: () => process.env.VERSION ?? 'local',
   redirects: async () =>
     // Redirect all non-default languages to path with language prefix.
     PATHS.flatMap<Redirect>((path) =>

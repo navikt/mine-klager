@@ -1,37 +1,41 @@
-import { isDeployed, isDeployedToDev, isDeployedToProd } from '@/lib/environment';
-import { getWebInstrumentations, initializeFaro } from '@grafana/faro-react';
-import { LogLevel, type PushLogOptions, faro } from '@grafana/faro-web-sdk';
+import {
+  type Faro,
+  LogLevel,
+  type PushLogOptions,
+  getWebInstrumentations,
+  initializeFaro,
+} from '@grafana/faro-web-sdk';
 import { TracingInstrumentation } from '@grafana/faro-web-tracing';
 
-const getUrl = () => {
-  if (isDeployedToProd) {
-    return 'https://telemetry.prod-gcp.nav.cloud.nais.io/collect';
-  }
+class Grafana {
+  private faro: Faro | null = null;
 
-  if (isDeployedToDev) {
-    return 'https://telemetry.dev-gcp.nav.cloud.nais.io/collect';
-  }
+  private getUrl = () =>
+    document.documentElement.getAttribute('data-environment') === 'prod-gcp'
+      ? 'https://telemetry.nav.no/collect'
+      : 'https://telemetry.ekstern.dev.nav.no/collect';
 
-  return '/collect';
-};
+  public initialize = () => {
+    this.faro = initializeFaro({
+      url: this.getUrl(),
+      app: { name: 'mine-klager' },
+      paused: true, // Initialize as paused to avoid sending events before consent is given.
+      instrumentations: [
+        ...getWebInstrumentations({ captureConsole: false, enablePerformanceInstrumentation: true }),
+        new TracingInstrumentation(),
+      ],
+    });
+  };
 
-export const initialize = () =>
-  initializeFaro({
-    url: getUrl(),
-    app: { name: 'kabal-frontend' },
-    paused: !isDeployed,
-    batching: {
-      enabled: true,
-      sendTimeout: isDeployedToProd ? 250 : 30000,
-      itemLimit: isDeployedToProd ? 50 : 100,
-    },
-    instrumentations: [...getWebInstrumentations({ captureConsole: false }), new TracingInstrumentation()],
-  });
+  public unpause = () => this.faro?.unpause();
 
-export const pushEvent = (name: string, domain: string, attributes?: Record<string, string>) =>
-  faro.api.pushEvent(name, { ...attributes, domain }, domain, { skipDedupe: true });
+  public pushEvent = (name: string, domain: string, attributes?: Record<string, string>) =>
+    this.faro?.api.pushEvent(name, { ...attributes, domain }, domain, { skipDedupe: true });
 
-export const pushLog = (message: string, options?: Omit<PushLogOptions, 'skipDedupe'>, level = LogLevel.DEBUG) =>
-  faro.api.pushLog([message], { ...options, skipDedupe: true, level });
+  public pushLog = (message: string, options?: Omit<PushLogOptions, 'skipDedupe'>, level = LogLevel.DEBUG) =>
+    this.faro?.api.pushLog([message], { ...options, skipDedupe: true, level });
 
-export const { pushMeasurement, pushError } = faro.api;
+  public pushError = (error: Error) => this.faro?.api.pushError(error);
+}
+
+export const grafana = new Grafana();

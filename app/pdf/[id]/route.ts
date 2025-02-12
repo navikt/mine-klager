@@ -1,11 +1,11 @@
 import { isLocal } from '@/lib/environment';
-import { getFromKabal } from '@/lib/fetch';
+import { generateTraceParent, getFromKabal } from '@/lib/fetch';
 import { getLanguageFromHeaders } from '@/lib/get-language';
-import { validateResponse } from '@/lib/validate-response';
+import { getLogger } from '@/lib/logger';
 import { Language, type Translation } from '@/locales';
 import type { NextRequest } from 'next/server';
 
-export const dynamic = 'force-dynamic';
+const logger = getLogger('pdf');
 
 const PDF_BASE_URL = isLocal ? 'https://mine-klager.intern.dev.nav.no/pdf' : 'http://kabal-api/api/innsyn/documents';
 
@@ -14,19 +14,33 @@ interface Params {
 }
 
 export async function GET(req: NextRequest, { params }: { params: Promise<Params> }) {
-  const { id } = await params;
-
-  const url = `${PDF_BASE_URL}/${id}`;
   const { headers } = req;
-  const res = await (isLocal ? fetch(url, { headers }) : getFromKabal(url, headers));
-
   const lang = getLanguageFromHeaders(headers);
 
-  return (await validateResponse(res, lang, ERROR_MESSAGE)) ?? res;
+  const { id } = await params;
+  const url = `${PDF_BASE_URL}/${id}`;
+  const { traceparent, trace_id, span_id } = generateTraceParent();
+
+  try {
+    const res = await (isLocal ? fetch(url, { method: 'GET', headers }) : getFromKabal(url, headers, traceparent));
+
+    if (!res.ok) {
+      return new Response(ERROR_MESSAGE[lang], { status: res.status });
+    }
+
+    return res;
+  } catch (error) {
+    logger.error('Failed to fetch document', trace_id, span_id, {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? (error.stack ?? '') : '',
+    });
+
+    return new Response(ERROR_MESSAGE[lang], { status: 500 });
+  }
 }
 
 const ERROR_MESSAGE: Translation = {
-  [Language.NB]: 'Kunne ikke hente dokument',
-  [Language.NN]: 'Kunne ikkje hente dokument',
-  [Language.EN]: 'Failed to fetch document',
+  [Language.NB]: 'Kunne ikke hente dokumentet.',
+  [Language.NN]: 'Kunne ikkje hente dokumentet.',
+  [Language.EN]: 'Failed to fetch the document.',
 };

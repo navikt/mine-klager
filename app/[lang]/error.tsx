@@ -1,7 +1,12 @@
 'use client'; // Error boundaries must be Client Components
+
+import { UnauthorizedError } from '@/lib/errors';
+import { grafana } from '@/lib/observability';
 import { DEFAULT_LANGUAGE, Language, type Translation, isLanguage } from '@/locales';
 import { Alert, Button, HStack, Heading, Page } from '@navikt/ds-react';
 import { PageBlock } from '@navikt/ds-react/Page';
+import { logger } from '@navikt/next-logger';
+import { unauthorized } from 'next/navigation';
 import { useEffect } from 'react';
 
 interface ErrorPageProps {
@@ -12,7 +17,14 @@ interface ErrorPageProps {
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   const lang = getLanguage(window.location.pathname);
 
-  useEffect(() => console.error(error), [error]);
+  useEffect(() => {
+    logger.error(error);
+    grafana.pushError(error);
+  }, [error]);
+
+  if (error instanceof UnauthorizedError) {
+    return unauthorized();
+  }
 
   return (
     <Page contentBlockPadding="end">

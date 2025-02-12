@@ -1,7 +1,7 @@
+import { UnavailableYtelser } from '@/app/[lang]/unavailable-ytelser';
 import { UNIT } from '@/lib/dictionary';
 import { Language, type Translation } from '@/locales';
-import { Alert, BodyShort, List, ReadMore } from '@navikt/ds-react';
-import { ListItem } from '@navikt/ds-react/List';
+import { Alert, BodyShort } from '@navikt/ds-react';
 
 interface DisclaimerProps {
   lang: Language;
@@ -13,13 +13,7 @@ export const Disclaimer = ({ lang, className }: DisclaimerProps) => (
     <BodyShort spacing>{FIRST_LINE[lang]}</BodyShort>
     <BodyShort spacing>{SECOND_LINE[lang]}</BodyShort>
     <BodyShort spacing>{THIRD_LINE[lang]}</BodyShort>
-    <ReadMore header={READ_MORE[lang]}>
-      <List>
-        {UNAVAILABLE[lang].map((ytelse) => (
-          <ListItem key={ytelse}>{ytelse}</ListItem>
-        ))}
-      </List>
-    </ReadMore>
+    <UnavailableYtelser lang={lang} />
   </Alert>
 );
 
@@ -39,40 +33,4 @@ const THIRD_LINE: Translation = {
   [Language.NB]: 'Du kan per nå dessverre ikke se klager som gjelder ytelsene i listen under.',
   [Language.NN]: 'Du kan per no dessverre ikkje sjå klagar som gjeld ytingane i lista under.',
   [Language.EN]: 'You cannot currently see complaints related to the benefits in the list below.',
-};
-
-const READ_MORE: Translation = {
-  [Language.NB]: 'Trykk her for å se listen',
-  [Language.NN]: 'Trykk her for å sjå lista',
-  [Language.EN]: 'Click here to see the list',
-};
-
-const UNAVAILABLE: Translation<string[]> = {
-  [Language.NB]: [
-    'Arbeidsavklaringspenger (AAP)',
-    'Dagpenger',
-    'Kompensasjon for selvstendig næringsdrivende og frilanser',
-    'Lønnsgaranti',
-    'Tvungen forvaltning',
-    'Tiltak og oppfølging',
-    'Bidrag',
-  ],
-  [Language.NN]: [
-    'Arbeidsavklaringspengar (AAP)',
-    'Dagpengar',
-    'Kompensasjon for sjølvstendig næringsdrivande og frilansarar',
-    'Lønsgaranti',
-    'Tvungen forvalting',
-    'Tiltak og oppfølging',
-    'Bidrag',
-  ],
-  [Language.EN]: [
-    'Work assessment allowance (AAP)',
-    'Unemployment benefits (Dagpenger)',
-    'Compensation for self-employed and freelancers',
-    'Wage guarantee',
-    'Sanctioned administration',
-    'Measures and follow-up',
-    'Child support',
-  ],
 };

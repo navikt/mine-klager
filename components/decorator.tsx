@@ -1,6 +1,7 @@
 import Script from 'next/script';
 import '@/app/globals.css';
 import { TITLE } from '@/app/[lang]/title';
+import { Faro } from '@/components/faro';
 import { isDeployedToProd } from '@/lib/environment';
 import { DEFAULT_LANGUAGE, LANGUAGES, type Language } from '@/locales';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
@@ -23,7 +24,9 @@ export const Decorator = async ({ children, lang }: Readonly<Props>) => {
   });
 
   return (
-    <html lang={lang}>
+    <html lang={lang} data-environment={process.env.NAIS_CLUSTER_NAME}>
+      <Faro />
+
       {/* biome-ignore lint/nursery/noHeadElement: head is needed here */}
       <head>
         <Decorator.HeadAssets />

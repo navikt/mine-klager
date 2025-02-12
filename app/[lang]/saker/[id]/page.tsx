@@ -4,15 +4,18 @@ import { Actions } from '@/components/actions/actions';
 import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { InfoItem } from '@/components/info-item';
+import { MetricEvent } from '@/components/metrics';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { ReceivedVedtaksinstans } from '@/components/received-vedtaksinstans';
+import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { getSak } from '@/lib/api';
+import { getCurrentPath } from '@/lib/current-path';
 import { PRETTY_DATE_FORMAT, format } from '@/lib/date';
 import { getYtelseName } from '@/lib/kodeverk';
 import { getSakHeading } from '@/lib/sak-heading';
-import { BehandlingstidUnitType } from '@/lib/types';
+import { BehandlingstidUnitType, CASE_TYPE_NAMES } from '@/lib/types';
 import type { Frist, Sak } from '@/lib/types';
-import { DEFAULT_LANGUAGE, Language, type Translation, isLanguage } from '@/locales';
+import { Language, type Translation, isLanguage } from '@/locales';
 import { HGrid, HStack, Heading } from '@navikt/ds-react';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
@@ -59,28 +62,35 @@ export default async function SakPage({ params }: Props) {
   const { lang, id } = await params;
 
   const sak = await getSak(await headers(), id);
+  const path = await getCurrentPath();
 
   if (sak === undefined || !isLanguage(lang)) {
     return notFound();
   }
 
-  const { typeId: type, saksnummer, events, innsendingsytelseId, varsletBehandlingstid, mottattKlageinstans } = sak;
-  const heading = await getSakHeading(type, innsendingsytelseId, lang);
-
-  const path = `/saker/${id}`;
+  const { typeId, saksnummer, events, innsendingsytelseId, varsletBehandlingstid, mottattKlageinstans } = sak;
+  const heading = await getSakHeading(typeId, innsendingsytelseId, lang);
 
   const lastEvent = events.at(-1);
   const hasLastEvent = lastEvent !== undefined;
 
+  const type = CASE_TYPE_NAMES[typeId];
+  const ytelse = innsendingsytelseId ?? 'UNKNOWN';
+  const eventCount = events.length;
+
+  const context: AmplitudeContextData = { lang, path, page: 'sak', ytelse, type };
+
   return (
     <>
+      <MetricEvent domain="sak" context={context} eventData={{ eventCount }} />
+
       <DecoratorUpdater
         lang={lang}
-        path={path}
+        path={`/saker/${id}`}
         breadcrumbs={[
           {
             title: heading,
-            url: lang === DEFAULT_LANGUAGE ? path : `/${lang}/saker/${id}`,
+            url: path,
           },
         ]}
       />
@@ -90,7 +100,7 @@ export default async function SakPage({ params }: Props) {
       </Heading>
 
       <HStack gap="2">
-        <CopyItem label={CASE_NUMBER_LABEL[lang]} tooltip={CASE_NUMBER_TOOLTIP[lang]}>
+        <CopyItem label={CASE_NUMBER_LABEL[lang]} tooltip={CASE_NUMBER_TOOLTIP[lang]} context={context}>
           {saksnummer}
         </CopyItem>
 
@@ -105,12 +115,12 @@ export default async function SakPage({ params }: Props) {
         )}
       </HStack>
 
-      {hasLastEvent ? <Actions sak={sak} sakEvent={lastEvent} lang={lang} /> : null}
+      {hasLastEvent ? <Actions sak={sak} sakEvent={lastEvent} lang={lang} context={context} /> : null}
 
       <HGrid gap="8 4" marginBlock="8 0" columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}>
-        <EventList sak={sak} lang={lang} />
+        <EventList sak={sak} lang={lang} context={context} />
 
-        {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} sak={sak} /> : null}
+        {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} sak={sak} context={context} /> : null}
       </HGrid>
     </>
   );

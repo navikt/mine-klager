@@ -44,6 +44,12 @@ export enum CaseType {
   OMGJØRING = '5',
 }
 
+export const CASE_TYPE_NAMES: Record<CaseType, string> = {
+  [CaseType.KLAGE]: 'klage',
+  [CaseType.ANKE]: 'anke',
+  [CaseType.OMGJØRING]: 'omgjøringskrav',
+};
+
 export interface Sak {
   id: string;
   typeId: CaseType;
