@@ -1,6 +1,5 @@
-import { isDeployed, isDeployedToDev, isDeployedToProd } from '@/lib/environment';
-import { getWebInstrumentations, initializeFaro } from '@grafana/faro-react';
-import { LogLevel, type PushLogOptions, faro } from '@grafana/faro-web-sdk';
+import { isDeployedToDev, isDeployedToProd } from '@/lib/environment';
+import { LogLevel, type PushLogOptions, faro, getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk';
 import { TracingInstrumentation } from '@grafana/faro-web-tracing';
 
 const getUrl = () => {
@@ -18,8 +17,8 @@ const getUrl = () => {
 export const initialize = () =>
   initializeFaro({
     url: getUrl(),
-    app: { name: 'kabal-frontend' },
-    paused: !isDeployed,
+    app: { name: 'mine-klager' },
+    paused: true, // Initialize as paused to avoid sending events before consent is given.
     batching: {
       enabled: true,
       sendTimeout: isDeployedToProd ? 250 : 30000,
@@ -33,5 +32,3 @@ export const pushEvent = (name: string, domain: string, attributes?: Record<stri
 
 export const pushLog = (message: string, options?: Omit<PushLogOptions, 'skipDedupe'>, level = LogLevel.DEBUG) =>
   faro.api.pushLog([message], { ...options, skipDedupe: true, level });
-
-export const { pushMeasurement, pushError } = faro.api;

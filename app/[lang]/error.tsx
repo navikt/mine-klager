@@ -1,7 +1,11 @@
 'use client'; // Error boundaries must be Client Components
+
+import { UnauthorizedError } from '@/lib/errors';
 import { DEFAULT_LANGUAGE, Language, type Translation, isLanguage } from '@/locales';
+import { faro } from '@grafana/faro-react';
 import { Alert, Button, HStack, Heading, Page } from '@navikt/ds-react';
 import { PageBlock } from '@navikt/ds-react/Page';
+import { unauthorized } from 'next/navigation';
 import { useEffect } from 'react';
 
 interface ErrorPageProps {
@@ -12,7 +16,13 @@ interface ErrorPageProps {
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   const lang = getLanguage(window.location.pathname);
 
-  useEffect(() => console.error(error), [error]);
+  useEffect(() => {
+    faro.api.pushError(error);
+  }, [error]);
+
+  if (error instanceof UnauthorizedError) {
+    return unauthorized();
+  }
 
   return (
     <Page contentBlockPadding="end">

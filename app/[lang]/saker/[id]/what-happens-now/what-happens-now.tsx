@@ -1,6 +1,7 @@
 import { NextDescription } from '@/app/[lang]/saker/[id]/what-happens-now/description';
 import { SvarbrevInfo } from '@/app/[lang]/saker/[id]/what-happens-now/svarbrev-info';
 import { RelevantDocuments } from '@/components/relevant-documents';
+import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { EventDocumentType } from '@/lib/types';
 import type { Sak, SakEvent } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
@@ -10,9 +11,10 @@ interface WhatHappensProps {
   lastEvent: SakEvent;
   lang: Language;
   sak: Sak;
+  context: AmplitudeContextData;
 }
 
-export const WhatHappensNow = ({ lastEvent, lang, sak }: WhatHappensProps) => {
+export const WhatHappensNow = ({ lastEvent, lang, sak, context }: WhatHappensProps) => {
   const { type, relevantDocuments } = lastEvent;
 
   const svarbrevDate = relevantDocuments.find(
@@ -40,7 +42,12 @@ export const WhatHappensNow = ({ lastEvent, lang, sak }: WhatHappensProps) => {
             {hasSvarbrev ? <SvarbrevInfo date={svarbrevDate} lang={lang} typeId={sak.typeId} /> : null}
           </div>
 
-          <RelevantDocuments relevantDocuments={relevantDocuments} lang={lang} />
+          <RelevantDocuments
+            relevantDocuments={relevantDocuments}
+            lang={lang}
+            component="what-happens-now"
+            context={context}
+          />
         </VStack>
       </Box>
     </VStack>

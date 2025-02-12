@@ -1,5 +1,7 @@
 import { Disclaimer } from '@/app/[lang]/disclaimer';
 import { SakListItem } from '@/app/[lang]/list-item';
+import { MetricEvent } from '@/components/metrics';
+import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { getSaker } from '@/lib/api';
 import { UNIT } from '@/lib/dictionary';
 import { Language, type Translation } from '@/locales';
@@ -8,22 +10,25 @@ import { headers } from 'next/headers';
 
 interface CaseListProps {
   lang: Language;
+  context: AmplitudeContextData;
 }
 
-export const CaseList = async ({ lang }: CaseListProps) => {
+const CaseList = async ({ lang, context }: CaseListProps) => {
   const sakerResponse = await getSaker(await headers());
 
   const { saker } = sakerResponse;
 
   return (
     <>
+      <MetricEvent eventName="saksliste" domain="saker" context={context} eventData={{ count: saker.length }} />
+
       <Title caseCount={saker.length} lang={lang} />
 
       <Disclaimer lang={lang} className="mb-4" />
 
       <VStack as="ul" gap="4">
         {saker.map((sak, index) => (
-          <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} />
+          <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} context={context} />
         ))}
       </VStack>
     </>

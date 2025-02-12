@@ -26,6 +26,7 @@ spec:
       autoLogin: true
   prometheus:
     enabled: true
+    path: /metrics
   accessPolicy:
     inbound:
       rules:
