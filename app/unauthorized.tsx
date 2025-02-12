@@ -1,4 +1,6 @@
 import { Decorator } from '@/components/decorator';
+import { MetricEvent } from '@/components/metrics';
+import { getCurrentPath } from '@/lib/current-path';
 import { getLanguageFromHeaders } from '@/lib/get-language';
 import { Language } from '@/locales';
 import { Alert, Button } from '@navikt/ds-react';
@@ -6,9 +8,12 @@ import { headers } from 'next/headers';
 
 export default async function Unauthorized() {
   const lang = getLanguageFromHeaders(await headers());
+  const path = await getCurrentPath();
 
   return (
     <Decorator lang={lang}>
+      <MetricEvent eventName="unauthorized" domain="unauthorized" context={{ path, lang, page: 'unauthorized' }} />
+
       <Alert variant="error">
         <div className="flex items-center gap-4">
           {LOGGED_OUT[lang]}

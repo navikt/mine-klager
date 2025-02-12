@@ -2,6 +2,8 @@
 
 import { RelevantDocuments } from '@/components/relevant-documents';
 import { TimelineItem } from '@/components/timeline/timeline-item';
+import type { AmplitudeContextData } from '@/lib/amplitude/types';
+import { sendMetricEvent } from '@/lib/metrics';
 import type { Sak } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
@@ -11,9 +13,10 @@ import { useState } from 'react';
 interface EventListProps {
   sak: Sak;
   lang: Language;
+  context: AmplitudeContextData;
 }
 
-export const EventList = ({ sak, lang }: EventListProps) => {
+export const EventList = ({ sak, lang, context }: EventListProps) => {
   const [expanded, setExpanded] = useState(false);
 
   const { events } = sak;
@@ -40,7 +43,13 @@ export const EventList = ({ sak, lang }: EventListProps) => {
           {hasPreviousEvents ? (
             <Button
               variant={expanded ? 'tertiary-neutral' : 'tertiary'}
-              onClick={() => setExpanded(!expanded)}
+              onClick={() => {
+                setExpanded(!expanded);
+                const eventName = expanded ? 'collapse-previous-events' : 'expand-previous-events';
+                const count = previousEvents.length;
+                const lastEventType = lastEvent.type;
+                sendMetricEvent(eventName, 'event-list', { ...context, count: count.toString(10), lastEventType });
+              }}
               icon={expanded ? <ChevronUpIcon aria-hidden /> : <ChevronDownIcon aria-hidden />}
               className="w-full"
             >
@@ -56,7 +65,12 @@ export const EventList = ({ sak, lang }: EventListProps) => {
             <VStack as="ul" gap="2" width="fit-content" className="flex-col-reverse">
               {previousEvents.map((event) => (
                 <TimelineItem as="li" key={`${event.type}-${event.date}`} sakEvent={event} lang={lang}>
-                  <RelevantDocuments relevantDocuments={event.relevantDocuments} lang={lang} />
+                  <RelevantDocuments
+                    relevantDocuments={event.relevantDocuments}
+                    lang={lang}
+                    component="previous-event"
+                    context={context}
+                  />
                 </TimelineItem>
               ))}
             </VStack>

@@ -2,19 +2,21 @@ import { CaseIcon } from '@/app/[lang]/case-icon';
 import { Received } from '@/app/[lang]/received';
 import { DateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
+import { MeasuredLink } from '@/components/link';
+import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { EVENT_NAMES } from '@/lib/event-names';
 import { getSakHeading } from '@/lib/sak-heading';
 import type { Sak } from '@/lib/types';
 import { DEFAULT_LANGUAGE, Language, type Translation } from '@/locales';
 import { Box, HStack, Heading, Stack, VStack } from '@navikt/ds-react';
-import NextLink from 'next/link';
 
 interface SakListItemProps {
   sak: Sak;
   lang: Language;
+  context: AmplitudeContextData;
 }
 
-export const SakListItem = ({ sak, lang }: SakListItemProps) => {
+export const SakListItem = ({ sak, lang, context }: SakListItemProps) => {
   const { id, typeId, saksnummer, events, innsendingsytelseId } = sak;
 
   const heading = getSakHeading(typeId, innsendingsytelseId, lang);
@@ -33,7 +35,7 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
           wrap={false}
           asChild
         >
-          <NextLink href={`${pathPrefix}/saker/${id}`} className="text-text-default no-underline">
+          <MeasuredLink href={`${pathPrefix}/saker/${id}`} className="text-text-default no-underline" context={context}>
             <CaseIcon
               typeId={typeId}
               className="h-8 w-fit shrink-0 text-text-subtle group-hover:text-text-action-hover md:h-12"
@@ -66,7 +68,7 @@ export const SakListItem = ({ sak, lang }: SakListItemProps) => {
                 </InfoItem>
               </VStack>
             </VStack>
-          </NextLink>
+          </MeasuredLink>
         </Stack>
       </li>
     </Box>

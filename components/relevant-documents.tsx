@@ -1,4 +1,5 @@
 import { PdfLink } from '@/components/pdf-link';
+import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { type EventDocument, EventDocumentType } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 import { HStack } from '@navikt/ds-react';
@@ -7,9 +8,11 @@ import type React from 'react';
 interface RelevantDocumentsProps {
   relevantDocuments: EventDocument[];
   lang: Language;
+  component: string;
+  context: AmplitudeContextData;
 }
 
-export const RelevantDocuments = ({ relevantDocuments, lang }: RelevantDocumentsProps) => {
+export const RelevantDocuments = ({ relevantDocuments, lang, component, context }: RelevantDocumentsProps) => {
   const links: React.ReactNode[] = [];
 
   for (const { journalpostId, eventDocumentType, title } of relevantDocuments) {
@@ -19,7 +22,13 @@ export const RelevantDocuments = ({ relevantDocuments, lang }: RelevantDocuments
 
     if (eventDocumentType === EventDocumentType.SVARBREV) {
       links.push(
-        <PdfLink key={journalpostId} journalpostId={journalpostId} tooltip={title}>
+        <PdfLink
+          key={journalpostId}
+          journalpostId={journalpostId}
+          tooltip={title}
+          component={component}
+          context={context}
+        >
           {SVARBREV[lang]}
         </PdfLink>,
       );

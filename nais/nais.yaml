@@ -26,6 +26,7 @@ spec:
       autoLogin: true
   prometheus:
     enabled: true
+    path: /metrics
   accessPolicy:
     inbound:
       rules:
@@ -41,8 +42,13 @@ spec:
   envFrom:
     - secret: slack-url
   observability:
-    tracing:
+    autoInstrumentation:
       enabled: true
+      runtime: nodejs
+    logging:
+      destinations:
+        - id: loki
+        - id: elastic
   ingresses:
   {{#each ingresses as |url|}}
     - {{url}}

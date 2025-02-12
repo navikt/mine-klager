@@ -1,4 +1,5 @@
 import { ButtonLink } from '@/components/button-link';
+import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { getNavKlageUrl } from '@/lib/get-nav-klage-url';
 import { KLANG_DOMAIN } from '@/lib/klang';
 import type { Sak, SakEvent } from '@/lib/types';
@@ -13,14 +14,22 @@ interface EttersendDokumentasjonProps {
   sak: Sak;
   sakEvent: SakEvent;
   lang: Language;
+  context: AmplitudeContextData;
 }
 
 interface CaseTypeProps {
   caseType: CaseTypeEnum;
 }
 
-const EttersendDokumentasjon = ({ sak, lang, caseType }: EttersendDokumentasjonProps & CaseTypeProps) => (
-  <ButtonLink variant="primary" href={getEttersendelseLink(sak, lang, caseType)} openInNewTab>
+const EttersendDokumentasjon = ({ sak, lang, caseType, context }: EttersendDokumentasjonProps & CaseTypeProps) => (
+  <ButtonLink
+    variant="primary"
+    href={getEttersendelseLink(sak, lang, caseType)}
+    openInNewTab
+    eventName="action"
+    component="actions"
+    context={context}
+  >
     {ETTERSEND_DOKUMENTASJON[lang]}
   </ButtonLink>
 );
