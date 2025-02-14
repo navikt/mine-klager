@@ -16,7 +16,6 @@
     "@navikt/aksel-icons": "7.13.0",
     "@navikt/ds-css": "7.13.0",
     "@navikt/ds-react": "7.13.0",
-    "@navikt/ds-tailwind": "7.13.0",
     "@navikt/nav-dekoratoren-moduler": "3.2.2",
     "@navikt/next-logger": "2.0.0",
     "@navikt/oasis": "3.7.0",
@@ -29,14 +28,14 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@tailwindcss/postcss": "4.0.6",
     "@types/bun": "1.2.2",
     "@types/node": "22.13.4",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
     "pino-pretty": "13.0.0",
     "postcss": "8.5.2",
-    "stylelint": "16.14.1",
-    "tailwindcss": "3.4.17",
+    "tailwindcss": "4.0.6",
     "typescript": "5.7.3"
   }
 }
