@@ -42,5 +42,6 @@
   },
   "files.exclude": {
     ".next": true
-  }
+  },
+  "tailwindCSS.experimental.configFile": "app/globals.css"
 }

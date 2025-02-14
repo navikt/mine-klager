@@ -35,10 +35,14 @@ export const SakListItem = ({ sak, lang, context }: SakListItemProps) => {
           wrap={false}
           asChild
         >
-          <MeasuredLink href={`${pathPrefix}/saker/${id}`} className="text-text-default no-underline" context={context}>
+          <MeasuredLink
+            href={`${pathPrefix}/saker/${id}`}
+            className="text-(--a-text-default) no-underline"
+            context={context}
+          >
             <CaseIcon
               typeId={typeId}
-              className="h-8 w-fit shrink-0 text-text-subtle group-hover:text-text-action-hover md:h-12"
+              className="h-8 w-fit shrink-0 text-(--a-text-subtle) group-hover:text-(--a-text-action-hover) md:h-12"
             />
 
             <VStack>
@@ -46,7 +50,7 @@ export const SakListItem = ({ sak, lang, context }: SakListItemProps) => {
                 level="2"
                 size="medium"
                 spacing
-                className="underline group-hover:text-text-action-hover group-hover:no-underline"
+                className="underline group-hover:text-(--a-text-action-hover) group-hover:no-underline"
               >
                 {heading}
               </Heading>
