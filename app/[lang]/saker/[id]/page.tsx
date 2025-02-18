@@ -82,7 +82,7 @@ export default async function SakPage({ params }: Props) {
 
   return (
     <>
-      <MetricEvent domain="sak" context={context} eventData={{ eventCount }} />
+      <MetricEvent domain="sak" context={context} eventData={{ eventCount, last_event_type: lastEvent?.type }} />
 
       <DecoratorUpdater
         lang={lang}
