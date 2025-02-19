@@ -16,7 +16,7 @@ export const Appeal = ({ sak, lang, context }: AppealProps) => (
     variant="primary"
     href={getAppealLink(sak, lang)}
     openInNewTab
-    eventName="action"
+    eventName="send-anke"
     component="actions"
     context={context}
   >

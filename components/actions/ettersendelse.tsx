@@ -21,12 +21,22 @@ interface CaseTypeProps {
   caseType: CaseTypeEnum;
 }
 
-const EttersendDokumentasjon = ({ sak, lang, caseType, context }: EttersendDokumentasjonProps & CaseTypeProps) => (
+interface EventNameProps {
+  eventName: string;
+}
+
+const EttersendDokumentasjon = ({
+  sak,
+  lang,
+  caseType,
+  eventName,
+  context,
+}: EttersendDokumentasjonProps & CaseTypeProps & EventNameProps) => (
   <ButtonLink
     variant="primary"
     href={getEttersendelseLink(sak, lang, caseType)}
     openInNewTab
-    eventName="action"
+    eventName={eventName}
     component="actions"
     context={context}
   >
@@ -43,11 +53,11 @@ const getEttersendelseLink = (sak: Sak, lang: Language, caseType: CaseTypeEnum) 
 };
 
 export const EttersendDokumentasjonKlage = (props: EttersendDokumentasjonProps) => (
-  <EttersendDokumentasjon {...props} caseType={CaseTypeEnum.KLAGE} />
+  <EttersendDokumentasjon {...props} caseType={CaseTypeEnum.KLAGE} eventName="ettersend-dokumentasjon-klage" />
 );
 
 export const EttersendDokumentasjonAnke = (props: EttersendDokumentasjonProps) => (
-  <EttersendDokumentasjon {...props} caseType={CaseTypeEnum.ANKE} />
+  <EttersendDokumentasjon {...props} caseType={CaseTypeEnum.ANKE} eventName="ettersend-dokumentasjon-anke" />
 );
 
 const ETTERSEND_DOKUMENTASJON: Translation = {
