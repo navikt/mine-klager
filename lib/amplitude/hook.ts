@@ -9,7 +9,7 @@ export const useSendMetricEvent = (
 ) => {
   useEffect(() => {
     setTimeout(() => {
-      sendMetricEvent(eventName, domain, context);
+      sendMetricEvent(eventName, domain, { ...context, referrer: document.referrer });
     }, 100);
   }, [eventName, context, domain]);
 };

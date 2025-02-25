@@ -7,17 +7,15 @@ import {
 } from '@grafana/faro-web-sdk';
 import { TracingInstrumentation } from '@grafana/faro-web-tracing';
 
-export const ENV = document.documentElement.getAttribute('data-environment');
-export const isProduction = ENV === 'prod-gcp';
-export const isDevelopment = ENV === 'dev-gcp';
-export const isDeployed = isProduction || isDevelopment;
-export const isLocal = !isDeployed;
-
 class Grafana {
   private faro: Faro | null = null;
 
-  private getUrl = () =>
-    isProduction ? 'https://telemetry.nav.no/collect' : 'https://telemetry.ekstern.dev.nav.no/collect';
+  private getUrl = () => {
+    const env = document.documentElement.getAttribute('data-environment');
+    const isProduction = env === 'prod-gcp';
+
+    return isProduction ? 'https://telemetry.nav.no/collect' : 'https://telemetry.ekstern.dev.nav.no/collect';
+  };
 
   public initialize = () => {
     this.faro = initializeFaro({
