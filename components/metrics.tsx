@@ -12,7 +12,7 @@ interface MetricEventProps {
 }
 
 export const MetricEvent = ({ eventName = 'besøk', domain, eventData, context }: MetricEventProps) => {
-  useSendMetricEvent(eventName, domain, { ...context, ...eventData, referrer: document.referrer });
+  useSendMetricEvent(eventName, domain, { ...context, ...eventData });
 
   return null;
 };
