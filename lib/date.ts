@@ -5,7 +5,8 @@ import { enGB, nb, nn } from 'date-fns/locale';
 
 export const PRETTY_DATETIME_FORMAT = 'dd. MMM yyyy HH:mm:ss';
 export const PRETTY_DATE_FORMAT = 'dd. MMM yyyy';
-export const ISO_FORMAT = 'yyyy-MM-ddTHH:mm:ss';
+export const ISO_DATETIME_FORMAT = 'yyyy-MM-ddTHH:mm:ss';
+export const ISO_DATE_FORMAT = 'yyyy-MM-dd';
 
 export const LOCALES: Record<Language, Locale> = {
   [Language.NB]: nb,

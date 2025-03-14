@@ -10,13 +10,14 @@ import { ReceivedVedtaksinstans } from '@/components/received-vedtaksinstans';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { getSak } from '@/lib/api';
 import { getCurrentPath } from '@/lib/current-path';
-import { PRETTY_DATE_FORMAT, format } from '@/lib/date';
+import { ISO_DATE_FORMAT, PRETTY_DATE_FORMAT, format } from '@/lib/date';
 import { getYtelseName } from '@/lib/kodeverk';
 import { getSakHeading } from '@/lib/sak-heading';
 import { BehandlingstidUnitType, CASE_TYPE_NAMES } from '@/lib/types';
 import type { Frist, Sak } from '@/lib/types';
 import { Language, type Translation, isLanguage } from '@/locales';
 import { HGrid, HStack, Heading } from '@navikt/ds-react';
+import { parse } from 'date-fns';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
@@ -126,20 +127,21 @@ export default async function SakPage({ params }: Props) {
   );
 }
 
-const formatBehandlingstid = (
-  { varsletBehandlingstidUnitTypeId, varsletBehandlingstidUnits, varsletFrist }: Frist,
-  mottattKlageinstans: string,
-  lang: Language,
-) => {
+const formatBehandlingstid = (frist: Frist, mottattKlageinstans: string, lang: Language) => {
+  const varslet = format(parse(frist.varsletFrist, ISO_DATE_FORMAT, new Date()), PRETTY_DATE_FORMAT, lang);
+
+  if (frist.varsletBehandlingstidUnitTypeId === null) {
+    return varslet;
+  }
+
   const unit =
-    varsletBehandlingstidUnitTypeId === BehandlingstidUnitType.WEEKS
-      ? WEEKS[lang](varsletBehandlingstidUnits)
-      : MONTHS[lang](varsletBehandlingstidUnits);
+    frist.varsletBehandlingstidUnitTypeId === BehandlingstidUnitType.WEEKS
+      ? WEEKS[lang](frist.varsletBehandlingstidUnits)
+      : MONTHS[lang](frist.varsletBehandlingstidUnits);
 
   const from = FROM[lang];
 
-  const mottatt = format(new Date(mottattKlageinstans), PRETTY_DATE_FORMAT, lang);
-  const varslet = format(new Date(varsletFrist), PRETTY_DATE_FORMAT, lang);
+  const mottatt = format(parse(mottattKlageinstans, ISO_DATE_FORMAT, new Date()), PRETTY_DATE_FORMAT, lang);
 
   return `${unit} ${from} ${mottatt} (${varslet})`;
 };

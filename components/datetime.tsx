@@ -1,6 +1,6 @@
 'use client';
 
-import { ISO_FORMAT, PRETTY_DATE_FORMAT, format, longFormat, textFormat } from '@/lib/date';
+import { ISO_DATETIME_FORMAT, PRETTY_DATE_FORMAT, format, longFormat, textFormat } from '@/lib/date';
 import type { Language } from '@/locales';
 import { Tooltip } from '@navikt/ds-react';
 import { parseISO } from 'date-fns';
@@ -15,7 +15,7 @@ const CLASSNAME = 'whitespace-nowrap';
 
 export const DateTime = ({ date, id, lang }: DateTimeProps) => {
   const parsed = parseISO(date);
-  const iso = format(parsed, ISO_FORMAT, lang);
+  const iso = format(parsed, ISO_DATETIME_FORMAT, lang);
   const dateOnly = format(parsed, PRETTY_DATE_FORMAT, lang);
 
   if (isZeroTime(parsed)) {
@@ -45,7 +45,7 @@ interface SimpleDateProps {
 export const SimpleDate = ({ date, lang }: SimpleDateProps) => {
   const parsed = parseISO(date);
 
-  return <time dateTime={format(parsed, ISO_FORMAT, lang)}>{textFormat(parsed, lang)}</time>;
+  return <time dateTime={format(parsed, ISO_DATETIME_FORMAT, lang)}>{textFormat(parsed, lang)}</time>;
 };
 
 const isZeroTime = (date: Date) =>
