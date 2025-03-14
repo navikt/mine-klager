@@ -3,15 +3,25 @@ export enum BehandlingstidUnitType {
   MONTHS = '2',
 }
 
-export interface Frist {
-  varsletBehandlingstidUnits: number;
-  varsletBehandlingstidUnitTypeId: BehandlingstidUnitType;
+interface VarsletFristDate {
   /**
    * Date
    * @example 2021-09-01
    */
   varsletFrist: string;
 }
+
+interface VarsletFristNullUnits extends VarsletFristDate {
+  varsletBehandlingstidUnits: null;
+  varsletBehandlingstidUnitTypeId: null;
+}
+
+export interface VarsletFristUnits extends VarsletFristDate {
+  varsletBehandlingstidUnits: number;
+  varsletBehandlingstidUnitTypeId: BehandlingstidUnitType;
+}
+
+export type Frist = VarsletFristNullUnits | VarsletFristUnits;
 
 export enum EventDocumentType {
   SVARBREV = 'SVARBREV',
