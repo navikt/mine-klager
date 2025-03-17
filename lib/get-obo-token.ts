@@ -11,6 +11,8 @@ export const getOboToken = async (audience: Audience, headers: ReadonlyHeaders) 
   const authorization = headers.get('authorization');
   const { trace_id, span_id } = getTraceparent(headers);
 
+  logger.info(`Getting on-behalf-of token for ${audience}`, trace_id, span_id);
+
   if (authorization === null) {
     logger.error('Missing authorization header', trace_id, span_id);
     unauthorized();
@@ -31,6 +33,8 @@ export const getOboToken = async (audience: Audience, headers: ReadonlyHeaders) 
     logger.error(`Failed to get on-behalf-of token for audience: ${audience}`, trace_id, span_id);
     unauthorized();
   }
+
+  logger.info(`Got on-behalf-of token for ${audience}: ${obo.token.substring(0, 100)}...`, trace_id, span_id);
 
   return obo.token;
 };
