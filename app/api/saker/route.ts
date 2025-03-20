@@ -1,6 +1,6 @@
-import { getSaker } from '@/lib/api';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
-import { getDecoratorLanguage } from '@/lib/get-language';
+import { getSaker } from '@/lib/server/api';
+import { getDecoratorLanguage } from '@/lib/server/get-language';
 import type { Translation } from '@/locales';
 import { headers } from 'next/headers';
 

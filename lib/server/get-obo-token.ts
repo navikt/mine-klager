@@ -1,5 +1,5 @@
-import { getTraceparent } from '@/lib/fetch';
 import { getLogger } from '@/lib/logger';
+import { getTraceparent } from '@/lib/server/fetch';
 import type { Audience } from '@/lib/types';
 import { requestOboToken, validateToken } from '@navikt/oasis';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';

@@ -1,4 +1,4 @@
-import { LANGUAGE_HEADER } from '@/lib/custom-headers';
+import { LANGUAGE_HEADER } from '@/lib/server/custom-headers';
 import { DEFAULT_LANGUAGE, type Language, isLanguage } from '@/locales';
 import type { DecoratorLocale } from '@navikt/nav-dekoratoren-moduler/ssr';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';

@@ -1,5 +1,6 @@
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { VERSION } from '@grafana/faro-web-sdk';
+import { VERSION } from '@/lib/version';
+
 import { getAmplitudeInstance } from '@navikt/nav-dekoratoren-moduler';
 
 export const amplitude = getAmplitudeInstance('mine-klager');

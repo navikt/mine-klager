@@ -24,7 +24,7 @@ export const Decorator = async ({ children, lang }: Readonly<Props>) => {
   });
 
   return (
-    <html lang={lang} data-environment={process.env.NAIS_CLUSTER_NAME}>
+    <html lang={lang} data-environment={process.env.NAIS_CLUSTER_NAME} data-version={process.env.VERSION}>
       <Faro />
 
       {/* biome-ignore lint/nursery/noHeadElement: head is needed here */}

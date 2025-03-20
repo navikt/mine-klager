@@ -1,6 +1,5 @@
 'use client';
-
-import { isLocal } from '@/lib/environment';
+import { isDeployed } from '@/lib/environment';
 import { grafana } from '@/lib/observability';
 import { getCurrentConsent } from '@navikt/nav-dekoratoren-moduler';
 import { useEffect } from 'react';
@@ -9,7 +8,7 @@ export const Faro = () => {
   useEffect(() => {
     grafana.initialize();
 
-    if (isLocal) {
+    if (!isDeployed) {
       return;
     }
 

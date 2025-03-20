@@ -1,4 +1,4 @@
-import { VERSION } from '@grafana/faro-web-sdk';
+import { VERSION } from '@/lib/version';
 
 enum LogLevel {
   DEBUG = 'debug',

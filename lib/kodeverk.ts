@@ -1,7 +1,7 @@
 import { isDeployed } from '@/lib/environment';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
-import { generateTraceParent } from '@/lib/fetch';
 import { getLogger } from '@/lib/logger';
+import { generateTraceParent } from '@/lib/server/fetch';
 import { Language, type Translation } from '@/locales';
 
 const logger = getLogger('kodeverk');

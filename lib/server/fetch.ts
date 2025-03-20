@@ -1,4 +1,4 @@
-import { getOboToken } from '@/lib/get-obo-token';
+import { getOboToken } from '@/lib/server/get-obo-token';
 import { Audience } from '@/lib/types';
 
 export const getFromKabal = async (
