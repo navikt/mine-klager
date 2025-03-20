@@ -1,8 +1,8 @@
 import { isLocal } from '@/lib/environment';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
-import { generateTraceParent, getFromKabal } from '@/lib/fetch';
-import { getLanguageFromHeaders } from '@/lib/get-language';
 import { getLogger } from '@/lib/logger';
+import { generateTraceParent, getFromKabal } from '@/lib/server/fetch';
+import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import type { GetSakerResponse, Sak } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';

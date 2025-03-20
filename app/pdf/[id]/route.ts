@@ -1,7 +1,7 @@
 import { isLocal } from '@/lib/environment';
-import { generateTraceParent, getFromKabal } from '@/lib/fetch';
-import { getLanguageFromHeaders } from '@/lib/get-language';
 import { getLogger } from '@/lib/logger';
+import { generateTraceParent, getFromKabal } from '@/lib/server/fetch';
+import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import { Language, type Translation } from '@/locales';
 import type { NextRequest } from 'next/server';
 

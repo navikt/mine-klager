@@ -1,3 +1,5 @@
+'use client';
+
 import { sendAmplitudeEvent } from '@/lib/amplitude/send';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { grafana } from '@/lib/observability';

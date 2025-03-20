@@ -1,4 +1,4 @@
-import { CURRENT_PATH_HEADER } from '@/lib/custom-headers';
+import { CURRENT_PATH_HEADER } from '@/lib/server/custom-headers';
 import { headers } from 'next/headers';
 
 export const getCurrentPath = async (): Promise<string> => {

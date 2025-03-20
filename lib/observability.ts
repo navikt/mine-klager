@@ -1,3 +1,4 @@
+import { isDeployedToProd } from '@/lib/environment';
 import {
   type Faro,
   LogLevel,
@@ -10,12 +11,8 @@ import { TracingInstrumentation } from '@grafana/faro-web-tracing';
 class Grafana {
   private faro: Faro | null = null;
 
-  private getUrl = () => {
-    const env = document.documentElement.getAttribute('data-environment');
-    const isProduction = env === 'prod-gcp';
-
-    return isProduction ? 'https://telemetry.nav.no/collect' : 'https://telemetry.ekstern.dev.nav.no/collect';
-  };
+  private getUrl = () =>
+    isDeployedToProd ? 'https://telemetry.nav.no/collect' : 'https://telemetry.ekstern.dev.nav.no/collect';
 
   public initialize = () => {
     this.faro = initializeFaro({
