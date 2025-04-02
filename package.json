@@ -20,7 +20,7 @@
     "@navikt/next-logger": "2.0.0",
     "@navikt/oasis": "3.7.0",
     "date-fns": "4.1.0",
-    "next": "15.2.3",
+    "next": "15.2.4",
     "next-auth": "4.24.11",
     "pino": "9.6.0",
     "react": "19.0.0",
