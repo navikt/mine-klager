@@ -1,12 +1,12 @@
-import { isDeployedToProd } from '@/lib/environment';
 import {
   type Faro,
-  LogLevel,
-  type PushLogOptions,
   getWebInstrumentations,
   initializeFaro,
+  LogLevel,
+  type PushLogOptions,
 } from '@grafana/faro-web-sdk';
 import { TracingInstrumentation } from '@grafana/faro-web-tracing';
+import { isDeployedToProd } from '@/lib/environment';
 
 class Grafana {
   private faro: Faro | null = null;

@@ -1,5 +1,5 @@
-import { EventType } from '@/lib/types';
 import { ArrowForwardIcon, GavelIcon, InboxDownIcon, PaperplaneIcon, type ParagraphIcon } from '@navikt/aksel-icons';
+import { EventType } from '@/lib/types';
 
 interface EventIconProps {
   type: EventType;

@@ -7,12 +7,7 @@ enum LogLevel {
   ERROR = 'error',
 }
 
-type LoggerFn = (
-  message: string,
-  trace_id: string,
-  span_id: string,
-  eventData?: Record<string, string | number>,
-) => void;
+type LoggerFn = (message: string, traceId: string, spanId: string, eventData?: Record<string, string | number>) => void;
 
 export const getLogger = (module: string) => ({
   debug: getLogLine(LogLevel.DEBUG, module),
@@ -23,9 +18,21 @@ export const getLogger = (module: string) => ({
 
 type GetLogLineFn = (level: LogLevel, module: string) => LoggerFn;
 
-const getLogLine: GetLogLineFn = (level, module) => (message, trace_id, span_id, eventData) =>
+const getLogLine: GetLogLineFn = (level, module) => (message, traceId, spanId, eventData) =>
+  // biome-ignore lint/suspicious/noConsole: Logging
   console[level](
-    JSON.stringify({ ...eventData, level, module, message, trace_id, span_id, VERSION, '@timestamp': timestamp() }),
+    JSON.stringify({
+      ...eventData,
+      level,
+      module,
+      message,
+      // biome-ignore lint/style/useNamingConvention: Logging format
+      trace_id: traceId,
+      // biome-ignore lint/style/useNamingConvention: Logging format
+      span_id: spanId,
+      version: VERSION,
+      '@timestamp': timestamp(),
+    }),
   );
 
 const timestamp = () => new Date().toISOString();

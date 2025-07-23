@@ -1,4 +1,7 @@
 const CaseList = lazy(() => import('@/app/[lang]/case-list'));
+
+import { notFound } from 'next/navigation';
+import { lazy, Suspense } from 'react';
 import { CaseListLoading } from '@/app/[lang]/case-list';
 import { TITLE } from '@/app/[lang]/title';
 import { DecoratorUpdater } from '@/components/decorator-updater';
@@ -6,9 +9,7 @@ import { MetricEvent } from '@/components/metrics';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguage } from '@/lib/server/get-language';
-import { type Language, isLanguage } from '@/locales';
-import { notFound } from 'next/navigation';
-import { Suspense, lazy } from 'react';
+import { isLanguage, type Language } from '@/locales';
 
 interface Params {
   lang: Language;

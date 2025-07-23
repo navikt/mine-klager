@@ -1,9 +1,9 @@
+import { BodyShort } from '@navikt/ds-react';
 import { DomstolLink, TrygderettenLink } from '@/app/[lang]/saker/[id]/what-happens-now/resource-links';
 import { TrygderettenAddress } from '@/app/[lang]/saker/[id]/what-happens-now/trygderetten-address';
 import { UNIT } from '@/lib/dictionary';
 import { EventType } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
-import { BodyShort } from '@navikt/ds-react';
 
 interface NextDescriptionProps {
   type: EventType;

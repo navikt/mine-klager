@@ -1,9 +1,9 @@
+import { HStack } from '@navikt/ds-react';
+import type React from 'react';
 import { PdfLink } from '@/components/pdf-link';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { type EventDocument, EventDocumentType } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
-import { HStack } from '@navikt/ds-react';
-import type React from 'react';
 
 interface RelevantDocumentsProps {
   relevantDocuments: EventDocument[];

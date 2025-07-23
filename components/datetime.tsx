@@ -1,9 +1,9 @@
 'use client';
 
-import { ISO_DATETIME_FORMAT, PRETTY_DATE_FORMAT, format, longFormat, textFormat } from '@/lib/date';
-import type { Language } from '@/locales';
 import { Tooltip } from '@navikt/ds-react';
 import { parseISO } from 'date-fns';
+import { format, ISO_DATETIME_FORMAT, longFormat, PRETTY_DATE_FORMAT, textFormat } from '@/lib/date';
+import type { Language } from '@/locales';
 
 interface DateTimeProps {
   id?: string;

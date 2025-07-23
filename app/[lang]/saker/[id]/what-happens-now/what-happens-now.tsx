@@ -1,11 +1,11 @@
+import { Box, Heading, VStack } from '@navikt/ds-react';
 import { NextDescription } from '@/app/[lang]/saker/[id]/what-happens-now/description';
 import { SvarbrevInfo } from '@/app/[lang]/saker/[id]/what-happens-now/svarbrev-info';
 import { RelevantDocuments } from '@/components/relevant-documents';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { EventDocumentType } from '@/lib/types';
 import type { Sak, SakEvent } from '@/lib/types';
+import { EventDocumentType } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
-import { Box, Heading, VStack } from '@navikt/ds-react';
 
 interface WhatHappensProps {
   lastEvent: SakEvent;

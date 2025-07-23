@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { sendMetricEvent } from '@/lib/metrics';
-import { useEffect } from 'react';
 
 export const useSendMetricEvent = (
   eventName: string,

@@ -1,7 +1,7 @@
-import { Language, type Translation } from '@/locales';
 import type { Locale } from 'date-fns';
-import { format as _format, intlFormat } from 'date-fns';
+import { format as dateFnsformat, intlFormat } from 'date-fns';
 import { enGB, nb, nn } from 'date-fns/locale';
+import { Language, type Translation } from '@/locales';
 
 export const PRETTY_DATETIME_FORMAT = 'dd. MMM yyyy HH:mm:ss';
 export const PRETTY_DATE_FORMAT = 'dd. MMM yyyy';
@@ -14,7 +14,8 @@ export const LOCALES: Record<Language, Locale> = {
   [Language.EN]: enGB,
 };
 
-export const format = (date: Date, format: string, lang: Language) => _format(date, format, { locale: LOCALES[lang] });
+export const format = (date: Date, format: string, lang: Language) =>
+  dateFnsformat(date, format, { locale: LOCALES[lang] });
 
 export const INTL_LOCALES: Translation = {
   [Language.NB]: 'nb-NO',

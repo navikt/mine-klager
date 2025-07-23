@@ -1,8 +1,8 @@
+import { headers } from 'next/headers';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import { getSaker } from '@/lib/server/api';
 import { getDecoratorLanguage } from '@/lib/server/get-language';
 import type { Translation } from '@/locales';
-import { headers } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 

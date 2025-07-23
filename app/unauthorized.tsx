@@ -1,10 +1,10 @@
+import { Alert, Button } from '@navikt/ds-react';
+import { headers } from 'next/headers';
 import { Decorator } from '@/components/decorator';
 import { MetricEvent } from '@/components/metrics';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import { Language } from '@/locales';
-import { Alert, Button } from '@navikt/ds-react';
-import { headers } from 'next/headers';
 
 export default async function Unauthorized() {
   const lang = getLanguageFromHeaders(await headers());

@@ -1,3 +1,7 @@
+import { Heading, HGrid, HStack } from '@navikt/ds-react';
+import { parse } from 'date-fns';
+import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
 import { EventList } from '@/app/[lang]/saker/[id]/event-list';
 import { WhatHappensNow } from '@/app/[lang]/saker/[id]/what-happens-now/what-happens-now';
 import { Actions } from '@/components/actions/actions';
@@ -8,18 +12,14 @@ import { MetricEvent } from '@/components/metrics';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { ReceivedVedtaksinstans } from '@/components/received-vedtaksinstans';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { ISO_DATE_FORMAT, PRETTY_DATE_FORMAT, format } from '@/lib/date';
+import { format, ISO_DATE_FORMAT, PRETTY_DATE_FORMAT } from '@/lib/date';
 import { getYtelseName } from '@/lib/kodeverk';
 import { getSakHeading } from '@/lib/sak-heading';
 import { getSak } from '@/lib/server/api';
 import { getCurrentPath } from '@/lib/server/current-path';
-import { BehandlingstidUnitType, CASE_TYPE_NAMES } from '@/lib/types';
 import type { Frist, Sak } from '@/lib/types';
-import { Language, type Translation, isLanguage } from '@/locales';
-import { HGrid, HStack, Heading } from '@navikt/ds-react';
-import { parse } from 'date-fns';
-import { headers } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { BehandlingstidUnitType, CASE_TYPE_NAMES } from '@/lib/types';
+import { isLanguage, Language, type Translation } from '@/locales';
 
 interface Params {
   id: string;
@@ -83,6 +83,7 @@ export default async function SakPage({ params }: Props) {
 
   return (
     <>
+      {/** biome-ignore lint/style/useNamingConvention: Metric event naming convention */}
       <MetricEvent domain="sak" context={context} eventData={{ eventCount, last_event_type: lastEvent?.type }} />
 
       <DecoratorUpdater

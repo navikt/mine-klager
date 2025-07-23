@@ -1,3 +1,4 @@
+import { Box, Heading, HStack, Stack, VStack } from '@navikt/ds-react';
 import { CaseIcon } from '@/app/[lang]/case-icon';
 import { Received } from '@/app/[lang]/received';
 import { DateTime } from '@/components/datetime';
@@ -8,7 +9,6 @@ import { EVENT_NAMES } from '@/lib/event-names';
 import { getSakHeading } from '@/lib/sak-heading';
 import type { Sak } from '@/lib/types';
 import { DEFAULT_LANGUAGE, Language, type Translation } from '@/locales';
-import { Box, HStack, Heading, Stack, VStack } from '@navikt/ds-react';
 
 interface SakListItemProps {
   sak: Sak;

@@ -1,3 +1,5 @@
+import { Heading, Skeleton, VStack } from '@navikt/ds-react';
+import { headers } from 'next/headers';
 import { Disclaimer } from '@/app/[lang]/disclaimer';
 import { SakListItem } from '@/app/[lang]/list-item';
 import { MetricEvent } from '@/components/metrics';
@@ -5,8 +7,6 @@ import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { UNIT } from '@/lib/dictionary';
 import { getSaker } from '@/lib/server/api';
 import { Language, type Translation } from '@/locales';
-import { Heading, Skeleton, VStack } from '@navikt/ds-react';
-import { headers } from 'next/headers';
 
 interface CaseListProps {
   lang: Language;

@@ -1,7 +1,7 @@
+import { Alert, BodyShort } from '@navikt/ds-react';
 import { UnavailableYtelser } from '@/app/[lang]/unavailable-ytelser';
 import { UNIT } from '@/lib/dictionary';
 import { Language, type Translation } from '@/locales';
-import { Alert, BodyShort } from '@navikt/ds-react';
 
 interface DisclaimerProps {
   lang: Language;

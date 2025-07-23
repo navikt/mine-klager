@@ -1,7 +1,7 @@
+import { BodyShort, VStack } from '@navikt/ds-react';
 import { UNIT } from '@/lib/dictionary';
 import { EventType } from '@/lib/types';
 import { Language } from '@/locales';
-import { BodyShort, VStack } from '@navikt/ds-react';
 
 interface EventDescriptionProps {
   type: EventType;
