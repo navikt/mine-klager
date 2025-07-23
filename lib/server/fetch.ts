@@ -8,13 +8,13 @@ export const getFromKabal = async (
 ): ReturnType<typeof fetch> => {
   const token = await getOboToken(Audience.KABAL_API, incomingHeaders);
 
-  const headers: HeadersInit = { method: 'GET', authorization: `Bearer ${token}` };
+  const headers: HeadersInit = { authorization: `Bearer ${token}` };
 
   if (traceparent !== undefined) {
     headers.traceparent = traceparent;
   }
 
-  return await fetch(url, { headers });
+  return await fetch(url, { method: 'GET', headers });
 };
 
 interface TraceParent {
