@@ -1,9 +1,9 @@
 'use client';
 
-import { sendMetricEvent } from '@/lib/metrics';
-import { Language, type Translation } from '@/locales';
 import { List, ReadMore } from '@navikt/ds-react';
 import { ListItem } from '@navikt/ds-react/List';
+import { sendMetricEvent } from '@/lib/metrics';
+import { Language, type Translation } from '@/locales';
 
 interface UnavailableYtelserProps {
   lang: Language;

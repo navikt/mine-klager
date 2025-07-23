@@ -1,11 +1,11 @@
+import { BodyShort, Heading } from '@navikt/ds-react';
+import { headers } from 'next/headers';
+import NextLink from 'next/link';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { UNIT } from '@/lib/dictionary';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import { Language, type Translation } from '@/locales';
-import { BodyShort, Heading } from '@navikt/ds-react';
-import { headers } from 'next/headers';
-import NextLink from 'next/link';
 
 export default async function NotFound() {
   const path = await getCurrentPath();

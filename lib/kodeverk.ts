@@ -24,10 +24,10 @@ export const getYtelseName = async (id: string, lang: Language): Promise<string>
 const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
   const url = `${API_URL}/innsendingsytelser/${lang}`;
 
-  const { traceparent, trace_id, span_id } = generateTraceParent();
+  const { traceparent, traceId, spanId } = generateTraceParent();
 
   try {
-    const res = await fetch(url, { headers: { Accept: 'application/json', traceparent } });
+    const res = await fetch(url, { headers: { accept: 'application/json', traceparent } });
 
     if (res.status === 401) {
       throw new UnauthorizedError(lang);
@@ -39,7 +39,7 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
 
     return res.json();
   } catch (error) {
-    logger.error('Failed to fetch kodeverk', trace_id, span_id, {
+    logger.error('Failed to fetch kodeverk', traceId, spanId, {
       error: error instanceof Error ? error.message : 'Unknown error',
     });
     throw new InternalServerError('Network error', FAILED_TO_FETCH[lang], lang);

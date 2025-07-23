@@ -1,7 +1,8 @@
 'use client';
+
+import NextLink from 'next/link';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { sendMetricEvent } from '@/lib/metrics';
-import NextLink from 'next/link';
 
 interface MeasuredLinkProps {
   href: string;
@@ -20,13 +21,15 @@ export const MeasuredLink = ({ href, context, ...props }: MeasuredLinkProps) => 
         return;
       }
 
-      const new_tab = button === 1 || metaKey;
+      const newTab = button === 1 || metaKey;
       const from = window.location.pathname;
-      sendMetricEvent('navigere', 'link', { ...context, href, from, new_tab: new_tab.toString() });
+      // biome-ignore lint/style/useNamingConvention: Metric event naming convention
+      sendMetricEvent('navigere', 'link', { ...context, href, from, new_tab: newTab.toString() });
     }}
     onKeyDown={({ key, metaKey }) => {
       if (key === 'Enter') {
         const from = window.location.pathname;
+        // biome-ignore lint/style/useNamingConvention: Metric event naming convention
         sendMetricEvent('navigere', 'link', { ...context, href, from, new_tab: metaKey.toString() });
       }
     }}

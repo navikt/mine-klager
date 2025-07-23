@@ -1,5 +1,5 @@
-import { CaseType } from '@/lib/types';
 import { ArrowCirclepathIcon, DocPencilIcon, ParagraphIcon } from '@navikt/aksel-icons';
+import { CaseType } from '@/lib/types';
 
 interface CaseIconProps {
   typeId: CaseType;

@@ -8,7 +8,7 @@ export const getFromKabal = async (
 ): ReturnType<typeof fetch> => {
   const token = await getOboToken(Audience.KABAL_API, incomingHeaders);
 
-  const headers: HeadersInit = { method: 'GET', Authorization: `Bearer ${token}` };
+  const headers: HeadersInit = { method: 'GET', authorization: `Bearer ${token}` };
 
   if (traceparent !== undefined) {
     headers.traceparent = traceparent;
@@ -19,8 +19,8 @@ export const getFromKabal = async (
 
 interface TraceParent {
   traceparent: string;
-  trace_id: string;
-  span_id: string;
+  traceId: string;
+  spanId: string;
 }
 
 export const getTraceparent = (incomingHeaders: Headers): TraceParent => {
@@ -34,20 +34,20 @@ const TRACE_FLAGS = '00';
 
 /** Generates a traceparent ID according to https://www.w3.org/TR/trace-context/#version-format */
 export const generateTraceParent = (): TraceParent => {
-  const trace_id = getUUID();
-  const span_id = getUUID().substring(0, 16); // parent_id
+  const traceId = getUuid();
+  const spanId = getUuid().substring(0, 16); // parent_id
 
   return {
-    traceparent: `${TRACE_VERSION}-${trace_id}-${span_id}-${TRACE_FLAGS}`,
-    trace_id,
-    span_id,
+    traceparent: `${TRACE_VERSION}-${traceId}-${spanId}-${TRACE_FLAGS}`,
+    traceId,
+    spanId,
   };
 };
 
-const getUUID = () => crypto.randomUUID().replaceAll('-', '');
+const getUuid = () => crypto.randomUUID().replaceAll('-', '');
 
 const parseTraceParent = (traceparent: string): TraceParent => {
-  const [_, trace_id, span_id, __] = traceparent.split('-');
+  const [_, traceId, spanId, __] = traceparent.split('-');
 
-  return { traceparent, trace_id, span_id };
+  return { traceparent, traceId, spanId };
 };

@@ -1,11 +1,11 @@
+import { CalendarIcon } from '@navikt/aksel-icons';
+import { Box, Stack, Tag, VStack } from '@navikt/ds-react';
 import { DateTime } from '@/components/datetime';
 import { EventDescription } from '@/components/timeline/event-description';
 import { EventHeading } from '@/components/timeline/event-heading';
 import { EventIcon } from '@/components/timeline/event-icon';
 import type { SakEvent } from '@/lib/types';
 import type { Language } from '@/locales';
-import { CalendarIcon } from '@navikt/aksel-icons';
-import { Box, Stack, Tag, VStack } from '@navikt/ds-react';
 
 interface TimelineItemContentProps {
   sakEvent: SakEvent;

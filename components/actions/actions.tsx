@@ -1,10 +1,10 @@
+import { HStack } from '@navikt/ds-react';
 import { Appeal } from '@/components/actions/appeal';
 import { ArchiveLink } from '@/components/actions/archive';
 import { EttersendDokumentasjonAnke, EttersendDokumentasjonKlage } from '@/components/actions/ettersendelse';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { EventType, type Sak, type SakEvent } from '@/lib/types';
 import type { Language } from '@/locales';
-import { HStack } from '@navikt/ds-react';
 
 interface ActionsProps {
   sak: Sak;

@@ -41,6 +41,7 @@ jobs:
           bun run lint
     
       - name: Test
+        if: false # No unit tests yet
         shell: bash
         run: |
           bun test

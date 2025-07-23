@@ -1,8 +1,8 @@
 'use client';
-import { isDeployed } from '@/lib/environment';
-import { grafana } from '@/lib/observability';
 import { getCurrentConsent } from '@navikt/nav-dekoratoren-moduler';
 import { useEffect } from 'react';
+import { isDeployed } from '@/lib/environment';
+import { grafana } from '@/lib/observability';
 
 export const Faro = () => {
   useEffect(() => {

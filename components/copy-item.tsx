@@ -1,9 +1,9 @@
 'use client';
 
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { sendMetricEvent } from '@/lib/metrics';
 import { CopyButton, HStack, Label, Tooltip } from '@navikt/ds-react';
 import { useId } from 'react';
+import type { AmplitudeContextData } from '@/lib/amplitude/types';
+import { sendMetricEvent } from '@/lib/metrics';
 
 interface InfoItemProps {
   label: string;

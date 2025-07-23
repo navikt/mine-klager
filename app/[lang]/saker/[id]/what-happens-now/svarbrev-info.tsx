@@ -1,8 +1,8 @@
+import { BodyShort } from '@navikt/ds-react';
 import { SimpleDate } from '@/components/datetime';
 import { UNIT } from '@/lib/dictionary';
 import { CaseType } from '@/lib/types';
 import { Language } from '@/locales';
-import { BodyShort } from '@navikt/ds-react';
 
 interface SvarbrevInfoProps {
   date: string;

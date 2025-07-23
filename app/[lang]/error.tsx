@@ -1,13 +1,13 @@
 'use client'; // Error boundaries must be Client Components
 
-import { UnauthorizedError } from '@/lib/errors';
-import { grafana } from '@/lib/observability';
-import { DEFAULT_LANGUAGE, Language, type Translation, isLanguage } from '@/locales';
-import { Alert, Button, HStack, Heading, Page } from '@navikt/ds-react';
+import { Alert, Button, Heading, HStack, Page } from '@navikt/ds-react';
 import { PageBlock } from '@navikt/ds-react/Page';
 import { logger } from '@navikt/next-logger';
 import { unauthorized } from 'next/navigation';
 import { useEffect } from 'react';
+import { UnauthorizedError } from '@/lib/errors';
+import { grafana } from '@/lib/observability';
+import { DEFAULT_LANGUAGE, isLanguage, Language, type Translation } from '@/locales';
 
 interface ErrorPageProps {
   error: Error & { digest?: string };

@@ -1,8 +1,8 @@
 'use client';
 
-import type { Language, Translation } from '@/locales';
 import { FilesIcon } from '@navikt/aksel-icons';
 import { Button, Tooltip } from '@navikt/ds-react';
+import type { Language, Translation } from '@/locales';
 
 interface TrygderettenAddressProps {
   lang: Language;

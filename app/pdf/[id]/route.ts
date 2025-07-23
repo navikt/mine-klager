@@ -1,9 +1,9 @@
+import type { NextRequest } from 'next/server';
 import { isLocal } from '@/lib/environment';
 import { getLogger } from '@/lib/logger';
 import { generateTraceParent, getFromKabal } from '@/lib/server/fetch';
 import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import { Language, type Translation } from '@/locales';
-import type { NextRequest } from 'next/server';
 
 const logger = getLogger('pdf');
 
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<Params
 
   const { id } = await params;
   const url = `${PDF_BASE_URL}/${id}`;
-  const { traceparent, trace_id, span_id } = generateTraceParent();
+  const { traceparent, traceId, spanId } = generateTraceParent();
 
   try {
     const res = await (isLocal ? fetch(url, { method: 'GET', headers }) : getFromKabal(url, headers, traceparent));
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<Params
 
     return res;
   } catch (error) {
-    logger.error('Failed to fetch document', trace_id, span_id, {
+    logger.error('Failed to fetch document', traceId, spanId, {
       error: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? (error.stack ?? '') : '',
     });

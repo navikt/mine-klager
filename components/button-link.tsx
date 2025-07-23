@@ -1,9 +1,9 @@
 'use client';
 
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { sendMetricEvent } from '@/lib/metrics';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Button, type ButtonProps } from '@navikt/ds-react';
+import type { AmplitudeContextData } from '@/lib/amplitude/types';
+import { sendMetricEvent } from '@/lib/metrics';
 
 interface ButtonLinkProps {
   variant: ButtonProps['variant'];
@@ -24,8 +24,8 @@ export const ButtonLink = ({
   component,
   context,
 }: ButtonLinkProps) => (
+  // biome-ignore lint/a11y/useSemanticElements: Button as link.
   <Button
-    // biome-ignore lint/a11y/useSemanticElements: Button as link.
     role="link"
     icon={openInNewTab ? <ExternalLinkIcon aria-hidden /> : undefined}
     variant={variant}
@@ -38,13 +38,15 @@ export const ButtonLink = ({
         return;
       }
 
-      const new_tab = (openInNewTab || metaKey || button === 1).toString();
-      sendMetricEvent(eventName, 'button-link', { ...context, component, href, new_tab });
+      const newTab = (openInNewTab || metaKey || button === 1).toString();
+      // biome-ignore lint/style/useNamingConvention: Metric event naming convention
+      sendMetricEvent(eventName, 'button-link', { ...context, component, href, new_tab: newTab });
     }}
     onKeyDown={({ key, metaKey }) => {
       if (key === 'Enter') {
-        const new_tab = (openInNewTab || metaKey).toString();
-        sendMetricEvent(eventName, 'button-link', { ...context, component, href, new_tab });
+        const newTab = (openInNewTab || metaKey).toString();
+        // biome-ignore lint/style/useNamingConvention: Metric event naming convention
+        sendMetricEvent(eventName, 'button-link', { ...context, component, href, new_tab: newTab });
       }
     }}
   >

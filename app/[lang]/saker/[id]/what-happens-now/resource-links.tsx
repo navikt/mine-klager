@@ -1,6 +1,6 @@
-import { Language } from '@/locales';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Link, type LinkProps } from '@navikt/ds-react';
+import { Language } from '@/locales';
 
 interface ResourceLinkProps {
   lang: Language;

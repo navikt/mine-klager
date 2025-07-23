@@ -1,8 +1,8 @@
 'use client';
 
+import { Tooltip } from '@navikt/ds-react';
 import { ButtonLink } from '@/components/button-link';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { Tooltip } from '@navikt/ds-react';
 
 interface PdfLinkProps {
   journalpostId: string;

@@ -1,6 +1,6 @@
+import { type NextRequest, NextResponse } from 'next/server';
 import { CURRENT_PATH_HEADER, DECORATOR_LANGUAGE_COOKIE, LANGUAGE_HEADER } from '@/lib/server/custom-headers';
 import { DEFAULT_LANGUAGE, isLanguage } from '@/locales';
-import { type NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const headers = new Headers();

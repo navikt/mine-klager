@@ -1,7 +1,7 @@
-import { DECORATOR_LANGUAGE_COOKIE } from '@/lib/server/custom-headers';
-import { DEFAULT_LANGUAGE, NON_DEFAULT_LANGUAGES } from '@/locales';
 import type { NextConfig } from 'next';
 import type { Redirect, Rewrite } from 'next/dist/lib/load-custom-routes';
+import { DECORATOR_LANGUAGE_COOKIE } from '@/lib/server/custom-headers';
+import { DEFAULT_LANGUAGE, NON_DEFAULT_LANGUAGES } from '@/locales';
 
 const INDEX_PATH = '/';
 const PATHS: string[] = ['/saker/:id', INDEX_PATH];
