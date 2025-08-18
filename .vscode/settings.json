@@ -3,7 +3,6 @@
   "editor.linkedEditing": true,
   "editor.defaultFormatter": "biomejs.biome",
   "editor.codeActionsOnSave": {
-    "quickfix.biome": "always",
     "source.fixAll.biome": "always",
     "source.organizeImports.biome": "always",
     "source.addMissingImports.ts": "never"
@@ -22,6 +21,7 @@
   "liveshare.allowGuestDebugControl": true,
   "liveshare.allowGuestTaskControl": true,
   "liveshare.notebooks.allowGuestExecuteCells": true,
+  "biome.lsp.bin": "node_modules/.bin/biome",
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
