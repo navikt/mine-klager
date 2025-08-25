@@ -1,10 +1,9 @@
-import type { DecoratorLocale } from '@navikt/nav-dekoratoren-moduler/ssr';
 import '@/app/globals.css';
 import { Decorator } from '@/components/decorator';
 import { getLanguage } from '@/lib/server/get-language';
 
 interface Params {
-  lang: DecoratorLocale;
+  lang: string;
 }
 
 interface Props {
