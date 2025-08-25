@@ -1,11 +1,10 @@
-import type { DecoratorLocale } from '@navikt/nav-dekoratoren-moduler/ssr';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { headers } from 'next/headers';
 import { LANGUAGE_HEADER } from '@/lib/server/custom-headers';
 import { DEFAULT_LANGUAGE, isLanguage, type Language } from '@/locales';
 
 interface Params {
-  lang: DecoratorLocale;
+  lang: string;
 }
 
 export const getLanguage = async (params: Promise<Params>): Promise<Language> => {
