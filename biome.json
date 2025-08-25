@@ -11,7 +11,12 @@
     "enabled": true,
     "actions": {
       "source": {
-        "organizeImports": "on"
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": ["**"]
+          }
+        }
       }
     }
   },
@@ -24,13 +29,13 @@
     "rules": {
       "recommended": true,
       "performance": {
-        "noDelete": "warn",
-        "noBarrelFile": "warn",
-        "noAccumulatingSpread": "warn",
-        "useTopLevelRegex": "warn",
-        "noDynamicNamespaceImportAccess": "warn",
-        "noNamespaceImport": "warn",
-        "noReExportAll": "warn"
+        "noDelete": "error",
+        "noBarrelFile": "error",
+        "noAccumulatingSpread": "error",
+        "useTopLevelRegex": "error",
+        "noDynamicNamespaceImportAccess": "error",
+        "noNamespaceImport": "error",
+        "noReExportAll": "error"
       },
       "a11y": {
         "recommended": true
@@ -39,11 +44,14 @@
         "recommended": true
       },
       "nursery": {
-        "noSecrets": { "level": "off", "options": {} },
-        "useExplicitType": { "level": "off", "options": {} }
+        "noSecrets": "off",
+        "useExplicitType": "off",
+        "noImportCycles": "off",
+        "useSortedClasses": { "level": "on", "fix": "safe", "options": {} }
       },
       "correctness": {
-        "useImportExtensions": { "level": "off", "fix": "none", "options": {} }
+        "useImportExtensions": "off",
+        "noUnusedImports": { "level": "error", "fix": "safe", "options": {} }
       },
       "style": {
         "noImplicitBoolean": "off",
@@ -90,19 +98,21 @@
         "useNumberNamespace": "error",
         "noInferrableTypes": "error",
         "noUselessElse": "error",
-        "useComponentExportOnlyModules": { "level": "off", "options": {} },
-        "noEnum": { "level": "off", "options": {} },
-        "useConsistentMemberAccessibility": { "level": "off", "options": {} },
-        "useConsistentCurlyBraces": { "level": "off", "fix": "none", "options": {} }
+        "useComponentExportOnlyModules": "off",
+        "noEnum": "off",
+        "useConsistentMemberAccessibility": "off",
+        "useConsistentCurlyBraces": "off"
       },
       "suspicious": {
         "noConsole": { "level": "warn", "options": { "allow": ["debug", "info", "warn", "error"] } },
         "noReactSpecificProps": "off",
-        "noEmptyBlockStatements": "warn"
+        "noEmptyBlockStatements": "warn",
+        "noFocusedTests": "error"
       },
       "complexity": {
         "useSimplifiedLogicExpression": "error",
-        "noExcessiveCognitiveComplexity": { "level": "warn", "options": { "maxAllowedComplexity": 25 } }
+        "noExcessiveCognitiveComplexity": { "level": "warn", "options": { "maxAllowedComplexity": 25 } },
+        "noUselessFragments": { "level": "on", "fix": "safe", "options": {} }
       }
     }
   },
@@ -112,7 +122,30 @@
     "linter": { "enabled": true }
   },
   "json": {
-    "formatter": { "enabled": true, "trailingCommas": "none" }
+    "formatter": {
+      "enabled": true,
+      "trailingCommas": "none",
+      "indentStyle": "space",
+      "lineWidth": 120,
+      "indentWidth": 2,
+      "bracketSpacing": true,
+      "expand": "auto",
+      "lineEnding": "lf"
+    },
+    "linter": { "enabled": true },
+    "assist": { "enabled": true }
+  },
+  "css": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "lineWidth": 120,
+      "indentWidth": 2,
+      "lineEnding": "lf",
+      "quoteStyle": "double"
+    },
+    "linter": { "enabled": true },
+    "assist": { "enabled": true }
   },
   "files": {
     "includes": ["**", "!**/dist", "!**/.next"]
