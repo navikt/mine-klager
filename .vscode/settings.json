@@ -22,6 +22,12 @@
   "liveshare.allowGuestTaskControl": true,
   "liveshare.notebooks.allowGuestExecuteCells": true,
   "biome.lsp.bin": "node_modules/.bin/biome",
+  "search.exclude": {
+    "node_modules": true,
+    "dist": true,
+    "tsconfig.tsbuildinfo": true,
+    "bun.lock": true
+  },
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
