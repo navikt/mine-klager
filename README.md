@@ -1,5 +1,5 @@
 # Mine Klager
-En innsynsløsning for klager og anker i Nav klageinstans.
+En innsynsløsning for klager og anker i Klageinstans.
 
 ## Utvikling
 

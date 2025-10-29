@@ -9,9 +9,9 @@ export const UNIT: Record<Keys, Translation> = {
     [Language.EN]: 'Nav Decision-making Unit (Nav vedtaksinstans)',
   },
   klageinstans: {
-    [Language.NB]: 'Nav klageinstans',
-    [Language.NN]: 'Nav klageinstans',
-    [Language.EN]: 'Nav Complaints Unit (Nav klageinstans)',
+    [Language.NB]: 'Klageinstans',
+    [Language.NN]: 'Klageinstans',
+    [Language.EN]: 'Complaints Unit (Klageinstans)',
   },
   trygderetten: {
     [Language.NB]: 'Trygderetten',
