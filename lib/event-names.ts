@@ -53,4 +53,29 @@ export const EVENT_NAMES: Readonly<Record<EventType, Translation>> = {
     [Language.NN]: `Omgjeringskrav avslutta hjå ${UNIT.klageinstans.nn}`,
     [Language.EN]: `Request for reconsideration concluded by ${UNIT.klageinstans.en}`,
   },
+  [EventType.GJENOPPTAKSBEGJAERING_MOTTATT_KLAGEINSTANS]: {
+    [Language.NB]: `Begjæring om gjenopptak mottatt ${UNIT.klageinstans.nb}`,
+    [Language.NN]: `Krav om gjenopning motteke ${UNIT.klageinstans.nn}`,
+    [Language.EN]: `Request for reopening received by ${UNIT.klageinstans.en}`,
+  },
+  [EventType.GJENOPPTAKSBEGJAERING_SENDT_TRYGDERETTEN]: {
+    [Language.NB]: `Begjæring om gjenopptak sendt til ${UNIT.trygderetten.nb}`,
+    [Language.NN]: `Krav om gjenopning sendt til ${UNIT.trygderetten.nn}`,
+    [Language.EN]: `Request for reopening sent to the ${UNIT.trygderetten.en}`,
+  },
+  [EventType.GJENOPPTAKSBEGJAERING_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN]: {
+    [Language.NB]: `Kjennelse mottatt fra ${UNIT.trygderetten.nb}`,
+    [Language.NN]: `Kjennelse mottatt fra ${UNIT.trygderetten.nn}`,
+    [Language.EN]: `Decision received from the ${UNIT.trygderetten.en}`,
+  },
+  [EventType.GJENOPPTAKSBEGJAERING_AVSLUTTET_I_TRYGDERETTEN]: {
+    [Language.NB]: `Begjæring om gjenopptak avsluttet hos ${UNIT.trygderetten.nb}`,
+    [Language.NN]: `Krav om gjenopning avslutta hjå ${UNIT.trygderetten.nn}`,
+    [Language.EN]: `Request for reopening concluded by the ${UNIT.trygderetten.en}`,
+  },
+  [EventType.GJENOPPTAKSBEGJAERING_AVSLUTTET_I_KLAGEINSTANS]: {
+    [Language.NB]: `Begjæring om gjenopptak avsluttet hos ${UNIT.klageinstans.nb}`,
+    [Language.NN]: `Krav om gjenopning avslutta hjå ${UNIT.klageinstans.nn}`,
+    [Language.EN]: `Request for reopening concluded by ${UNIT.klageinstans.en}`,
+  },
 };

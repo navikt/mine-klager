@@ -145,4 +145,60 @@ const EVENT_DESCRIPTIONS: Readonly<Record<EventType, Record<Language, string[]>>
       `You can read the decision in the letter you have received from ${UNIT.klageinstans.en} in the document archive.`,
     ],
   },
+
+  [EventType.GJENOPPTAKSBEGJAERING_MOTTATT_KLAGEINSTANS]: {
+    [Language.NB]: [
+      `Begjæringen din om gjenopptak er mottatt hos ${UNIT.klageinstans.nb}.`,
+      `Dersom ${UNIT.klageinstans.nb} ikke endrer det tidligere vedtaket sitt, går saken din videre til ${UNIT.trygderetten.nb}. Du vil få mulighet til å uttale deg før saken sendes videre til ${UNIT.trygderetten.nb}.`,
+    ],
+    [Language.NN]: [
+      `Kravet ditt om gjenopning er motteke hjå ${UNIT.klageinstans.nn}.`,
+      `Dersom ${UNIT.klageinstans.nn} ikkje endrar det tidligare vedtaket sitt, går saka di vidare til ${UNIT.trygderetten.nn}. Du vil få høve til å uttale deg før saka sendast vidare til ${UNIT.trygderetten.nn}.`,
+    ],
+    [Language.EN]: [
+      `Your request for reopening has been received by ${UNIT.klageinstans.en}.`,
+      `If ${UNIT.klageinstans.en} do not change its previous decision, your case will be sent on to the ${UNIT.trygderetten.en}. You will have the opportunity to comment before the case is sent on to the ${UNIT.trygderetten.en}.`,
+    ],
+  },
+  [EventType.GJENOPPTAKSBEGJAERING_SENDT_TRYGDERETTEN]: {
+    [Language.NB]: [
+      `${UNIT.klageinstans.nb} har avsluttet behandlingen av begjæringen din om gjenopptak, og begjæringen din er sendt videre til ${UNIT.trygderetten.nb}.`,
+    ],
+    [Language.NN]: [
+      `${UNIT.klageinstans.nn} har avslutta behandlinga av kravet ditt om gjenopning, og begjæringen din er sendt vidare til ${UNIT.trygderetten.nn}.`,
+    ],
+    [Language.EN]: [
+      `${UNIT.klageinstans.en} has concluded the processing of your request for reopening, and your request has been sent on to the ${UNIT.trygderetten.en}.`,
+    ],
+  },
+  [EventType.GJENOPPTAKSBEGJAERING_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN]: {
+    [Language.NB]: [`Kjennelse mottatt fra ${UNIT.trygderetten.nb}.`],
+    [Language.NN]: [`Kjennelse mottatt fra ${UNIT.trygderetten.nn}.`],
+    [Language.EN]: [`Decision on reopening received from the ${UNIT.trygderetten.en}.`],
+  },
+  [EventType.GJENOPPTAKSBEGJAERING_AVSLUTTET_I_TRYGDERETTEN]: {
+    [Language.NB]: [
+      `${UNIT.trygderetten.nb} har avsluttet behandlingen av begjæringen din om gjenopptak. Du kan lese avgjørelsen i kjennelsen fra ${UNIT.trygderetten.nb}.`,
+    ],
+    [Language.NN]: [
+      `${UNIT.trygderetten.nn} har avslutta behandlinga av kravet ditt om gjenopning. Du kan lese avgjerda i kjennelsen frå ${UNIT.trygderetten.nn}.`,
+    ],
+    [Language.EN]: [
+      `The ${UNIT.trygderetten.en} has concluded the processing of your request for reopening. You can read the decision in the judgment from the ${UNIT.trygderetten.en}.`,
+    ],
+  },
+  [EventType.GJENOPPTAKSBEGJAERING_AVSLUTTET_I_KLAGEINSTANS]: {
+    [Language.NB]: [
+      `${UNIT.klageinstans.nb} har avsluttet behandlingen av begjæringen din om gjenopptak.`,
+      `Du kan lese avgjørelsen i brevet du har fått fra ${UNIT.klageinstans.nb} i dokumentarkivet.`,
+    ],
+    [Language.NN]: [
+      `${UNIT.klageinstans.nn} har avslutta behandlinga av kravet ditt om gjenopning.`,
+      `Du kan lese avgjerda i brevet du har fått frå ${UNIT.klageinstans.nn} i dokumentarkivet.`,
+    ],
+    [Language.EN]: [
+      `${UNIT.klageinstans.en} has concluded the processing of your request for reopening.`,
+      `You can read the decision in the letter you have received from ${UNIT.klageinstans.en} in the document archive.`,
+    ],
+  },
 };

@@ -3,18 +3,17 @@ import { NextDescription } from '@/app/[lang]/saker/[id]/what-happens-now/descri
 import { SvarbrevInfo } from '@/app/[lang]/saker/[id]/what-happens-now/svarbrev-info';
 import { RelevantDocuments } from '@/components/relevant-documents';
 import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import type { Sak, SakEvent } from '@/lib/types';
+import type { SakEvent } from '@/lib/types';
 import { EventDocumentType } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
 interface WhatHappensProps {
   lastEvent: SakEvent;
   lang: Language;
-  sak: Sak;
   context: AmplitudeContextData;
 }
 
-export const WhatHappensNow = ({ lastEvent, lang, sak, context }: WhatHappensProps) => {
+export const WhatHappensNow = ({ lastEvent, lang, context }: WhatHappensProps) => {
   const { type, relevantDocuments } = lastEvent;
 
   const svarbrevDate = relevantDocuments.find(
@@ -39,7 +38,7 @@ export const WhatHappensNow = ({ lastEvent, lang, sak, context }: WhatHappensPro
         <VStack gap="4">
           <div>
             <NextDescription type={type} lang={lang} hasSvarbrev={hasSvarbrev} />
-            {hasSvarbrev ? <SvarbrevInfo date={svarbrevDate} lang={lang} typeId={sak.typeId} /> : null}
+            {hasSvarbrev ? <SvarbrevInfo date={svarbrevDate} lang={lang} /> : null}
           </div>
 
           <RelevantDocuments
