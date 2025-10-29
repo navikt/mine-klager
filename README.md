@@ -1,5 +1,5 @@
 # Mine Klager
-En innsynsløsning for klager og anker i Klageinstans.
+En innsynsløsning for saker i Klageinstans.
 
 ## Utvikling
 
