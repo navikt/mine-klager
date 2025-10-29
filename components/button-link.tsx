@@ -2,8 +2,7 @@
 
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Button, type ButtonProps } from '@navikt/ds-react';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { sendMetricEvent } from '@/lib/metrics';
+import { type MetricsContextData, sendMetricEvent } from '@/lib/metrics';
 
 interface ButtonLinkProps {
   variant: ButtonProps['variant'];
@@ -12,7 +11,7 @@ interface ButtonLinkProps {
   openInNewTab?: boolean;
   eventName: string;
   component: string;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 export const ButtonLink = ({

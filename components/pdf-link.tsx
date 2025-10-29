@@ -2,14 +2,14 @@
 
 import { Tooltip } from '@navikt/ds-react';
 import { ButtonLink } from '@/components/button-link';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
+import type { MetricsContextData } from '@/lib/metrics';
 
 interface PdfLinkProps {
   journalpostId: string;
   tooltip: string;
   children: React.ReactNode;
   component: string;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 export const PdfLink = ({ journalpostId, tooltip, children, component, context }: PdfLinkProps) => (

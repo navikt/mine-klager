@@ -1,11 +1,11 @@
 import { ButtonLink } from '@/components/button-link';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { isDeployedToProd } from '@/lib/environment';
+import type { MetricsContextData } from '@/lib/metrics';
 import { DEFAULT_LANGUAGE, type Language, type Translation } from '@/locales';
 
 interface ArchiveLinkProps {
   lang: Language;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 export const ArchiveLink = ({ lang, context }: ArchiveLinkProps) => (

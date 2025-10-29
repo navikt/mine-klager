@@ -11,9 +11,9 @@ import { InfoItem } from '@/components/info-item';
 import { MetricEvent } from '@/components/metrics';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { ReceivedVedtaksinstans } from '@/components/received-vedtaksinstans';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { format, ISO_DATE_FORMAT, PRETTY_DATE_FORMAT } from '@/lib/date';
 import { getYtelseName } from '@/lib/kodeverk';
+import type { MetricsContextData } from '@/lib/metrics';
 import { getSakHeading } from '@/lib/sak-heading';
 import { getSak } from '@/lib/server/api';
 import { getCurrentPath } from '@/lib/server/current-path';
@@ -77,7 +77,7 @@ export default async function SakPage({ params }: Props) {
 
   const eventCount = events.length;
 
-  const context: AmplitudeContextData = {
+  const context: MetricsContextData = {
     lang,
     path,
     page: 'sak',

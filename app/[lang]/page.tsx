@@ -6,7 +6,7 @@ import { CaseListLoading } from '@/app/[lang]/case-list';
 import { TITLE } from '@/app/[lang]/title';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { MetricEvent } from '@/components/metrics';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
+import type { MetricsContextData } from '@/lib/metrics';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguage } from '@/lib/server/get-language';
 import { isLanguage, type Language } from '@/locales';
@@ -37,7 +37,7 @@ export default async function SakerPage({ params }: SakerPageProps) {
     return notFound();
   }
 
-  const context: AmplitudeContextData = { lang, path, page: 'saker' };
+  const context: MetricsContextData = { lang, path, page: 'saker' };
 
   return (
     <>

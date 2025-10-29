@@ -1,15 +1,14 @@
 'use client';
 
 import NextLink from 'next/link';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { sendMetricEvent } from '@/lib/metrics';
+import { type MetricsContextData, sendMetricEvent } from '@/lib/metrics';
 
 interface MeasuredLinkProps {
   href: string;
   className?: string;
   children: React.ReactNode;
   ref?: React.RefObject<HTMLAnchorElement>;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 export const MeasuredLink = ({ href, context, ...props }: MeasuredLinkProps) => (
