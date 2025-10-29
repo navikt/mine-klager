@@ -24,7 +24,6 @@ export const ButtonLink = ({
   component,
   context,
 }: ButtonLinkProps) => (
-  // biome-ignore lint/a11y/useSemanticElements: Button as link.
   <Button
     role="link"
     icon={openInNewTab ? <ExternalLinkIcon aria-hidden /> : undefined}
