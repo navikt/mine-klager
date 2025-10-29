@@ -42,7 +42,7 @@ const HEADING: Translation = {
 };
 
 const BODY: Translation = {
-  [Language.NB]: `Gå til «Mine klager og anker hos ${UNIT.klageinstans.nb}».`,
-  [Language.NN]: `Gå til «Mine klagar og ankar hos ${UNIT.klageinstans.nn}».`,
-  [Language.EN]: `Go to «My complaints and appeals with ${UNIT.klageinstans.en}».`,
+  [Language.NB]: `Gå til «Mine saker hos ${UNIT.klageinstans.nb}».`,
+  [Language.NN]: `Gå til «Mine saker hos ${UNIT.klageinstans.nn}».`,
+  [Language.EN]: `Go to «My cases with ${UNIT.klageinstans.en}».`,
 };

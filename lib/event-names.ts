@@ -14,8 +14,8 @@ export const EVENT_NAMES: Readonly<Record<EventType, Translation>> = {
     [Language.EN]: `Complaint received by ${UNIT.klageinstans.en}`,
   },
   [EventType.KLAGE_AVSLUTTET_I_KLAGEINSTANS]: {
-    [Language.NB]: `Klage avsluttet hos ${UNIT.klageinstans.nb}`,
-    [Language.NN]: `Klage avslutta hjå ${UNIT.klageinstans.nn}`,
+    [Language.NB]: `Klage fullført hos ${UNIT.klageinstans.nb}`,
+    [Language.NN]: `Klage fullført hjå ${UNIT.klageinstans.nn}`,
     [Language.EN]: `Complaint concluded by ${UNIT.klageinstans.en}`,
   },
   [EventType.ANKE_MOTTATT_KLAGEINSTANS]: {
@@ -31,16 +31,16 @@ export const EVENT_NAMES: Readonly<Record<EventType, Translation>> = {
   [EventType.ANKE_KJENNELSE_MOTTATT_FRA_TRYGDERETTEN]: {
     [Language.NB]: `Kjennelse mottatt fra ${UNIT.trygderetten.nb}`,
     [Language.NN]: `Kjennelse mottatt fra ${UNIT.trygderetten.nn}`,
-    [Language.EN]: `Appeal decision received from the ${UNIT.trygderetten.en}`,
+    [Language.EN]: `Decision received from the ${UNIT.trygderetten.en}`,
   },
   [EventType.ANKE_AVSLUTTET_I_TRYGDERETTEN]: {
-    [Language.NB]: `Anke avsluttet hos ${UNIT.trygderetten.nb}`,
-    [Language.NN]: `Anke avslutta hjå ${UNIT.trygderetten.nn}`,
+    [Language.NB]: `Anke fullført hos ${UNIT.trygderetten.nb}`,
+    [Language.NN]: `Anke fullført hjå ${UNIT.trygderetten.nn}`,
     [Language.EN]: `Appeal concluded by the ${UNIT.trygderetten.en}`,
   },
   [EventType.ANKE_AVSLUTTET_I_KLAGEINSTANS]: {
-    [Language.NB]: `Anke avsluttet hos ${UNIT.klageinstans.nb}`,
-    [Language.NN]: `Anke avslutta hjå ${UNIT.klageinstans.nn}`,
+    [Language.NB]: `Anke fullført hos ${UNIT.klageinstans.nb}`,
+    [Language.NN]: `Anke fullført hjå ${UNIT.klageinstans.nn}`,
     [Language.EN]: `Appeal concluded by ${UNIT.klageinstans.en}`,
   },
   [EventType.OMGJOERINGSKRAV_MOTTATT_KLAGEINSTANS]: {
@@ -49,8 +49,8 @@ export const EVENT_NAMES: Readonly<Record<EventType, Translation>> = {
     [Language.EN]: `Request for reconsideration received by ${UNIT.klageinstans.en}`,
   },
   [EventType.OMGJOERINGSKRAV_AVSLUTTET_I_KLAGEINSTANS]: {
-    [Language.NB]: `Omgjøringskrav avsluttet hos ${UNIT.klageinstans.nb}`,
-    [Language.NN]: `Omgjeringskrav avslutta hjå ${UNIT.klageinstans.nn}`,
+    [Language.NB]: `Omgjøringskrav fullført hos ${UNIT.klageinstans.nb}`,
+    [Language.NN]: `Omgjeringskrav fullført hjå ${UNIT.klageinstans.nn}`,
     [Language.EN]: `Request for reconsideration concluded by ${UNIT.klageinstans.en}`,
   },
   [EventType.GJENOPPTAKSBEGJAERING_MOTTATT_KLAGEINSTANS]: {
@@ -69,13 +69,13 @@ export const EVENT_NAMES: Readonly<Record<EventType, Translation>> = {
     [Language.EN]: `Decision received from the ${UNIT.trygderetten.en}`,
   },
   [EventType.GJENOPPTAKSBEGJAERING_AVSLUTTET_I_TRYGDERETTEN]: {
-    [Language.NB]: `Begjæring om gjenopptak avsluttet hos ${UNIT.trygderetten.nb}`,
-    [Language.NN]: `Krav om gjenopning avslutta hjå ${UNIT.trygderetten.nn}`,
+    [Language.NB]: `Begjæring om gjenopptak fullført hos ${UNIT.trygderetten.nb}`,
+    [Language.NN]: `Krav om gjenopning fullført hjå ${UNIT.trygderetten.nn}`,
     [Language.EN]: `Request for reopening concluded by the ${UNIT.trygderetten.en}`,
   },
   [EventType.GJENOPPTAKSBEGJAERING_AVSLUTTET_I_KLAGEINSTANS]: {
-    [Language.NB]: `Begjæring om gjenopptak avsluttet hos ${UNIT.klageinstans.nb}`,
-    [Language.NN]: `Krav om gjenopning avslutta hjå ${UNIT.klageinstans.nn}`,
+    [Language.NB]: `Begjæring om gjenopptak fullført hos ${UNIT.klageinstans.nb}`,
+    [Language.NN]: `Krav om gjenopning fullført hjå ${UNIT.klageinstans.nn}`,
     [Language.EN]: `Request for reopening concluded by ${UNIT.klageinstans.en}`,
   },
 };
