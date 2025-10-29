@@ -17,7 +17,6 @@ export const NextDescription = ({ type, lang, hasSvarbrev }: NextDescriptionProp
   const lastIndex = hasSvarbrev ? 0 : texts.length - 1;
 
   return texts.map((text, index) => (
-    // biome-ignore lint/suspicious/noArrayIndexKey: Static arrays
     <BodyShort key={index} size="medium" spacing={hasSvarbrev || index !== lastIndex}>
       {text}
     </BodyShort>
