@@ -75,11 +75,15 @@ export default async function SakPage({ params }: Props) {
   const lastEvent = events.at(-1);
   const hasLastEvent = lastEvent !== undefined;
 
-  const type = CASE_TYPE_NAMES[typeId];
-  const ytelse = innsendingsytelseId ?? 'UNKNOWN';
   const eventCount = events.length;
 
-  const context: AmplitudeContextData = { lang, path, page: 'sak', ytelse, type };
+  const context: AmplitudeContextData = {
+    lang,
+    path,
+    page: 'sak',
+    ytelse: innsendingsytelseId ?? 'UNKNOWN',
+    type: CASE_TYPE_NAMES[typeId],
+  };
 
   return (
     <>
@@ -122,7 +126,7 @@ export default async function SakPage({ params }: Props) {
       <HGrid gap="8 4" marginBlock="8 0" columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}>
         <EventList sak={sak} lang={lang} context={context} />
 
-        {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} sak={sak} context={context} /> : null}
+        {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} context={context} /> : null}
       </HGrid>
     </>
   );

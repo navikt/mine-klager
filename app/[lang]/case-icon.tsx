@@ -1,4 +1,4 @@
-import { ArrowCirclepathIcon, DocPencilIcon, ParagraphIcon } from '@navikt/aksel-icons';
+import { ArrowCirclepathIcon, ArrowCirclepathReverseIcon, DocPencilIcon, ParagraphIcon } from '@navikt/aksel-icons';
 import { CaseType } from '@/lib/types';
 
 interface CaseIconProps {
@@ -6,7 +6,7 @@ interface CaseIconProps {
   className?: string;
 }
 
-export const CaseIcon = ({ typeId, ...rest }: CaseIconProps) => {
+export const CaseIcon = ({ typeId, ...rest }: CaseIconProps): React.ReactElement => {
   switch (typeId) {
     case CaseType.KLAGE:
       return <DocPencilIcon {...rest} aria-hidden />;
@@ -14,7 +14,7 @@ export const CaseIcon = ({ typeId, ...rest }: CaseIconProps) => {
       return <ParagraphIcon {...rest} aria-hidden />;
     case CaseType.OMGJØRING:
       return <ArrowCirclepathIcon {...rest} aria-hidden />;
-    default:
-      return null;
+    case CaseType.GJENOPPTAKSBEGJÆRING:
+      return <ArrowCirclepathReverseIcon {...rest} aria-hidden />;
   }
 };

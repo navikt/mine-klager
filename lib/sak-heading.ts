@@ -1,3 +1,4 @@
+import { UNIT } from '@/lib/dictionary';
 import { getYtelseName } from '@/lib/kodeverk';
 import { CaseType } from '@/lib/types';
 import type { Language, Translation } from '@/locales';
@@ -20,10 +21,17 @@ const OMGJØRING_PREFIX: Translation = {
   en: 'Request for reconsideration about',
 };
 
+const GJENOPPTAKSBEGJÆRING_PREFIX: Translation = {
+  nb: `Begjæring om gjenopptak av ${UNIT.trygderetten.nb} sin kjennelse som gjelder`,
+  nn: `Krav om gjenopning av ${UNIT.trygderetten.nn} sin kjennelse som gjeld`,
+  en: `Request for reopening of the ${UNIT.trygderetten.en}'s judgment about`,
+};
+
 const PREFIX: Record<CaseType, Translation> = {
   [CaseType.KLAGE]: KLAGE_PREFIX,
   [CaseType.ANKE]: ANKE_PREFIX,
   [CaseType.OMGJØRING]: OMGJØRING_PREFIX,
+  [CaseType.GJENOPPTAKSBEGJÆRING]: GJENOPPTAKSBEGJÆRING_PREFIX,
 };
 
 export const getSakHeading = async (type: CaseType, innsendingsytelseId: string | null, lang: Language) => {
