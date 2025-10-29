@@ -5,15 +5,14 @@ import { Alert, Box, Button, Heading, VStack } from '@navikt/ds-react';
 import { useState } from 'react';
 import { RelevantDocuments } from '@/components/relevant-documents';
 import { TimelineItem } from '@/components/timeline/timeline-item';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { sendMetricEvent } from '@/lib/metrics';
+import { type MetricsContextData, sendMetricEvent } from '@/lib/metrics';
 import type { Sak } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
 interface EventListProps {
   sak: Sak;
   lang: Language;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 export const EventList = ({ sak, lang, context }: EventListProps) => {

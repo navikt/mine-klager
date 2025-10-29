@@ -3,14 +3,14 @@ import { headers } from 'next/headers';
 import { Disclaimer } from '@/app/[lang]/disclaimer';
 import { SakListItem } from '@/app/[lang]/list-item';
 import { MetricEvent } from '@/components/metrics';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { UNIT } from '@/lib/dictionary';
+import type { MetricsContextData } from '@/lib/metrics';
 import { getSaker } from '@/lib/server/api';
 import { Language, type Translation } from '@/locales';
 
 interface CaseListProps {
   lang: Language;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 const CaseList = async ({ lang, context }: CaseListProps) => {

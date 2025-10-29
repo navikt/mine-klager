@@ -2,7 +2,7 @@ import { Box, Heading, VStack } from '@navikt/ds-react';
 import { NextDescription } from '@/app/[lang]/saker/[id]/what-happens-now/description';
 import { SvarbrevInfo } from '@/app/[lang]/saker/[id]/what-happens-now/svarbrev-info';
 import { RelevantDocuments } from '@/components/relevant-documents';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
+import type { MetricsContextData } from '@/lib/metrics';
 import type { SakEvent } from '@/lib/types';
 import { EventDocumentType } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
@@ -10,7 +10,7 @@ import { Language, type Translation } from '@/locales';
 interface WhatHappensProps {
   lastEvent: SakEvent;
   lang: Language;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 export const WhatHappensNow = ({ lastEvent, lang, context }: WhatHappensProps) => {

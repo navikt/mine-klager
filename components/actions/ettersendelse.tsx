@@ -1,7 +1,7 @@
 import { ButtonLink } from '@/components/button-link';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { getNavKlageUrl } from '@/lib/get-nav-klage-url';
 import { KLANG_DOMAIN } from '@/lib/klang';
+import type { MetricsContextData } from '@/lib/metrics';
 import type { Sak, SakEvent } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
@@ -14,7 +14,7 @@ interface EttersendDokumentasjonProps {
   sak: Sak;
   sakEvent: SakEvent;
   lang: Language;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 interface CaseTypeProps {

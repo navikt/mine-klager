@@ -2,14 +2,13 @@
 
 import { CopyButton, HStack, Label, Tooltip } from '@navikt/ds-react';
 import { useId } from 'react';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
-import { sendMetricEvent } from '@/lib/metrics';
+import { type MetricsContextData, sendMetricEvent } from '@/lib/metrics';
 
 interface InfoItemProps {
   label: string;
   tooltip: string;
   children: string;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 export const CopyItem = ({ label, tooltip, children, context }: InfoItemProps) => {

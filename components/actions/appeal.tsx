@@ -1,14 +1,14 @@
 import { ButtonLink } from '@/components/button-link';
-import type { AmplitudeContextData } from '@/lib/amplitude/types';
 import { getNavKlageUrl } from '@/lib/get-nav-klage-url';
 import { KLANG_DOMAIN } from '@/lib/klang';
+import type { MetricsContextData } from '@/lib/metrics';
 import type { Sak } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
 interface AppealProps {
   sak: Sak;
   lang: Language;
-  context: AmplitudeContextData;
+  context: MetricsContextData;
 }
 
 export const Appeal = ({ sak, lang, context }: AppealProps) => (

@@ -1,14 +1,13 @@
 'use client';
 
-import { useSendMetricEvent } from '@/lib/amplitude/hook';
-import type { AmplitudeContextData, EventData } from '@/lib/amplitude/types';
+import { type MetricEventData, type MetricsContextData, useSendMetricEvent } from '@/lib/metrics';
 
 interface MetricEventProps {
   eventName?: string;
   /* The domain of the event. Used by Grafana. */
   domain: string;
-  context: AmplitudeContextData;
-  eventData?: EventData;
+  context: MetricsContextData;
+  eventData?: MetricEventData;
 }
 
 export const MetricEvent = ({ eventName = 'besøk', domain, eventData, context }: MetricEventProps) => {
