@@ -2,7 +2,7 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 import { headers } from 'next/headers';
 import NextLink from 'next/link';
 import { DecoratorUpdater } from '@/components/decorator-updater';
-import { UNIT } from '@/lib/dictionary';
+import { INSTANS } from '@/lib/dictionary';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import { Language, type Translation } from '@/locales';
@@ -42,7 +42,7 @@ const HEADING: Translation = {
 };
 
 const BODY: Translation = {
-  [Language.NB]: `Gå til «Mine saker hos ${UNIT.klageinstans.nb}».`,
-  [Language.NN]: `Gå til «Mine saker hos ${UNIT.klageinstans.nn}».`,
-  [Language.EN]: `Go to «My cases with ${UNIT.klageinstans.en}».`,
+  [Language.NB]: `Gå til «Mine saker hos ${INSTANS.klageinstans.nb}».`,
+  [Language.NN]: `Gå til «Mine saker hos ${INSTANS.klageinstans.nn}».`,
+  [Language.EN]: `Go to «My cases with ${INSTANS.klageinstans.en}».`,
 };

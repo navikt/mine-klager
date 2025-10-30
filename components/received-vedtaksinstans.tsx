@@ -1,6 +1,6 @@
 import { DateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
-import { UNIT } from '@/lib/dictionary';
+import { INSTANS } from '@/lib/dictionary';
 import { CaseType, EventType, type Sak } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
@@ -26,7 +26,7 @@ export const ReceivedVedtaksinstans = ({ sak, lang }: MottattProps) => {
 };
 
 const RECEIVED_VEDTAKSINSTANS: Translation = {
-  [Language.NB]: `Mottatt ${UNIT.vedtaksinstans.nb}`,
-  [Language.NN]: `Mottatt ${UNIT.vedtaksinstans.nn}`,
-  [Language.EN]: `Received by ${UNIT.vedtaksinstans.en}`,
+  [Language.NB]: `Mottatt ${INSTANS.vedtaksinstans.nb}`,
+  [Language.NN]: `Mottatt ${INSTANS.vedtaksinstans.nn}`,
+  [Language.EN]: `Received by ${INSTANS.vedtaksinstans.en}`,
 };
