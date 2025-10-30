@@ -6,7 +6,7 @@ import { configureLogger } from '@navikt/next-logger';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { browserLog } from '@/lib/browser-log';
-import { UNIT } from '@/lib/dictionary';
+import { INSTANS } from '@/lib/dictionary';
 import { DEFAULT_LANGUAGE, isLanguage, Language, type Translation } from '@/locales';
 
 configureLogger({
@@ -20,9 +20,9 @@ interface BreadcrumbsProps {
 }
 
 const TITLE: Translation = {
-  [Language.NB]: `Mine saker hos ${UNIT.klageinstans.nb}`,
-  [Language.NN]: `Mine saker hos ${UNIT.klageinstans.nn}`,
-  [Language.EN]: `My cases with ${UNIT.klageinstans.en}`,
+  [Language.NB]: `Mine saker hos ${INSTANS.klageinstans.nb}`,
+  [Language.NN]: `Mine saker hos ${INSTANS.klageinstans.nn}`,
+  [Language.EN]: `My cases with ${INSTANS.klageinstans.en}`,
 };
 
 export const DecoratorUpdater = ({ lang, breadcrumbs = [], path }: BreadcrumbsProps) => {

@@ -1,4 +1,4 @@
-import { UNIT } from '@/lib/dictionary';
+import { INSTANS } from '@/lib/dictionary';
 import { getYtelseName } from '@/lib/kodeverk';
 import { CaseType } from '@/lib/types';
 import type { Language, Translation } from '@/locales';
@@ -22,9 +22,9 @@ const OMGJØRING_PREFIX: Translation = {
 };
 
 const GJENOPPTAKSBEGJÆRING_PREFIX: Translation = {
-  nb: `Begjæring om gjenopptak av ${UNIT.trygderetten.nb} sin kjennelse som gjelder`,
-  nn: `Krav om gjenopning av ${UNIT.trygderetten.nn} sin kjennelse som gjeld`,
-  en: `Request for reopening of the ${UNIT.trygderetten.en}'s judgment about`,
+  nb: `Begjæring om gjenopptak av ${INSTANS.trygderetten.nb} sin kjennelse som gjelder`,
+  nn: `Krav om gjenopning av ${INSTANS.trygderetten.nn} sin kjennelse som gjeld`,
+  en: `Request for reopening of the ${INSTANS.trygderetten.en}'s judgment about`,
 };
 
 const PREFIX: Record<CaseType, Translation> = {

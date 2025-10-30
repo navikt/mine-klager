@@ -1,6 +1,6 @@
 import { BodyShort } from '@navikt/ds-react';
 import { SimpleDate } from '@/components/datetime';
-import { UNIT } from '@/lib/dictionary';
+import { INSTANS } from '@/lib/dictionary';
 import { Language } from '@/locales';
 
 interface SvarbrevInfoProps {
@@ -13,8 +13,8 @@ export const SvarbrevInfo = ({ date, lang }: SvarbrevInfoProps) => {
     case Language.NB: {
       return (
         <BodyShort>
-          Du kan lese mer og få informasjon om {UNIT.klageinstans.nb} sin saksbehandlingstid i brevet du fikk fra{' '}
-          {UNIT.klageinstans.nb} <SimpleDate date={date} lang={lang} />.
+          Du kan lese mer og få informasjon om {INSTANS.klageinstans.nb} sin saksbehandlingstid i brevet du fikk fra{' '}
+          {INSTANS.klageinstans.nb} <SimpleDate date={date} lang={lang} />.
         </BodyShort>
       );
     }
@@ -22,8 +22,8 @@ export const SvarbrevInfo = ({ date, lang }: SvarbrevInfoProps) => {
     case Language.NN: {
       return (
         <BodyShort>
-          Du kan lese meir og få informasjon om {UNIT.klageinstans.nn} si saksbehandlingstid i brevet du fekk frå{' '}
-          {UNIT.klageinstans.nn} <SimpleDate date={date} lang={lang} />.
+          Du kan lese meir og få informasjon om {INSTANS.klageinstans.nn} si saksbehandlingstid i brevet du fekk frå{' '}
+          {INSTANS.klageinstans.nn} <SimpleDate date={date} lang={lang} />.
         </BodyShort>
       );
     }
@@ -31,8 +31,8 @@ export const SvarbrevInfo = ({ date, lang }: SvarbrevInfoProps) => {
     case Language.EN: {
       return (
         <BodyShort>
-          You can read more and get information about {UNIT.klageinstans.en}'s processing time in the letter you
-          received from {UNIT.klageinstans.en} on <SimpleDate date={date} lang={lang} />.
+          You can read more and get information about {INSTANS.klageinstans.en}'s processing time in the letter you
+          received from {INSTANS.klageinstans.en} on <SimpleDate date={date} lang={lang} />.
         </BodyShort>
       );
     }
