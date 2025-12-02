@@ -58,10 +58,23 @@ jobs:
         if: false # No unit tests yet
         run: bun test
 
+      - name: Restore cache for NextJS
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: nextjs-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          restore-keys: nextjs-
+
       - name: Build
         env:
           VERSION: ${{ github.sha }}
         run: bun run build
+
+      - name: Save cache for NextJS
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: nextjs-${{ hashFiles('**/*.ts', '**/*.tsx') }}
 
       - name: Upload static files to CDN
         uses: nais/deploy/actions/cdn-upload/v2@master
