@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
     authInterrupts: true,
   },
+  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   assetPrefix: process.env.NODE_ENV === 'production' ? 'https://cdn.nav.no/klage/mine-klager' : undefined,
   output: 'standalone',
   poweredByHeader: false,
