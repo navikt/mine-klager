@@ -133,10 +133,8 @@ export default async function SakPage({ params }: Props) {
 }
 
 const formatBehandlingstid = (frist: Frist, mottattKlageinstans: string, lang: Language) => {
-  const varslet = format(parse(frist.varsletFrist, ISO_DATE_FORMAT, new Date()), PRETTY_DATE_FORMAT, lang);
-
   if (frist.varsletBehandlingstidUnitTypeId === null) {
-    return varslet;
+    return format(parse(frist.varsletFrist, ISO_DATE_FORMAT, new Date()), PRETTY_DATE_FORMAT, lang);
   }
 
   const unit =
@@ -144,11 +142,9 @@ const formatBehandlingstid = (frist: Frist, mottattKlageinstans: string, lang: L
       ? WEEKS[lang](frist.varsletBehandlingstidUnits)
       : MONTHS[lang](frist.varsletBehandlingstidUnits);
 
-  const from = FROM[lang];
-
   const mottatt = format(parse(mottattKlageinstans, ISO_DATE_FORMAT, new Date()), PRETTY_DATE_FORMAT, lang);
 
-  return `${unit} ${from} ${mottatt} (${varslet})`;
+  return `${unit} ${FROM[lang]} ${mottatt}`;
 };
 
 const CASE_NUMBER_LABEL: Translation = {
