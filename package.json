@@ -19,7 +19,7 @@
     "@navikt/next-logger": "4.4.1",
     "@navikt/oasis": "4.1.1",
     "date-fns": "4.1.0",
-    "next": "16.0.6",
+    "next": "16.0.7",
     "next-auth": "4.24.13",
     "pino": "10.1.0",
     "react": "19.2.0",
