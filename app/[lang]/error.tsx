@@ -39,7 +39,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           </Alert>
         )}
 
-        <HStack gap="2" marginBlock="2 0">
+        <HStack gap="space-8" marginBlock="space-8 space-0">
           <Button variant="primary" onClick={() => window.history.back()}>
             {GO_BACK[lang]}
           </Button>

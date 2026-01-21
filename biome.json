@@ -148,6 +148,6 @@
     "assist": { "enabled": true }
   },
   "files": {
-    "includes": ["**", "!**/dist", "!**/.next"]
+    "includes": ["**", "!**/*.css", "!**/dist", "!**/.next"]
   }
 }

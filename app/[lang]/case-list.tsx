@@ -26,7 +26,7 @@ const CaseList = async ({ lang, context }: CaseListProps) => {
 
       <Disclaimer lang={lang} className="mb-4" />
 
-      <VStack as="ul" gap="4">
+      <VStack as="ul" gap="space-16">
         {saker.map((sak, index) => (
           <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} context={context} />
         ))}
@@ -43,10 +43,10 @@ export const CaseListLoading = ({ lang }: CaseListLoadingProps) => (
   <>
     <Title caseCount={0} lang={lang} />
 
-    <VStack as="ul" gap="4">
-      <Skeleton variant="rectangle" height={196} width="100%" className="rounded-medium shadow-medium" />
-      <Skeleton variant="rectangle" height={196} width="100%" className="rounded-medium shadow-medium" />
-      <Skeleton variant="rectangle" height={196} width="100%" className="rounded-medium shadow-medium" />
+    <VStack as="ul" gap="space-16">
+      <Skeleton variant="rectangle" height={196} width="100%" className="rounded-sm shadow-sm" />
+      <Skeleton variant="rectangle" height={196} width="100%" className="rounded-sm shadow-sm" />
+      <Skeleton variant="rectangle" height={196} width="100%" className="rounded-sm shadow-sm" />
     </VStack>
   </>
 );

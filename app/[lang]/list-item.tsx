@@ -25,11 +25,11 @@ export const SakListItem = ({ sak, lang, context }: SakListItemProps) => {
   const pathPrefix = lang === DEFAULT_LANGUAGE ? '' : `/${lang}`;
 
   return (
-    <Box asChild shadow="small" borderRadius="medium" background="bg-default">
-      <li className="group transition duration-200 ease-in-out hover:bg-surface-hover hover:shadow-medium">
+    <Box asChild borderRadius="12" background="default" shadow="dialog">
+      <li className="group focus-within:bg-ax-bg-brand-blue-moderate-hoverA hover:bg-ax-bg-brand-blue-moderate-hoverA">
         <Stack
-          gap={{ xs: '4', sm: '4', md: '6' }}
-          padding={{ xs: '4', sm: '4', md: '6' }}
+          gap={{ xs: 'space-16', sm: 'space-16', md: 'space-24' }}
+          padding={{ xs: 'space-16', sm: 'space-16', md: 'space-24' }}
           direction={{ xs: 'column', sm: 'row' }}
           align="center"
           wrap={false}
@@ -37,12 +37,12 @@ export const SakListItem = ({ sak, lang, context }: SakListItemProps) => {
         >
           <MeasuredLink
             href={`${pathPrefix}/saker/${id}`}
-            className="text-(--a-text-default) no-underline"
+            className="rounded-[inherit] border-2 border-transparent text-(--ax-text-neutral) no-underline focus:border-ax-border-focus focus:outline-none"
             context={context}
           >
             <CaseIcon
               typeId={typeId}
-              className="h-8 w-fit shrink-0 text-(--a-text-subtle) group-hover:text-(--a-text-action-hover) md:h-12"
+              className="ax-md:h-12 h-8 w-fit shrink-0 text-(--ax-text-neutral-subtle) group-hover:text-(--ax-text-accent-subtle)"
             />
 
             <VStack>
@@ -50,12 +50,12 @@ export const SakListItem = ({ sak, lang, context }: SakListItemProps) => {
                 level="2"
                 size="medium"
                 spacing
-                className="underline group-hover:text-(--a-text-action-hover) group-hover:no-underline"
+                className="underline group-hover:text-(--ax-text-accent-subtle) group-hover:no-underline"
               >
                 {heading}
               </Heading>
 
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <InfoItem label={CASE_NUMBER[lang]}>{saksnummer}</InfoItem>
 
                 <Received sak={sak} lang={lang} />
@@ -64,7 +64,7 @@ export const SakListItem = ({ sak, lang, context }: SakListItemProps) => {
                   {lastEvent === undefined ? (
                     NO_EVENTS[lang]
                   ) : (
-                    <HStack gap="1">
+                    <HStack gap="space-4">
                       <DateTime id="last-event" date={lastEvent.date} lang={lang} /> -{' '}
                       <span>{EVENT_NAMES[lastEvent.type][lang]}</span>
                     </HStack>
