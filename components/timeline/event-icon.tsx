@@ -10,7 +10,7 @@ export const EventIcon = ({ type }: EventIconProps) => {
 
   return (
     <div
-      className="after:-translate-x-1/2 after:-z-10 relative z-0 shrink-0 grow-0 after:absolute after:top-10 after:bottom-2 after:left-1/2 after:w-05 after:bg-surface-subtle after:transition-colors after:duration-200 after:content-[''] group-hover:after:bg-surface-hover"
+      className="relative z-0 shrink-0 grow-0 after:absolute after:top-10 after:bottom-2 after:left-1/2 after:-z-10 after:w-05 after:-translate-x-1/2 after:bg-surface-subtle after:transition-colors after:duration-200 after:content-[''] group-hover:after:bg-surface-hover"
       role="presentation"
       aria-hidden
     >
