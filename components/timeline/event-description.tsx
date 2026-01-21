@@ -12,7 +12,7 @@ export const EventDescription = ({ type, lang }: EventDescriptionProps) => {
   const description = EVENT_DESCRIPTIONS[type][lang];
 
   return (
-    <VStack gap="2" flexGrow="1">
+    <VStack gap="space-8" flexGrow="1">
       {description.map((text) => (
         <BodyShort key={text} size="medium">
           {text}

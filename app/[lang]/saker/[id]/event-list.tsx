@@ -34,9 +34,8 @@ export const EventList = ({ sak, lang, context }: EventListProps) => {
       <Heading level="2" size="medium" spacing>
         {HEADING[lang]}
       </Heading>
-
-      <Box borderWidth="1" borderRadius="large" padding="4" height="fit-content">
-        <VStack gap="3">
+      <Box borderWidth="1" borderRadius="8" padding="space-16" height="fit-content">
+        <VStack gap="space-12">
           <TimelineItem as="section" sakEvent={lastEvent} lang={lang} />
 
           {hasPreviousEvents ? (
@@ -61,7 +60,7 @@ export const EventList = ({ sak, lang, context }: EventListProps) => {
           )}
 
           {hasPreviousEvents && expanded ? (
-            <VStack as="ul" gap="2" width="fit-content" className="flex-col-reverse">
+            <VStack as="ul" gap="space-8" width="fit-content" className="flex-col-reverse">
               {previousEvents.map((event) => (
                 <TimelineItem as="li" key={`${event.type}-${event.date}`} sakEvent={event} lang={lang}>
                   <RelevantDocuments
