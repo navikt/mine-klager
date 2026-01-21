@@ -105,7 +105,7 @@ export default async function SakPage({ params }: Props) {
         {heading}
       </Heading>
 
-      <HStack gap="2">
+      <HStack gap="space-8">
         <CopyItem label={CASE_NUMBER_LABEL[lang]} tooltip={CASE_NUMBER_TOOLTIP[lang]} context={context}>
           {saksnummer}
         </CopyItem>
@@ -123,7 +123,11 @@ export default async function SakPage({ params }: Props) {
 
       {hasLastEvent ? <Actions sak={sak} sakEvent={lastEvent} lang={lang} context={context} /> : null}
 
-      <HGrid gap="8 4" marginBlock="8 0" columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}>
+      <HGrid
+        gap="space-32 space-16"
+        marginBlock="space-32 space-0"
+        columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}
+      >
         <EventList sak={sak} lang={lang} context={context} />
 
         {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} context={context} /> : null}

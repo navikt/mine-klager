@@ -27,15 +27,14 @@ export const WhatHappensNow = ({ lastEvent, lang, context }: WhatHappensProps) =
       <Heading level="2" size="medium" spacing>
         {NEXT_EVENT_LABEL[lang]}
       </Heading>
-
       <Box
-        borderRadius="medium"
-        padding="4"
-        background="surface-subtle"
+        borderRadius="4"
+        padding="space-16"
+        background="neutral-soft"
         width="fit-content"
-        className="transition-colors duration-200 hover:bg-surface-hover"
+        className="transition-colors duration-200 hover:bg-ax-bg-neutral-moderate-hoverA"
       >
-        <VStack gap="4">
+        <VStack gap="space-16">
           <div>
             <NextDescription type={type} lang={lang} hasSvarbrev={hasSvarbrev} />
             {hasSvarbrev ? <SvarbrevInfo date={svarbrevDate} lang={lang} /> : null}

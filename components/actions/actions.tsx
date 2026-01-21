@@ -51,7 +51,7 @@ interface ActionContainerProps {
 }
 
 const ActionContainer = ({ children, lang, context }: ActionContainerProps) => (
-  <HStack gap="2" align="center" justify="start" flexShrink="0" marginBlock="8 0">
+  <HStack gap="space-8" align="center" justify="start" flexShrink="0" marginBlock="space-32 space-0">
     <ArchiveLink lang={lang} context={context} />
     {children}
   </HStack>

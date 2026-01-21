@@ -40,7 +40,7 @@ export const RelevantDocuments = ({ relevantDocuments, lang, component, context 
   }
 
   return (
-    <HStack gap="2" align="start" justify="end">
+    <HStack gap="space-8" align="start" justify="end">
       {links}
     </HStack>
   );

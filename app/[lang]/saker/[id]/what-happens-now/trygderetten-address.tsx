@@ -11,14 +11,15 @@ interface TrygderettenAddressProps {
 export const TrygderettenAddress = ({ lang }: TrygderettenAddressProps) => (
   <Tooltip content={TOOLTIP[lang]} placement="top">
     <Button
-      variant="tertiary-neutral"
+      data-color="neutral"
+      variant="tertiary"
       size="medium"
       onClick={() => navigator.clipboard.writeText(TRYGDERTETTEN_ADDRESS)}
       icon={<FilesIcon aria-hidden />}
       iconPosition="right"
       className="flex"
     >
-      <address className="whitespace-pre text-left font-font-family font-normal">{TRYGDERTETTEN_ADDRESS}</address>
+      <address className="whitespace-pre text-left font-ax-font-family font-normal">{TRYGDERTETTEN_ADDRESS}</address>
     </Button>
   </Tooltip>
 );

@@ -20,16 +20,15 @@ export const TimelineItem = ({ sakEvent, lang, as, children }: TimelineItemConte
   return (
     <Box
       as={as}
-      borderRadius="medium"
-      padding="2"
+      borderRadius="4"
+      padding="space-8"
       flexGrow="1"
-      className="relative flex flex-row flex-nowrap transition-colors duration-200 hover:bg-surface-hover"
+      className="relative flex flex-row flex-nowrap transition-colors duration-200"
     >
       <EventIcon type={type} />
-
-      <VStack flexGrow="1" marginInline="2 0" gap="2">
+      <VStack flexGrow="1" marginInline="space-8 space-0" gap="space-8">
         <Stack
-          gap="2"
+          gap="space-8"
           align="start"
           justify="space-between"
           wrap={false}
@@ -37,12 +36,12 @@ export const TimelineItem = ({ sakEvent, lang, as, children }: TimelineItemConte
         >
           <EventHeading type={type} lang={lang} />
 
-          <Tag variant="neutral-moderate" icon={<CalendarIcon aria-hidden />} size="small">
+          <Tag data-color="neutral" variant="moderate" icon={<CalendarIcon aria-hidden />} size="small">
             <DateTime date={date} lang={lang} />
           </Tag>
         </Stack>
 
-        <VStack gap="4" flexGrow="1">
+        <VStack gap="space-16" flexGrow="1">
           <EventDescription type={type} lang={lang} />
 
           {children}
