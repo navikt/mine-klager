@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
-import { Alert, Box, Button, Heading, VStack } from '@navikt/ds-react';
+import { Box, Button, Heading, InlineMessage, VStack } from '@navikt/ds-react';
 import { useState } from 'react';
 import { RelevantDocuments } from '@/components/relevant-documents';
 import { TimelineItem } from '@/components/timeline/timeline-item';
@@ -54,9 +54,9 @@ export const EventList = ({ sak, lang, context }: EventListProps) => {
               {expanded ? COLLAPSE[lang] : `${SHOW_ALL[lang]} (${previousEvents.length})`}
             </Button>
           ) : (
-            <Alert variant="info" size="small">
+            <InlineMessage status="info" size="small">
               {NO_PREVIOUS_EVENTS[lang]}
-            </Alert>
+            </InlineMessage>
           )}
 
           {hasPreviousEvents && expanded ? (

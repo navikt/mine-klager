@@ -1,6 +1,7 @@
 'use client'; // Error boundaries must be Client Components
 
-import { Alert, Button, Heading, HStack, Page } from '@navikt/ds-react';
+import { Button, HStack, LocalAlert, Page } from '@navikt/ds-react';
+import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds-react/LocalAlert';
 import { PageBlock } from '@navikt/ds-react/Page';
 import { logger } from '@navikt/next-logger';
 import { unauthorized } from 'next/navigation';
@@ -29,15 +30,12 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <Page contentBlockPadding="end">
       <PageBlock as="main" width="xl" gutters>
-        <Heading size="medium" spacing>
-          {WRONG[lang]}
-        </Heading>
-
-        {error.message.length === 0 ? null : (
-          <Alert variant="error" size="small">
-            {error.message}
-          </Alert>
-        )}
+        <LocalAlert status="error">
+          <LocalAlertHeader>
+            <LocalAlertTitle>{WRONG[lang]}</LocalAlertTitle>
+          </LocalAlertHeader>
+          {error.message.length === 0 ? null : <LocalAlertContent>{error.message}</LocalAlertContent>}
+        </LocalAlert>
 
         <HStack gap="space-8" marginBlock="space-8 space-0">
           <Button variant="primary" onClick={() => window.history.back()}>
