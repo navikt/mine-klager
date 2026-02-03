@@ -1,4 +1,5 @@
-import { Alert, BodyShort } from '@navikt/ds-react';
+import { BodyShort, InfoCard } from '@navikt/ds-react';
+import { InfoCardContent } from '@navikt/ds-react/InfoCard';
 import { UnavailableYtelser } from '@/app/[lang]/unavailable-ytelser';
 import { INSTANS } from '@/lib/dictionary';
 import { Language, type Translation } from '@/locales';
@@ -9,12 +10,14 @@ interface DisclaimerProps {
 }
 
 export const Disclaimer = ({ lang, className }: DisclaimerProps) => (
-  <Alert variant="info" className={className}>
-    <BodyShort spacing>{FIRST_LINE[lang]}</BodyShort>
-    <BodyShort spacing>{SECOND_LINE[lang]}</BodyShort>
-    <BodyShort spacing>{THIRD_LINE[lang]}</BodyShort>
-    <UnavailableYtelser lang={lang} />
-  </Alert>
+  <InfoCard data-color="info" className={className}>
+    <InfoCardContent>
+      <BodyShort spacing>{FIRST_LINE[lang]}</BodyShort>
+      <BodyShort spacing>{SECOND_LINE[lang]}</BodyShort>
+      <BodyShort spacing>{THIRD_LINE[lang]}</BodyShort>
+      <UnavailableYtelser lang={lang} />
+    </InfoCardContent>
+  </InfoCard>
 );
 
 const FIRST_LINE: Translation = {

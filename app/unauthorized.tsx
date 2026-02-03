@@ -1,4 +1,5 @@
-import { Alert, Button } from '@navikt/ds-react';
+import { Button, LocalAlert } from '@navikt/ds-react';
+import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds-react/LocalAlert';
 import { headers } from 'next/headers';
 import { Decorator } from '@/components/decorator';
 import { MetricEvent } from '@/components/metrics';
@@ -14,14 +15,16 @@ export default async function Unauthorized() {
     <Decorator lang={lang}>
       <MetricEvent eventName="unauthorized" domain="unauthorized" context={{ path, lang, page: 'unauthorized' }} />
 
-      <Alert variant="error">
-        <div className="flex items-center gap-4">
-          {LOGGED_OUT[lang]}
+      <LocalAlert status="error">
+        <LocalAlertHeader>
+          <LocalAlertTitle>{LOGGED_OUT[lang]}</LocalAlertTitle>
+        </LocalAlertHeader>
+        <LocalAlertContent>
           <Button variant="primary" as="a" href="/oauth2/login">
             {LOG_IN[lang]}
           </Button>
-        </div>
-      </Alert>
+        </LocalAlertContent>
+      </LocalAlert>
     </Decorator>
   );
 }
