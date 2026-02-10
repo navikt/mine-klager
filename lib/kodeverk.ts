@@ -49,7 +49,9 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
 
-      throw new InternalServerError('Network error', FAILED_TO_FETCH[lang], lang);
+      throw new InternalServerError(500, FAILED_TO_FETCH[lang], lang, {
+        cause: error instanceof Error ? error : undefined,
+      });
     } finally {
       span.end();
     }
