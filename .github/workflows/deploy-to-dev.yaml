@@ -55,8 +55,6 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-          registry-url: https://npm.pkg.github.com/
-          scope: "@navikt"
 
       - name: Generate bunfig.toml
         run: |
@@ -102,7 +100,7 @@ jobs:
           cache_to: type=gha,mode=max # optional, default type=gha,mode=max
           build_args: |
             VERSION=${{ steps.version.outputs.version }}
-  
+
   deploy_to_dev:
     name: Deploy
     runs-on: ubuntu-latest
@@ -134,7 +132,7 @@ jobs:
       - name: E2E
         uses: navikt/mine-klager-e2e-tests/.github/actions/run@main
         with:
-          status_api_key: ${{ secrets.STATUS_API_KEY }} 
+          status_api_key: ${{ secrets.STATUS_API_KEY }}
           e2e_tag: ${{ inputs.e2e_tag }}
           nais_management_project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           nais_workload_identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
