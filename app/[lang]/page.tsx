@@ -8,10 +8,11 @@ import { CaseListLoading } from '@/app/[lang]/case-list';
 import { TITLE } from '@/app/[lang]/title';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { MetricEvent } from '@/components/metrics';
+import { INSTANS } from '@/lib/dictionary';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguage } from '@/lib/server/get-language';
-import { isLanguage, type Language } from '@/locales';
+import { isLanguage, Language, type Translation } from '@/locales';
 
 interface Params {
   lang: Language;
@@ -26,6 +27,8 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
 
   return {
     title: TITLE[lang],
+    description: DESCRIPTION[lang],
+    robots: { index: false, follow: false },
     alternates: {
       languages: {
         nb: '/nb',
@@ -35,6 +38,12 @@ export async function generateMetadata({ params }: MetadataProps): Promise<Metad
     },
   };
 }
+
+const DESCRIPTION: Translation = {
+  [Language.NB]: `Se og følg opp dine klagesaker hos ${INSTANS.klageinstans.nb}.`,
+  [Language.NN]: `Sjå og følg opp klagesakene dine hjå ${INSTANS.klageinstans.nn}.`,
+  [Language.EN]: `View and follow up on your complaint cases with ${INSTANS.klageinstans.en}.`,
+};
 
 interface SakerPageProps {
   params: Promise<Params>;
