@@ -18,23 +18,37 @@ export const getSaker = async (headers: Headers): Promise<GetSakerResponse> => {
     const res = await (isLocal ? fetch(SAKER_API_URL, { headers }) : getFromKabal(SAKER_API_URL, headers));
 
     if (res.status === 401) {
-      logger.warn('Unauthorized fetch of cases');
+      logger.warn('Unauthorized when fetching cases from Kabal', {
+        status: res.status,
+        statusText: res.statusText,
+      });
+
       throw new UnauthorizedError(lang);
     }
 
     if (!res.ok) {
-      logger.error(`Failed to fetch cases - ${res.status}`);
+      logger.error(`Kabal responded with status ${res.status} when fetching cases`, {
+        status: res.status,
+        statusText: res.statusText,
+      });
+
       throw new InternalServerError(res.status, FAILED_TO_FETCH[lang], lang);
     }
 
     return res.json();
   } catch (error) {
-    logger.error('Failed to fetch cases', {
+    if (error instanceof InternalServerError || error instanceof UnauthorizedError) {
+      throw error;
+    }
+
+    logger.error('Failed to fetch cases from Kabal', {
       error: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? (error.stack ?? '') : '',
     });
 
-    throw error;
+    throw new InternalServerError(500, FAILED_TO_FETCH[lang], lang, {
+      cause: error instanceof Error ? error : undefined,
+    });
   }
 };
 

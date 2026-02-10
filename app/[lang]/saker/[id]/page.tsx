@@ -1,8 +1,9 @@
-import { Heading, HGrid, HStack } from '@navikt/ds-react';
+import { Heading, HGrid, HStack, LocalAlert } from '@navikt/ds-react';
+import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds-react/LocalAlert';
 import { trace } from '@opentelemetry/api';
 import { parse } from 'date-fns';
 import { headers } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { notFound, unauthorized } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import { EventList } from '@/app/[lang]/saker/[id]/event-list';
 import { WhatHappensNow } from '@/app/[lang]/saker/[id]/what-happens-now/what-happens-now';
@@ -14,6 +15,7 @@ import { MetricEvent } from '@/components/metrics';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { ReceivedVedtaksinstans } from '@/components/received-vedtaksinstans';
 import { format, ISO_DATE_FORMAT, PRETTY_DATE_FORMAT } from '@/lib/date';
+import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import { getYtelseName } from '@/lib/kodeverk';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getSakHeading } from '@/lib/sak-heading';
@@ -38,8 +40,6 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, id } = await params;
 
-  const sak = await getSak(await headers(), id);
-
   const alternates: Metadata['alternates'] = {
     languages: {
       nb: `/nb/saker/${id}`,
@@ -48,28 +48,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 
-  if (sak === undefined || !isLanguage(lang)) {
-    return {
-      title: FALLBACK_TITLE[lang],
-      description: FALLBACK_DESCRIPTION[lang],
-      robots: { index: false, follow: false },
-      alternates,
-    };
-  }
-
-  const { innsendingsytelseId, saksnummer } = sak;
-
-  const ytelseName =
-    innsendingsytelseId === null
-      ? `${UNKNOWN[lang]} (${innsendingsytelseId})`
-      : await getYtelseName(innsendingsytelseId, lang);
-
-  return {
-    title: `${saksnummer} - ${ytelseName}`,
-    description: CASE_DESCRIPTION[lang](saksnummer, ytelseName),
+  const fallback: Metadata = {
+    title: FALLBACK_TITLE[lang],
+    description: FALLBACK_DESCRIPTION[lang],
     robots: { index: false, follow: false },
     alternates,
   };
+
+  try {
+    const sak = await getSak(await headers(), id);
+
+    if (sak === undefined || !isLanguage(lang)) {
+      return fallback;
+    }
+
+    const { innsendingsytelseId, saksnummer } = sak;
+
+    const ytelseName = innsendingsytelseId === null ? UNKNOWN[lang] : await getYtelseName(innsendingsytelseId, lang);
+
+    return {
+      title: `${saksnummer} - ${ytelseName}`,
+      description: CASE_DESCRIPTION[lang](saksnummer, ytelseName),
+      robots: { index: false, follow: false },
+      alternates,
+    };
+  } catch (error) {
+    if (error instanceof UnauthorizedError) {
+      return unauthorized();
+    }
+
+    return fallback;
+  }
 }
 
 const CASE_DESCRIPTION: Translation<(saksnummer: string, ytelse: string) => string> = {
@@ -85,9 +94,9 @@ const FALLBACK_DESCRIPTION: Translation = {
 };
 
 const UNKNOWN: Translation = {
-  [Language.NB]: 'Ukjent',
-  [Language.NN]: 'Ukjent',
-  [Language.EN]: 'Unknown',
+  [Language.NB]: 'Ukjent ytelse',
+  [Language.NN]: 'Ukjend yting',
+  [Language.EN]: 'Unknown benefit',
 };
 
 export default async function SakPage({ params }: Props) {
@@ -101,12 +110,15 @@ export default async function SakPage({ params }: Props) {
       const path = await getCurrentPath();
 
       if (sak === undefined || !isLanguage(lang)) {
+        span.setAttribute('sak.found', false);
+
         return notFound();
       }
 
       const { typeId, saksnummer, events, innsendingsytelseId, varsletBehandlingstid, mottattKlageinstans } = sak;
       const heading = await getSakHeading(typeId, innsendingsytelseId, lang);
 
+      span.setAttribute('sak.found', true);
       span.setAttribute('sak.typeId', typeId);
       span.setAttribute('sak.events.count', events.length);
 
@@ -172,6 +184,26 @@ export default async function SakPage({ params }: Props) {
           </HGrid>
         </>
       );
+    } catch (error) {
+      if (error instanceof UnauthorizedError) {
+        return unauthorized();
+      }
+
+      if (error instanceof InternalServerError) {
+        const { lang } = await params;
+        const validLang = isLanguage(lang) ? lang : Language.NB;
+
+        return (
+          <LocalAlert status="error">
+            <LocalAlertHeader>
+              <LocalAlertTitle>{FETCH_CASE_ERROR_TITLE[validLang]}</LocalAlertTitle>
+            </LocalAlertHeader>
+            <LocalAlertContent>{FETCH_CASE_ERROR_DESCRIPTION[validLang]}</LocalAlertContent>
+          </LocalAlert>
+        );
+      }
+
+      throw error;
     } finally {
       span.end();
     }
@@ -237,4 +269,16 @@ const FALLBACK_TITLE: Translation = {
   [Language.NB]: 'Klage',
   [Language.NN]: 'Klage',
   [Language.EN]: 'Complaint',
+};
+
+const FETCH_CASE_ERROR_TITLE: Translation = {
+  [Language.NB]: 'Kunne ikke hente saken',
+  [Language.NN]: 'Kunne ikkje hente saka',
+  [Language.EN]: 'Failed to fetch case',
+};
+
+const FETCH_CASE_ERROR_DESCRIPTION: Translation = {
+  [Language.NB]: 'Vi klarte ikke å hente saken din akkurat nå. Vennligst prøv igjen senere.',
+  [Language.NN]: 'Vi klarte ikkje å hente saka di akkurat no. Ver venleg og prøv igjen seinare.',
+  [Language.EN]: 'We were unable to fetch your case right now. Please try again later.',
 };

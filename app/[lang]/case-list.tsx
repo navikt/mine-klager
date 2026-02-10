@@ -1,10 +1,13 @@
-import { Heading, Skeleton, VStack } from '@navikt/ds-react';
+import { Heading, LocalAlert, Skeleton, VStack } from '@navikt/ds-react';
+import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds-react/LocalAlert';
 import { trace } from '@opentelemetry/api';
 import { headers } from 'next/headers';
+import { unauthorized } from 'next/navigation';
 import { Disclaimer } from '@/app/[lang]/disclaimer';
 import { SakListItem } from '@/app/[lang]/list-item';
 import { MetricEvent } from '@/components/metrics';
 import { INSTANS } from '@/lib/dictionary';
+import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getSaker } from '@/lib/server/api';
 import { Language, type Translation } from '@/locales';
@@ -40,10 +43,51 @@ const CaseList = async ({ lang, context }: CaseListProps) =>
           </VStack>
         </>
       );
+    } catch (error) {
+      if (error instanceof UnauthorizedError) {
+        return unauthorized();
+      }
+
+      if (error instanceof InternalServerError) {
+        return <CaseListError lang={lang} />;
+      }
+
+      throw error;
     } finally {
       span.end();
     }
   });
+
+interface CaseListErrorProps {
+  lang: Language;
+}
+
+const CaseListError = ({ lang }: CaseListErrorProps) => (
+  <>
+    <Title caseCount={0} lang={lang} />
+
+    <Disclaimer lang={lang} className="mb-4" />
+
+    <LocalAlert status="error">
+      <LocalAlertHeader>
+        <LocalAlertTitle>{FETCH_ERROR_TITLE[lang]}</LocalAlertTitle>
+      </LocalAlertHeader>
+      <LocalAlertContent>{FETCH_ERROR_DESCRIPTION[lang]}</LocalAlertContent>
+    </LocalAlert>
+  </>
+);
+
+const FETCH_ERROR_TITLE: Translation = {
+  [Language.NB]: 'Kunne ikke hente saker',
+  [Language.NN]: 'Kunne ikkje hente saker',
+  [Language.EN]: 'Failed to fetch cases',
+};
+
+const FETCH_ERROR_DESCRIPTION: Translation = {
+  [Language.NB]: 'Vi klarte ikke å hente sakene dine akkurat nå. Vennligst prøv igjen senere.',
+  [Language.NN]: 'Vi klarte ikkje å hente sakene dine akkurat no. Ver venleg og prøv igjen seinare.',
+  [Language.EN]: 'We were unable to fetch your cases right now. Please try again later.',
+};
 
 interface CaseListLoadingProps {
   lang: Language;

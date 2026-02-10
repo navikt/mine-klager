@@ -16,10 +16,10 @@ interface SakListItemProps {
   context: MetricsContextData;
 }
 
-export const SakListItem = ({ sak, lang, context }: SakListItemProps) => {
+export const SakListItem = async ({ sak, lang, context }: SakListItemProps) => {
   const { id, typeId, saksnummer, events, innsendingsytelseId } = sak;
 
-  const heading = getSakHeading(typeId, innsendingsytelseId, lang);
+  const heading = await getSakHeading(typeId, innsendingsytelseId, lang);
   const lastEvent = events.at(-1);
 
   const pathPrefix = lang === DEFAULT_LANGUAGE ? '' : `/${lang}`;
