@@ -22,15 +22,15 @@ import type { MetricsContextData } from '@/lib/metrics';
 import { getSakHeading } from '@/lib/sak-heading';
 import { getSak } from '@/lib/server/api';
 import { getCurrentPath } from '@/lib/server/current-path';
+import { getLanguage, type LanguageParams, resolveLanguageParams } from '@/lib/server/get-language';
 import type { Frist, Sak } from '@/lib/types';
 import { BehandlingstidUnitType, CASE_TYPE_NAMES } from '@/lib/types';
-import { isLanguage, Language, type Translation } from '@/locales';
+import { Language, type Translation } from '@/locales';
 
 const tracer = trace.getTracer('mine-klager');
 
-interface Params {
+interface Params extends LanguageParams {
   id: string;
-  lang: Language;
   sak: Sak;
 }
 
@@ -39,7 +39,7 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang, id } = await params;
+  const { lang, id } = await resolveLanguageParams(params);
 
   const alternates: Metadata['alternates'] = {
     languages: {
@@ -49,18 +49,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 
-  const fallback: Metadata = {
-    title: FALLBACK_TITLE[lang],
-    description: FALLBACK_DESCRIPTION[lang],
-    robots: { index: false, follow: false },
-    alternates,
-  };
-
   try {
     const sak = await getSak(await headers(), id);
 
-    if (sak === undefined || !isLanguage(lang)) {
-      return fallback;
+    if (sak === undefined) {
+      return {
+        title: FALLBACK_TITLE[lang],
+        description: FALLBACK_DESCRIPTION[lang],
+        robots: { index: false, follow: false },
+        alternates,
+      };
     }
 
     const { innsendingsytelseId, saksnummer } = sak;
@@ -78,7 +76,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       return unauthorized();
     }
 
-    return fallback;
+    return {
+      title: FALLBACK_TITLE[lang],
+      description: FALLBACK_DESCRIPTION[lang],
+      robots: { index: false, follow: false },
+      alternates,
+    };
   }
 }
 
@@ -103,14 +106,14 @@ const UNKNOWN: Translation = {
 export default async function SakPage({ params }: Props) {
   return tracer.startActiveSpan('SakPage', async (span) => {
     try {
-      const { lang, id } = await params;
+      const { lang, id } = await resolveLanguageParams(params);
 
       span.setAttribute('sak.id', id);
 
       const sak = await getSak(await headers(), id);
       const path = await getCurrentPath();
 
-      if (sak === undefined || !isLanguage(lang)) {
+      if (sak === undefined) {
         span.setAttribute('sak.found', false);
 
         return notFound();
@@ -191,18 +194,17 @@ export default async function SakPage({ params }: Props) {
       }
 
       if (error instanceof InternalServerError) {
-        const { lang } = await params;
-        const validLang = isLanguage(lang) ? lang : Language.NB;
+        const errorLang = await getLanguage(params);
         const traceId = span.spanContext().traceId;
 
         return (
           <LocalAlert status="error">
             <LocalAlertHeader>
-              <LocalAlertTitle>{FETCH_CASE_ERROR_TITLE[validLang]}</LocalAlertTitle>
+              <LocalAlertTitle>{FETCH_CASE_ERROR_TITLE[errorLang]}</LocalAlertTitle>
             </LocalAlertHeader>
             <LocalAlertContent>
-              {FETCH_CASE_ERROR_DESCRIPTION[validLang]}
-              <ErrorId id={traceId} label={TRACE_ID_LABEL[validLang]} prefix="trace" />
+              {FETCH_CASE_ERROR_DESCRIPTION[errorLang]}
+              <ErrorId id={traceId} label={TRACE_ID_LABEL[errorLang]} prefix="trace" />
             </LocalAlertContent>
           </LocalAlert>
         );

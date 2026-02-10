@@ -3,11 +3,26 @@ import { headers } from 'next/headers';
 import { LANGUAGE_HEADER } from '@/lib/server/custom-headers';
 import { DEFAULT_LANGUAGE, isLanguage, type Language } from '@/locales';
 
-interface Params {
+export interface LanguageParams {
   lang: string;
 }
 
-export const getLanguage = async (params: Promise<Params>): Promise<Language> => {
+interface ResolvedLang {
+  lang: Language;
+}
+
+export const resolveLanguageParams = async <T extends LanguageParams>(
+  params: Promise<T>,
+): Promise<Omit<T, 'lang'> & ResolvedLang> => {
+  const { lang, ...rest } = await params;
+
+  return {
+    ...rest,
+    lang: isLanguage(lang) ? lang : DEFAULT_LANGUAGE,
+  };
+};
+
+export const getLanguage = async (params: Promise<LanguageParams>): Promise<Language> => {
   const { lang } = await params;
 
   if (isLanguage(lang)) {
