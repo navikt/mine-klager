@@ -1,5 +1,4 @@
 import { trace } from '@opentelemetry/api';
-import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import { lazy, Suspense } from 'react';
 import { CaseListLoading } from '@/app/[lang]/case-list';
@@ -9,17 +8,13 @@ import { MetricEvent } from '@/components/metrics';
 import { INSTANS } from '@/lib/dictionary';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getCurrentPath } from '@/lib/server/current-path';
-import { getLanguage } from '@/lib/server/get-language';
-import { isLanguage, Language, type Translation } from '@/locales';
+import { getLanguage, type LanguageParams } from '@/lib/server/get-language';
+import { Language, type Translation } from '@/locales';
 
 const CaseList = lazy(() => import('@/app/[lang]/case-list'));
 
-interface Params {
-  lang: Language;
-}
-
 interface MetadataProps {
-  params: Promise<Params>;
+  params: Promise<LanguageParams>;
 }
 
 export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
@@ -46,7 +41,7 @@ const DESCRIPTION: Translation = {
 };
 
 interface SakerPageProps {
-  params: Promise<Params>;
+  params: Promise<LanguageParams>;
 }
 
 const tracer = trace.getTracer('mine-klager');
@@ -54,12 +49,8 @@ const tracer = trace.getTracer('mine-klager');
 export default async function SakerPage({ params }: SakerPageProps) {
   return tracer.startActiveSpan('SakerPage', async (span) => {
     try {
-      const { lang } = await params;
+      const lang = await getLanguage(params);
       const path = await getCurrentPath();
-
-      if (!isLanguage(lang)) {
-        return notFound();
-      }
 
       span.setAttribute('page.lang', lang);
 
