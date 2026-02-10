@@ -1,4 +1,5 @@
 import { Heading, Skeleton, VStack } from '@navikt/ds-react';
+import { trace } from '@opentelemetry/api';
 import { headers } from 'next/headers';
 import { Disclaimer } from '@/app/[lang]/disclaimer';
 import { SakListItem } from '@/app/[lang]/list-item';
@@ -13,27 +14,36 @@ interface CaseListProps {
   context: MetricsContextData;
 }
 
-const CaseList = async ({ lang, context }: CaseListProps) => {
-  const sakerResponse = await getSaker(await headers());
+const tracer = trace.getTracer('mine-klager');
 
-  const { saker } = sakerResponse;
+const CaseList = async ({ lang, context }: CaseListProps) =>
+  tracer.startActiveSpan('CaseList', async (span) => {
+    try {
+      const sakerResponse = await getSaker(await headers());
 
-  return (
-    <>
-      <MetricEvent eventName="saksliste" domain="saker" context={context} eventData={{ count: saker.length }} />
+      const { saker } = sakerResponse;
 
-      <Title caseCount={saker.length} lang={lang} />
+      span.setAttribute('cases.count', saker.length);
 
-      <Disclaimer lang={lang} className="mb-4" />
+      return (
+        <>
+          <MetricEvent eventName="saksliste" domain="saker" context={context} eventData={{ count: saker.length }} />
 
-      <VStack as="ul" gap="space-16">
-        {saker.map((sak, index) => (
-          <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} context={context} />
-        ))}
-      </VStack>
-    </>
-  );
-};
+          <Title caseCount={saker.length} lang={lang} />
+
+          <Disclaimer lang={lang} className="mb-4" />
+
+          <VStack as="ul" gap="space-16">
+            {saker.map((sak, index) => (
+              <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} context={context} />
+            ))}
+          </VStack>
+        </>
+      );
+    } finally {
+      span.end();
+    }
+  });
 
 interface CaseListLoadingProps {
   lang: Language;

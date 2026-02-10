@@ -1,10 +1,11 @@
+import { trace } from '@opentelemetry/api';
 import { isDeployed } from '@/lib/environment';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import { getLogger } from '@/lib/logger';
-import { generateTraceParent } from '@/lib/server/fetch';
 import { Language, type Translation } from '@/locales';
 
 const logger = getLogger('kodeverk');
+const tracer = trace.getTracer('mine-klager');
 
 export const API_URL = isDeployed
   ? 'http://klage-kodeverk-api/kodeverk'
@@ -24,26 +25,30 @@ export const getYtelseName = async (id: string, lang: Language): Promise<string>
 const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
   const url = `${API_URL}/innsendingsytelser/${lang}`;
 
-  const { traceparent, traceId, spanId } = generateTraceParent();
+  return tracer.startActiveSpan(`getYtelser ${url}`, async (span) => {
+    try {
+      span.setAttribute('kodeverk.lang', lang);
 
-  try {
-    const res = await fetch(url, { headers: { accept: 'application/json', traceparent } });
+      const res = await fetch(url, { headers: { accept: 'application/json' } });
 
-    if (res.status === 401) {
-      throw new UnauthorizedError(lang);
+      if (res.status === 401) {
+        throw new UnauthorizedError(lang);
+      }
+
+      if (!res.ok) {
+        throw new InternalServerError(res.status, `${FAILED_TO_FETCH[lang]}: ${await res.text()}`, lang);
+      }
+
+      return res.json();
+    } catch (error) {
+      logger.error('Failed to fetch kodeverk', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+      throw new InternalServerError('Network error', FAILED_TO_FETCH[lang], lang);
+    } finally {
+      span.end();
     }
-
-    if (!res.ok) {
-      throw new InternalServerError(res.status, `${FAILED_TO_FETCH[lang]}: ${await res.text()}`, lang);
-    }
-
-    return res.json();
-  } catch (error) {
-    logger.error('Failed to fetch kodeverk', traceId, spanId, {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
-    throw new InternalServerError('Network error', FAILED_TO_FETCH[lang], lang);
-  }
+  });
 };
 
 const FAILED_TO_FETCH: Translation = {

@@ -1,7 +1,9 @@
 import { Heading, HGrid, HStack } from '@navikt/ds-react';
+import { trace } from '@opentelemetry/api';
 import { parse } from 'date-fns';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next/types';
 import { EventList } from '@/app/[lang]/saker/[id]/event-list';
 import { WhatHappensNow } from '@/app/[lang]/saker/[id]/what-happens-now/what-happens-now';
 import { Actions } from '@/components/actions/actions';
@@ -21,6 +23,8 @@ import type { Frist, Sak } from '@/lib/types';
 import { BehandlingstidUnitType, CASE_TYPE_NAMES } from '@/lib/types';
 import { isLanguage, Language, type Translation } from '@/locales';
 
+const tracer = trace.getTracer('mine-klager');
+
 interface Params {
   id: string;
   lang: Language;
@@ -31,13 +35,21 @@ interface Props {
   params: Promise<Params>;
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, id } = await params;
 
   const sak = await getSak(await headers(), id);
 
+  const alternates: Metadata['alternates'] = {
+    languages: {
+      nb: `/nb/saker/${id}`,
+      nn: `/nn/saker/${id}`,
+      en: `/en/saker/${id}`,
+    },
+  };
+
   if (sak === undefined || !isLanguage(lang)) {
-    return { title: FALLBACK_TITLE[lang], lang };
+    return { title: FALLBACK_TITLE[lang], alternates };
   }
 
   const { innsendingsytelseId, saksnummer } = sak;
@@ -47,10 +59,7 @@ export async function generateMetadata({ params }: Props) {
       ? `${UNKNOWN[lang]} (${innsendingsytelseId})`
       : await getYtelseName(innsendingsytelseId, lang);
 
-  return {
-    title: `${saksnummer} - ${ytelseName}`,
-    lang,
-  };
+  return { title: `${saksnummer} - ${ytelseName}`, alternates };
 }
 
 const UNKNOWN: Translation = {
@@ -60,80 +69,91 @@ const UNKNOWN: Translation = {
 };
 
 export default async function SakPage({ params }: Props) {
-  const { lang, id } = await params;
+  return tracer.startActiveSpan('SakPage', async (span) => {
+    try {
+      const { lang, id } = await params;
 
-  const sak = await getSak(await headers(), id);
-  const path = await getCurrentPath();
+      span.setAttribute('sak.id', id);
 
-  if (sak === undefined || !isLanguage(lang)) {
-    return notFound();
-  }
+      const sak = await getSak(await headers(), id);
+      const path = await getCurrentPath();
 
-  const { typeId, saksnummer, events, innsendingsytelseId, varsletBehandlingstid, mottattKlageinstans } = sak;
-  const heading = await getSakHeading(typeId, innsendingsytelseId, lang);
+      if (sak === undefined || !isLanguage(lang)) {
+        return notFound();
+      }
 
-  const lastEvent = events.at(-1);
-  const hasLastEvent = lastEvent !== undefined;
+      const { typeId, saksnummer, events, innsendingsytelseId, varsletBehandlingstid, mottattKlageinstans } = sak;
+      const heading = await getSakHeading(typeId, innsendingsytelseId, lang);
 
-  const eventCount = events.length;
+      span.setAttribute('sak.typeId', typeId);
+      span.setAttribute('sak.events.count', events.length);
 
-  const context: MetricsContextData = {
-    lang,
-    path,
-    page: 'sak',
-    ytelse: innsendingsytelseId ?? 'UNKNOWN',
-    type: CASE_TYPE_NAMES[typeId],
-  };
+      const lastEvent = events.at(-1);
+      const hasLastEvent = lastEvent !== undefined;
 
-  return (
-    <>
-      {/** biome-ignore lint/style/useNamingConvention: Metric event naming convention */}
-      <MetricEvent domain="sak" context={context} eventData={{ eventCount, last_event_type: lastEvent?.type }} />
+      const eventCount = events.length;
 
-      <DecoratorUpdater
-        lang={lang}
-        path={`/saker/${id}`}
-        breadcrumbs={[
-          {
-            title: heading,
-            url: path,
-          },
-        ]}
-      />
+      const context: MetricsContextData = {
+        lang,
+        path,
+        page: 'sak',
+        ytelse: innsendingsytelseId ?? 'UNKNOWN',
+        type: CASE_TYPE_NAMES[typeId],
+      };
 
-      <Heading level="1" size="large" spacing>
-        {heading}
-      </Heading>
+      return (
+        <>
+          {/** biome-ignore lint/style/useNamingConvention: Metric event naming convention */}
+          <MetricEvent domain="sak" context={context} eventData={{ eventCount, last_event_type: lastEvent?.type }} />
 
-      <HStack gap="space-8">
-        <CopyItem label={CASE_NUMBER_LABEL[lang]} tooltip={CASE_NUMBER_TOOLTIP[lang]} context={context}>
-          {saksnummer}
-        </CopyItem>
+          <DecoratorUpdater
+            lang={lang}
+            path={`/saker/${id}`}
+            breadcrumbs={[
+              {
+                title: heading,
+                url: path,
+              },
+            ]}
+          />
 
-        <ReceivedVedtaksinstans sak={sak} lang={lang} />
+          <Heading level="1" size="large" spacing>
+            {heading}
+          </Heading>
 
-        {varsletBehandlingstid === null ? (
-          <ReceivedKlageinstans sak={sak} lang={lang} />
-        ) : (
-          <InfoItem label={DEADLINE_LABEL[lang]}>
-            {formatBehandlingstid(varsletBehandlingstid, mottattKlageinstans, lang)}
-          </InfoItem>
-        )}
-      </HStack>
+          <HStack gap="space-8">
+            <CopyItem label={CASE_NUMBER_LABEL[lang]} tooltip={CASE_NUMBER_TOOLTIP[lang]} context={context}>
+              {saksnummer}
+            </CopyItem>
 
-      {hasLastEvent ? <Actions sak={sak} sakEvent={lastEvent} lang={lang} context={context} /> : null}
+            <ReceivedVedtaksinstans sak={sak} lang={lang} />
 
-      <HGrid
-        gap="space-32 space-16"
-        marginBlock="space-32 space-0"
-        columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}
-      >
-        <EventList sak={sak} lang={lang} context={context} />
+            {varsletBehandlingstid === null ? (
+              <ReceivedKlageinstans sak={sak} lang={lang} />
+            ) : (
+              <InfoItem label={DEADLINE_LABEL[lang]}>
+                {formatBehandlingstid(varsletBehandlingstid, mottattKlageinstans, lang)}
+              </InfoItem>
+            )}
+          </HStack>
 
-        {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} context={context} /> : null}
-      </HGrid>
-    </>
-  );
+          {hasLastEvent ? <Actions sak={sak} sakEvent={lastEvent} lang={lang} context={context} /> : null}
+
+          <HGrid
+            gap="space-32 space-16"
+            marginBlock="space-32 space-0"
+            columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}
+          >
+            <EventList sak={sak} lang={lang} context={context} />
+
+            {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} context={context} /> : null}
+          </HGrid>
+        </>
+      );
+    } finally {
+      span.end();
+    }
+  });
 }
 
 const formatBehandlingstid = (frist: Frist, mottattKlageinstans: string, lang: Language) => {
