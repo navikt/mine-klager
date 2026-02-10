@@ -16,7 +16,9 @@ export const getSaker = async (headers: Headers): Promise<GetSakerResponse> => {
   const { traceparent, traceId, spanId } = generateTraceParent();
 
   try {
-    const res = await (isLocal ? fetch(SAKER_API_URL, { headers }) : getFromKabal(SAKER_API_URL, headers, traceparent));
+    const res = await (isLocal
+      ? fetch(SAKER_API_URL, { headers })
+      : getFromKabal(SAKER_API_URL, headers, traceparent, traceId, spanId));
 
     if (res.status === 401) {
       logger.warn('Unauthorized fetch of cases', traceId, spanId);
