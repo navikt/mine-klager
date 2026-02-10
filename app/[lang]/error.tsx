@@ -5,6 +5,7 @@ import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds
 import { PageBlock } from '@navikt/ds-react/Page';
 import { logger } from '@navikt/next-logger';
 import { useEffect } from 'react';
+import { ErrorId } from '@/components/error-id';
 import { grafana } from '@/lib/observability';
 import { DEFAULT_LANGUAGE, isLanguage, Language, type Translation } from '@/locales';
 
@@ -28,7 +29,12 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           <LocalAlertHeader>
             <LocalAlertTitle>{WRONG[lang]}</LocalAlertTitle>
           </LocalAlertHeader>
-          {error.message.length === 0 ? null : <LocalAlertContent>{error.message}</LocalAlertContent>}
+          <LocalAlertContent>
+            {error.message.length === 0 ? null : error.message}
+            {error.digest === undefined ? null : (
+              <ErrorId id={error.digest} label={ERROR_REFERENCE[lang]} prefix="digest" />
+            )}
+          </LocalAlertContent>
         </LocalAlert>
 
         <HStack gap="space-8" marginBlock="space-8 space-0">
@@ -66,4 +72,10 @@ const REFRESH: Translation = {
   [Language.NB]: 'Oppdater',
   [Language.NN]: 'Oppdater',
   [Language.EN]: 'Refresh',
+};
+
+const ERROR_REFERENCE: Translation = {
+  [Language.NB]: 'Feilkode',
+  [Language.NN]: 'Feilkode',
+  [Language.EN]: 'Error code',
 };

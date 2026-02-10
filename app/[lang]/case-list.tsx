@@ -5,6 +5,7 @@ import { headers } from 'next/headers';
 import { unauthorized } from 'next/navigation';
 import { Disclaimer } from '@/app/[lang]/disclaimer';
 import { SakListItem } from '@/app/[lang]/list-item';
+import { ErrorId } from '@/components/error-id';
 import { MetricEvent } from '@/components/metrics';
 import { INSTANS } from '@/lib/dictionary';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
@@ -49,7 +50,9 @@ const CaseList = async ({ lang, context }: CaseListProps) =>
       }
 
       if (error instanceof InternalServerError) {
-        return <CaseListError lang={lang} />;
+        const traceId = span.spanContext().traceId;
+
+        return <CaseListError lang={lang} traceId={traceId} />;
       }
 
       throw error;
@@ -60,9 +63,10 @@ const CaseList = async ({ lang, context }: CaseListProps) =>
 
 interface CaseListErrorProps {
   lang: Language;
+  traceId: string;
 }
 
-const CaseListError = ({ lang }: CaseListErrorProps) => (
+const CaseListError = ({ lang, traceId }: CaseListErrorProps) => (
   <>
     <Title caseCount={0} lang={lang} />
 
@@ -72,7 +76,10 @@ const CaseListError = ({ lang }: CaseListErrorProps) => (
       <LocalAlertHeader>
         <LocalAlertTitle>{FETCH_ERROR_TITLE[lang]}</LocalAlertTitle>
       </LocalAlertHeader>
-      <LocalAlertContent>{FETCH_ERROR_DESCRIPTION[lang]}</LocalAlertContent>
+      <LocalAlertContent>
+        {FETCH_ERROR_DESCRIPTION[lang]}
+        <ErrorId id={traceId} label={TRACE_ID_LABEL[lang]} prefix="trace" />
+      </LocalAlertContent>
     </LocalAlert>
   </>
 );
@@ -87,6 +94,12 @@ const FETCH_ERROR_DESCRIPTION: Translation = {
   [Language.NB]: 'Vi klarte ikke å hente sakene dine akkurat nå. Vennligst prøv igjen senere.',
   [Language.NN]: 'Vi klarte ikkje å hente sakene dine akkurat no. Ver venleg og prøv igjen seinare.',
   [Language.EN]: 'We were unable to fetch your cases right now. Please try again later.',
+};
+
+const TRACE_ID_LABEL: Translation = {
+  [Language.NB]: 'Feilkode',
+  [Language.NN]: 'Feilkode',
+  [Language.EN]: 'Error code',
 };
 
 interface CaseListLoadingProps {

@@ -10,6 +10,7 @@ import { WhatHappensNow } from '@/app/[lang]/saker/[id]/what-happens-now/what-ha
 import { Actions } from '@/components/actions/actions';
 import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
+import { ErrorId } from '@/components/error-id';
 import { InfoItem } from '@/components/info-item';
 import { MetricEvent } from '@/components/metrics';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
@@ -192,13 +193,17 @@ export default async function SakPage({ params }: Props) {
       if (error instanceof InternalServerError) {
         const { lang } = await params;
         const validLang = isLanguage(lang) ? lang : Language.NB;
+        const traceId = span.spanContext().traceId;
 
         return (
           <LocalAlert status="error">
             <LocalAlertHeader>
               <LocalAlertTitle>{FETCH_CASE_ERROR_TITLE[validLang]}</LocalAlertTitle>
             </LocalAlertHeader>
-            <LocalAlertContent>{FETCH_CASE_ERROR_DESCRIPTION[validLang]}</LocalAlertContent>
+            <LocalAlertContent>
+              {FETCH_CASE_ERROR_DESCRIPTION[validLang]}
+              <ErrorId id={traceId} label={TRACE_ID_LABEL[validLang]} prefix="trace" />
+            </LocalAlertContent>
           </LocalAlert>
         );
       }
@@ -281,4 +286,10 @@ const FETCH_CASE_ERROR_DESCRIPTION: Translation = {
   [Language.NB]: 'Vi klarte ikke å hente saken din akkurat nå. Vennligst prøv igjen senere.',
   [Language.NN]: 'Vi klarte ikkje å hente saka di akkurat no. Ver venleg og prøv igjen seinare.',
   [Language.EN]: 'We were unable to fetch your case right now. Please try again later.',
+};
+
+const TRACE_ID_LABEL: Translation = {
+  [Language.NB]: 'Feilkode',
+  [Language.NN]: 'Feilkode',
+  [Language.EN]: 'Error code',
 };
