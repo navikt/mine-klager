@@ -1,18 +1,38 @@
+import { getLogger } from '@/lib/logger';
 import { getOboToken } from '@/lib/server/get-obo-token';
 import { Audience } from '@/lib/types';
+
+const logger = getLogger('fetch');
+
+const prepareHeaders = async (incomingHeaders: Headers, traceparent: string, traceId: string, spanId: string) => {
+  try {
+    const token = await getOboToken(Audience.KABAL_API, incomingHeaders);
+
+    const headers: HeadersInit = { authorization: `Bearer ${token}` };
+
+    if (traceparent !== undefined) {
+      headers.traceparent = traceparent;
+    }
+
+    return headers;
+  } catch (error) {
+    logger.error('Failed to get OBO token', traceId, spanId, {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? (error.stack ?? '') : '',
+    });
+
+    throw new Error('Failed to get OBO token');
+  }
+};
 
 export const getFromKabal = async (
   url: string,
   incomingHeaders: Headers,
-  traceparent?: string,
+  traceparent: string,
+  traceId: string,
+  spanId: string,
 ): ReturnType<typeof fetch> => {
-  const token = await getOboToken(Audience.KABAL_API, incomingHeaders);
-
-  const headers: HeadersInit = { authorization: `Bearer ${token}` };
-
-  if (traceparent !== undefined) {
-    headers.traceparent = traceparent;
-  }
+  const headers = await prepareHeaders(incomingHeaders, traceparent, traceId, spanId);
 
   return await fetch(url, { method: 'GET', headers });
 };

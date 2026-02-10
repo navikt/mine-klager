@@ -22,7 +22,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<Params
   const { traceparent, traceId, spanId } = generateTraceParent();
 
   try {
-    const res = await (isLocal ? fetch(url, { method: 'GET', headers }) : getFromKabal(url, headers, traceparent));
+    const res = await (isLocal
+      ? fetch(url, { method: 'GET', headers })
+      : getFromKabal(url, headers, traceparent, traceId, spanId));
 
     if (!res.ok) {
       return new Response(ERROR_MESSAGE[lang], { status: res.status });
