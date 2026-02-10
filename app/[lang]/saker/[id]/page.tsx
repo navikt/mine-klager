@@ -49,7 +49,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   if (sak === undefined || !isLanguage(lang)) {
-    return { title: FALLBACK_TITLE[lang], alternates };
+    return {
+      title: FALLBACK_TITLE[lang],
+      description: FALLBACK_DESCRIPTION[lang],
+      robots: { index: false, follow: false },
+      alternates,
+    };
   }
 
   const { innsendingsytelseId, saksnummer } = sak;
@@ -59,8 +64,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? `${UNKNOWN[lang]} (${innsendingsytelseId})`
       : await getYtelseName(innsendingsytelseId, lang);
 
-  return { title: `${saksnummer} - ${ytelseName}`, alternates };
+  return {
+    title: `${saksnummer} - ${ytelseName}`,
+    description: CASE_DESCRIPTION[lang](saksnummer, ytelseName),
+    robots: { index: false, follow: false },
+    alternates,
+  };
 }
+
+const CASE_DESCRIPTION: Translation<(saksnummer: string, ytelse: string) => string> = {
+  [Language.NB]: (saksnummer, ytelse) => `Klagesak ${saksnummer} - ${ytelse}`,
+  [Language.NN]: (saksnummer, ytelse) => `Klagesak ${saksnummer} - ${ytelse}`,
+  [Language.EN]: (saksnummer, ytelse) => `Complaint case ${saksnummer} - ${ytelse}`,
+};
+
+const FALLBACK_DESCRIPTION: Translation = {
+  [Language.NB]: 'Klagesak',
+  [Language.NN]: 'Klagesak',
+  [Language.EN]: 'Complaint case',
+};
 
 const UNKNOWN: Translation = {
   [Language.NB]: 'Ukjent',
