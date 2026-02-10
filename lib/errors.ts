@@ -15,8 +15,8 @@ const LOGGED_OUT_MESSAGE: Translation = {
 export class InternalServerError extends Error {
   public status: number | string;
 
-  constructor(status: number | string, message: string, lang: Language) {
-    super(`${INTERNAL_SERVER_ERROR_MESSAGE[lang]} (${status}) - ${message}`);
+  constructor(status: number | string, message: string, lang: Language, options?: { cause?: Error }) {
+    super(`${INTERNAL_SERVER_ERROR_MESSAGE[lang]} (${status}) - ${message}`, options);
     this.status = status;
   }
 }

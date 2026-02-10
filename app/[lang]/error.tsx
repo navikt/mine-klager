@@ -4,9 +4,7 @@ import { Button, HStack, LocalAlert, Page } from '@navikt/ds-react';
 import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds-react/LocalAlert';
 import { PageBlock } from '@navikt/ds-react/Page';
 import { logger } from '@navikt/next-logger';
-import { unauthorized } from 'next/navigation';
 import { useEffect } from 'react';
-import { UnauthorizedError } from '@/lib/errors';
 import { grafana } from '@/lib/observability';
 import { DEFAULT_LANGUAGE, isLanguage, Language, type Translation } from '@/locales';
 
@@ -22,10 +20,6 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
     logger.error(error);
     grafana.pushError(error);
   }, [error]);
-
-  if (error instanceof UnauthorizedError) {
-    return unauthorized();
-  }
 
   return (
     <Page contentBlockPadding="end">

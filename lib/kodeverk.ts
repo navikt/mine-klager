@@ -41,9 +41,14 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
 
       return res.json();
     } catch (error) {
+      if (error instanceof InternalServerError || error instanceof UnauthorizedError) {
+        throw error;
+      }
+
       logger.error('Failed to fetch kodeverk', {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
+
       throw new InternalServerError('Network error', FAILED_TO_FETCH[lang], lang);
     } finally {
       span.end();
