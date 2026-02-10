@@ -1,5 +1,3 @@
-const CaseList = lazy(() => import('@/app/[lang]/case-list'));
-
 import { trace } from '@opentelemetry/api';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
@@ -13,6 +11,8 @@ import type { MetricsContextData } from '@/lib/metrics';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguage } from '@/lib/server/get-language';
 import { isLanguage, Language, type Translation } from '@/locales';
+
+const CaseList = lazy(() => import('@/app/[lang]/case-list'));
 
 interface Params {
   lang: Language;
