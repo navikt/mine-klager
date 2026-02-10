@@ -4,6 +4,7 @@ import { isLocal } from '@/lib/environment';
 import { getLogger } from '@/lib/logger';
 import { getFromKabal } from '@/lib/server/fetch';
 import { getLanguageFromHeaders } from '@/lib/server/get-language';
+import { recordSpanError } from '@/lib/tracing';
 import { Language, type Translation } from '@/locales';
 
 const logger = getLogger('pdf');
@@ -37,6 +38,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<Params
 
       return res;
     } catch (error) {
+      recordSpanError(span, error);
+
       logger.error('Failed to fetch document', {
         error: error instanceof Error ? error.message : 'Unknown error',
         stack: error instanceof Error ? (error.stack ?? '') : '',
