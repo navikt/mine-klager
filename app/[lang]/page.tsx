@@ -1,6 +1,8 @@
 const CaseList = lazy(() => import('@/app/[lang]/case-list'));
 
+import { trace } from '@opentelemetry/api';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next/types';
 import { lazy, Suspense } from 'react';
 import { CaseListLoading } from '@/app/[lang]/case-list';
 import { TITLE } from '@/app/[lang]/title';
@@ -19,35 +21,54 @@ interface MetadataProps {
   params: Promise<Params>;
 }
 
-export async function generateMetadata({ params }: MetadataProps) {
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
   const lang = await getLanguage(params);
 
-  return { title: TITLE[lang], lang };
+  return {
+    title: TITLE[lang],
+    alternates: {
+      languages: {
+        nb: '/nb',
+        nn: '/nn',
+        en: '/en',
+      },
+    },
+  };
 }
 
 interface SakerPageProps {
   params: Promise<Params>;
 }
 
+const tracer = trace.getTracer('mine-klager');
+
 export default async function SakerPage({ params }: SakerPageProps) {
-  const { lang } = await params;
-  const path = await getCurrentPath();
+  return tracer.startActiveSpan('SakerPage', async (span) => {
+    try {
+      const { lang } = await params;
+      const path = await getCurrentPath();
 
-  if (!isLanguage(lang)) {
-    return notFound();
-  }
+      if (!isLanguage(lang)) {
+        return notFound();
+      }
 
-  const context: MetricsContextData = { lang, path, page: 'saker' };
+      span.setAttribute('page.lang', lang);
 
-  return (
-    <>
-      <MetricEvent domain="saker" context={context} />
+      const context: MetricsContextData = { lang, path, page: 'saker' };
 
-      <DecoratorUpdater lang={lang} />
+      return (
+        <>
+          <MetricEvent domain="saker" context={context} />
 
-      <Suspense fallback={<CaseListLoading lang={lang} />}>
-        <CaseList lang={lang} context={context} />
-      </Suspense>
-    </>
-  );
+          <DecoratorUpdater lang={lang} />
+
+          <Suspense fallback={<CaseListLoading lang={lang} />}>
+            <CaseList lang={lang} context={context} />
+          </Suspense>
+        </>
+      );
+    } finally {
+      span.end();
+    }
+  });
 }

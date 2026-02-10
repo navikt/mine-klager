@@ -1,36 +1,44 @@
 import { requestOboToken, validateToken } from '@navikt/oasis';
+import { trace } from '@opentelemetry/api';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { unauthorized } from 'next/navigation';
 import { getLogger } from '@/lib/logger';
-import { getTraceparent } from '@/lib/server/fetch';
 import type { Audience } from '@/lib/types';
 
 const logger = getLogger('obo-token');
 
-export const getOboToken = async (audience: Audience, headers: ReadonlyHeaders) => {
-  const authorization = headers.get('authorization');
-  const { traceId, spanId } = getTraceparent(headers);
+const tracer = trace.getTracer('mine-klager');
 
-  if (authorization === null) {
-    logger.error('Missing authorization header', traceId, spanId);
-    unauthorized();
-  }
+export const getOboToken = async (audience: Audience, headers: ReadonlyHeaders) =>
+  tracer.startActiveSpan('getOboToken', async (span) => {
+    try {
+      span.setAttribute('token.audience', audience);
 
-  const [, token] = authorization.split(' ');
+      const authorization = headers.get('authorization');
 
-  const validation = await validateToken(token);
+      if (authorization === null) {
+        logger.error('Missing authorization header');
+        unauthorized();
+      }
 
-  if (!validation.ok) {
-    logger.error('Invalid token', traceId, spanId);
-    unauthorized();
-  }
+      const [, token] = authorization.split(' ');
 
-  const obo = await requestOboToken(token, `${process.env.NAIS_CLUSTER_NAME}:klage:${audience}`);
+      const validation = await validateToken(token);
 
-  if (!obo.ok) {
-    logger.error(`Failed to get on-behalf-of token for audience: ${audience}`, traceId, spanId);
-    unauthorized();
-  }
+      if (!validation.ok) {
+        logger.error('Invalid token');
+        unauthorized();
+      }
 
-  return obo.token;
-};
+      const obo = await requestOboToken(token, `${process.env.NAIS_CLUSTER_NAME}:klage:${audience}`);
+
+      if (!obo.ok) {
+        logger.error(`Failed to get on-behalf-of token for audience: ${audience}`);
+        unauthorized();
+      }
+
+      return obo.token;
+    } finally {
+      span.end();
+    }
+  });

@@ -1,3 +1,4 @@
+import { trace } from '@opentelemetry/api';
 import { headers } from 'next/headers';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import { getSaker } from '@/lib/server/api';
@@ -6,24 +7,38 @@ import type { Translation } from '@/locales';
 
 export const dynamic = 'force-dynamic';
 
+const tracer = trace.getTracer('mine-klager');
+
 export async function GET() {
-  try {
-    const saker = await getSaker(await headers());
+  return tracer.startActiveSpan('GET /api/saker', async (span) => {
+    try {
+      const saker = await getSaker(await headers());
 
-    return Response.json(saker);
-  } catch (error) {
-    if (error instanceof UnauthorizedError) {
-      return new Response(error.message, { status: 401 });
+      span.setAttribute('response.status', 200);
+
+      return Response.json(saker);
+    } catch (error) {
+      if (error instanceof UnauthorizedError) {
+        span.setAttribute('response.status', 401);
+
+        return new Response(error.message, { status: 401 });
+      }
+
+      if (error instanceof InternalServerError) {
+        span.setAttribute('response.status', 500);
+
+        return new Response(error.message, { status: 500 });
+      }
+
+      const lang = await getDecoratorLanguage();
+
+      span.setAttribute('response.status', 500);
+
+      return new Response(UNKNOWN_ERROR[lang], { status: 500 });
+    } finally {
+      span.end();
     }
-
-    if (error instanceof InternalServerError) {
-      return new Response(error.message, { status: 500 });
-    }
-
-    const lang = await getDecoratorLanguage();
-
-    return new Response(UNKNOWN_ERROR[lang], { status: 500 });
-  }
+  });
 }
 
 const UNKNOWN_ERROR: Translation = {

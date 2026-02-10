@@ -1,3 +1,4 @@
+import { trace } from '@opentelemetry/api';
 import { VERSION } from '@/lib/version';
 
 enum LogLevel {
@@ -7,7 +8,19 @@ enum LogLevel {
   ERROR = 'error',
 }
 
-type LoggerFn = (message: string, traceId: string, spanId: string, eventData?: Record<string, string | number>) => void;
+type LoggerFn = (message: string, eventData?: Record<string, string | number>) => void;
+
+const getTraceContext = () => {
+  const span = trace.getActiveSpan();
+
+  if (span === undefined) {
+    return { traceId: '', spanId: '' };
+  }
+
+  const { traceId, spanId } = span.spanContext();
+
+  return { traceId, spanId };
+};
 
 export const getLogger = (module: string) => ({
   debug: getLogLine(LogLevel.DEBUG, module),
@@ -18,7 +31,9 @@ export const getLogger = (module: string) => ({
 
 type GetLogLineFn = (level: LogLevel, module: string) => LoggerFn;
 
-const getLogLine: GetLogLineFn = (level, module) => (message, traceId, spanId, eventData) =>
+const getLogLine: GetLogLineFn = (level, module) => (message, eventData) => {
+  const { traceId, spanId } = getTraceContext();
+
   // biome-ignore lint/suspicious/noConsole: Logging
   console[level](
     JSON.stringify({
@@ -34,5 +49,6 @@ const getLogLine: GetLogLineFn = (level, module) => (message, traceId, spanId, e
       '@timestamp': timestamp(),
     }),
   );
+};
 
 const timestamp = () => new Date().toISOString();
