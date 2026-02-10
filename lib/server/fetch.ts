@@ -1,4 +1,4 @@
-import { trace } from '@opentelemetry/api';
+import { SpanStatusCode, trace } from '@opentelemetry/api';
 import { getLogger } from '@/lib/logger';
 import { getOboToken } from '@/lib/server/get-obo-token';
 import { Audience } from '@/lib/types';
@@ -27,7 +27,25 @@ export const getFromKabal = async (url: string, incomingHeaders: Headers): Retur
     try {
       const headers = await prepareHeaders(incomingHeaders);
 
-      return await fetch(url, { method: 'GET', headers });
+      const res = await fetch(url, { method: 'GET', headers });
+
+      span.setAttribute('http.status_code', res.status);
+
+      if (!res.ok) {
+        span.setStatus({ code: SpanStatusCode.ERROR, message: `Failed to fetch from Kabal - ${res.status}` });
+      } else {
+        span.setStatus({ code: SpanStatusCode.OK, message: 'Successfully fetched from Kabal' });
+      }
+
+      return res;
+    } catch (error) {
+      if (error instanceof Error) {
+        span.setStatus({ code: SpanStatusCode.ERROR, message: `Error while fetching from Kabal - ${error.message}` });
+      } else {
+        span.setStatus({ code: SpanStatusCode.ERROR, message: 'Error while fetching from Kabal - Unknown error' });
+      }
+
+      throw error;
     } finally {
       span.end();
     }
