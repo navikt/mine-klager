@@ -23,6 +23,7 @@ import { getSakHeading } from '@/lib/sak-heading';
 import { getSak } from '@/lib/server/api';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguage, type LanguageParams, resolveLanguageParams } from '@/lib/server/get-language';
+import { recordSpanError } from '@/lib/tracing';
 import type { Frist, Sak } from '@/lib/types';
 import { BehandlingstidUnitType, CASE_TYPE_NAMES } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
@@ -192,6 +193,8 @@ export default async function SakPage({ params }: Props) {
       if (error instanceof UnauthorizedError) {
         return unauthorized();
       }
+
+      recordSpanError(span, error);
 
       if (error instanceof InternalServerError) {
         const errorLang = await getLanguage(params);

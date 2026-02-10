@@ -11,6 +11,7 @@ import { INSTANS } from '@/lib/dictionary';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getSaker } from '@/lib/server/api';
+import { recordSpanError } from '@/lib/tracing';
 import { Language, type Translation } from '@/locales';
 
 interface CaseListProps {
@@ -48,6 +49,8 @@ const CaseList = async ({ lang, context }: CaseListProps) =>
       if (error instanceof UnauthorizedError) {
         return unauthorized();
       }
+
+      recordSpanError(span, error);
 
       if (error instanceof InternalServerError) {
         const traceId = span.spanContext().traceId;

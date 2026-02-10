@@ -2,6 +2,7 @@ import { trace } from '@opentelemetry/api';
 import { isDeployed } from '@/lib/environment';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import { getLogger } from '@/lib/logger';
+import { recordSpanError } from '@/lib/tracing';
 import { Language, type Translation } from '@/locales';
 
 const logger = getLogger('kodeverk');
@@ -44,6 +45,8 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
       if (error instanceof InternalServerError || error instanceof UnauthorizedError) {
         throw error;
       }
+
+      recordSpanError(span, error);
 
       logger.error('Failed to fetch kodeverk', {
         error: error instanceof Error ? error.message : 'Unknown error',

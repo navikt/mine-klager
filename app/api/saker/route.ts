@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import { getSaker } from '@/lib/server/api';
 import { getDecoratorLanguage } from '@/lib/server/get-language';
+import { recordSpanError } from '@/lib/tracing';
 import type { Translation } from '@/locales';
 
 export const dynamic = 'force-dynamic';
@@ -23,6 +24,8 @@ export async function GET() {
 
         return new Response(error.message, { status: 401 });
       }
+
+      recordSpanError(span, error);
 
       if (error instanceof InternalServerError) {
         span.setAttribute('response.status', 500);

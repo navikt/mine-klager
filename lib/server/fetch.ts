@@ -1,6 +1,7 @@
 import { SpanStatusCode, trace } from '@opentelemetry/api';
 import { getLogger } from '@/lib/logger';
 import { getOboToken } from '@/lib/server/get-obo-token';
+import { recordSpanError } from '@/lib/tracing';
 import { Audience } from '@/lib/types';
 
 const logger = getLogger('fetch');
@@ -39,11 +40,7 @@ export const getFromKabal = async (url: string, incomingHeaders: Headers): Retur
 
       return res;
     } catch (error) {
-      if (error instanceof Error) {
-        span.setStatus({ code: SpanStatusCode.ERROR, message: `Error while fetching from Kabal - ${error.message}` });
-      } else {
-        span.setStatus({ code: SpanStatusCode.ERROR, message: 'Error while fetching from Kabal - Unknown error' });
-      }
+      recordSpanError(span, error);
 
       throw error;
     } finally {
