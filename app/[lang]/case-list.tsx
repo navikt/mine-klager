@@ -39,8 +39,8 @@ const CaseList = async ({ lang, context }: CaseListProps) =>
           <Disclaimer lang={lang} className="mb-4" />
 
           <VStack as="ul" gap="space-16">
-            {saker.map((sak, index) => (
-              <SakListItem key={`${sak.id}-${index}`} sak={sak} lang={lang} context={context} />
+            {saker.map((sak) => (
+              <SakListItem key={sak.id} sak={sak} lang={lang} context={context} />
             ))}
           </VStack>
         </>
