@@ -3,7 +3,6 @@ import Script from 'next/script';
 import '@/app/globals.css';
 import { Page, PageBlock } from '@navikt/ds-react/Page';
 import { type DecoratorParams, fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
-import Head from 'next/head';
 import { TITLE } from '@/app/[lang]/title';
 import { Faro } from '@/components/faro';
 import { isDeployedToProd } from '@/lib/environment';
@@ -53,9 +52,10 @@ export const Decorator = async ({ children, lang }: Readonly<Props>) => {
     <html lang={lang} data-environment={process.env.NAIS_CLUSTER_NAME} data-version={process.env.VERSION}>
       <Faro />
 
-      <Head>
+      {/** biome-ignore lint/style/noHeadElement:  App Router requires native <head>, not next/head. next/head breaks the Decorator. */}
+      <head>
         <Decorator.HeadAssets />
-      </Head>
+      </head>
 
       <body>
         <Decorator.Header />
