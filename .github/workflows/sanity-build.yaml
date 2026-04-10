@@ -14,6 +14,9 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+          registries: |
+            https://registry.npmjs.org/
+            @navikt:https://npm.pkg.github.com|$TOKEN
 
       - name: Generate bunfig.toml
         run: echo -e "[install.scopes]\n\"@navikt\" = { token = \"${{ secrets.READER_TOKEN }}\", url = \"https://npm.pkg.github.com/\" }" > bunfig.toml
@@ -21,7 +24,7 @@ jobs:
       - name: Install dependencies
         shell: bash
         env:
-          BUN_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+          TOKEN: ${{ secrets.READER_TOKEN }}
         run: bun install --frozen-lockfile
 
       - name: Typecheck
