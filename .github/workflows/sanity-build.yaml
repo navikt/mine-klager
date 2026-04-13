@@ -18,9 +18,6 @@ jobs:
             https://registry.npmjs.org/
             @navikt:https://npm.pkg.github.com|$TOKEN
 
-      - name: Generate bunfig.toml
-        run: echo -e "[install.scopes]\n\"@navikt\" = { token = \"${{ secrets.READER_TOKEN }}\", url = \"https://npm.pkg.github.com/\" }" > bunfig.toml
-
       - name: Install dependencies
         shell: bash
         env:
