@@ -56,13 +56,12 @@ jobs:
         with:
           bun-version: latest
           registries: |
-            https://registry.npmjs.org/
             @navikt:https://npm.pkg.github.com|$TOKEN
 
       - name: Install dependencies
         env:
           TOKEN: ${{ secrets.READER_TOKEN }}
-        run: bun install --frozen-lockfile
+        run: bun install --frozen-lockfile --ignore-scripts
 
       - name: Test
         if: false # No unit tests yet
