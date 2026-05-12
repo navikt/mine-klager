@@ -16,7 +16,7 @@ interface VarsletFristNullUnits extends VarsletFristDate {
   varsletBehandlingstidUnitTypeId: null;
 }
 
-export interface VarsletFristUnits extends VarsletFristDate {
+interface VarsletFristUnits extends VarsletFristDate {
   varsletBehandlingstidUnits: number;
   varsletBehandlingstidUnitTypeId: BehandlingstidUnitType;
 }
