@@ -8,11 +8,11 @@ import { Language, type Translation } from '@/locales';
 const logger = getLogger('kodeverk');
 const tracer = trace.getTracer('mine-klager');
 
-export const API_URL = isDeployed
+const API_URL = isDeployed
   ? 'http://klage-kodeverk-api/kodeverk'
   : 'https://klage-kodeverk-api.intern.dev.nav.no/kodeverk';
 
-export interface Ytelse {
+interface Ytelse {
   id: string;
   navn: string;
 }

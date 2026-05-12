@@ -5,7 +5,7 @@ import type { MetricsContextData } from '@/lib/metrics';
 import type { Sak, SakEvent } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
-export enum CaseTypeEnum {
+enum CaseTypeEnum {
   KLAGE = 'klage',
   ANKE = 'anke',
 }
