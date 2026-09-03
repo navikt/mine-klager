@@ -31,24 +31,9 @@ const READ_MORE: Translation = {
 };
 
 const UNAVAILABLE: Translation<string[]> = {
-  [Language.NB]: [
-    'Arbeidsavklaringspenger (AAP)',
-    'Dagpenger',
-    'Lønnsgaranti',
-    'Tvungen forvaltning',
-    'Tiltak og oppfølging',
-    'Bidrag',
-  ],
-  [Language.NN]: [
-    'Arbeidsavklaringspengar (AAP)',
-    'Dagpengar',
-    'Lønsgaranti',
-    'Tvungen forvalting',
-    'Tiltak og oppfølging',
-    'Bidrag',
-  ],
+  [Language.NB]: ['Dagpenger', 'Lønnsgaranti', 'Tvungen forvaltning', 'Tiltak og oppfølging', 'Bidrag'],
+  [Language.NN]: ['Dagpengar', 'Lønsgaranti', 'Tvungen forvalting', 'Tiltak og oppfølging', 'Bidrag'],
   [Language.EN]: [
-    'Work assessment allowance (AAP)',
     'Unemployment benefits (Dagpenger)',
     'Wage guarantee',
     'Sanctioned administration',
