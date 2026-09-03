@@ -34,7 +34,6 @@ const UNAVAILABLE: Translation<string[]> = {
   [Language.NB]: [
     'Arbeidsavklaringspenger (AAP)',
     'Dagpenger',
-    'Kompensasjon for selvstendig næringsdrivende og frilanser',
     'Lønnsgaranti',
     'Tvungen forvaltning',
     'Tiltak og oppfølging',
@@ -43,7 +42,6 @@ const UNAVAILABLE: Translation<string[]> = {
   [Language.NN]: [
     'Arbeidsavklaringspengar (AAP)',
     'Dagpengar',
-    'Kompensasjon for sjølvstendig næringsdrivande og frilansarar',
     'Lønsgaranti',
     'Tvungen forvalting',
     'Tiltak og oppfølging',
@@ -52,7 +50,6 @@ const UNAVAILABLE: Translation<string[]> = {
   [Language.EN]: [
     'Work assessment allowance (AAP)',
     'Unemployment benefits (Dagpenger)',
-    'Compensation for self-employed and freelancers',
     'Wage guarantee',
     'Sanctioned administration',
     'Measures and follow-up',
