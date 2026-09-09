@@ -11,7 +11,7 @@ interface VarsletFristProps {
 export const VarsletFrist = ({ sak, lang }: VarsletFristProps) =>
   sak.varsletBehandlingstid === null ? null : (
     <InfoItem label={DEADLINE_LABEL[lang]}>
-      <FullDateTime id="varslet-frist" date={sak.varsletBehandlingstid.varsletFrist} lang={lang} />
+      <FullDateTime date={sak.varsletBehandlingstid.varsletFrist} lang={lang} />
     </InfoItem>
   );
 
