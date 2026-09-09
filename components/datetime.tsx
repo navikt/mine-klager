@@ -2,7 +2,7 @@
 
 import { Tooltip } from '@navikt/ds-react';
 import { parseISO } from 'date-fns';
-import { format, ISO_DATETIME_FORMAT, longFormat, PRETTY_DATE_FORMAT, textFormat } from '@/lib/date';
+import { format, formatFullDate, formatFullDatetime, formatShortDate, ISO_DATETIME_FORMAT } from '@/lib/date';
 import type { Language } from '@/locales';
 
 interface DateTimeProps {
@@ -13,25 +13,47 @@ interface DateTimeProps {
 
 const CLASSNAME = 'whitespace-nowrap';
 
-export const DateTime = ({ date, id, lang }: DateTimeProps) => {
+export const FullDateTime = ({ date, id, lang }: DateTimeProps) => {
   const parsed = parseISO(date);
   const iso = format(parsed, ISO_DATETIME_FORMAT, lang);
-  const dateOnly = format(parsed, PRETTY_DATE_FORMAT, lang);
+  const displayDate = formatFullDate(parsed, lang);
 
   if (isZeroTime(parsed)) {
     return (
-      <Tooltip content={dateOnly} describesChild>
+      <time id={id} dateTime={iso} className={CLASSNAME}>
+        {displayDate}
+      </time>
+    );
+  }
+
+  return (
+    <Tooltip content={formatFullDatetime(parsed, lang)} describesChild>
+      <time id={id} dateTime={iso} className={CLASSNAME}>
+        {displayDate}
+      </time>
+    </Tooltip>
+  );
+};
+
+export const ShortDateTime = ({ date, id, lang }: DateTimeProps) => {
+  const parsed = parseISO(date);
+  const iso = format(parsed, ISO_DATETIME_FORMAT, lang);
+  const displayDate = formatShortDate(parsed, lang);
+
+  if (isZeroTime(parsed)) {
+    return (
+      <Tooltip content={formatFullDate(parsed, lang)} describesChild>
         <time id={id} dateTime={iso} className={CLASSNAME}>
-          {dateOnly}
+          {displayDate}
         </time>
       </Tooltip>
     );
   }
 
   return (
-    <Tooltip content={longFormat(parsed, lang)} describesChild>
+    <Tooltip content={formatFullDatetime(parsed, lang)} describesChild>
       <time id={id} dateTime={iso} className={CLASSNAME}>
-        {dateOnly}
+        {displayDate}
       </time>
     </Tooltip>
   );
@@ -45,7 +67,7 @@ interface SimpleDateProps {
 export const SimpleDate = ({ date, lang }: SimpleDateProps) => {
   const parsed = parseISO(date);
 
-  return <time dateTime={format(parsed, ISO_DATETIME_FORMAT, lang)}>{textFormat(parsed, lang)}</time>;
+  return <time dateTime={format(parsed, ISO_DATETIME_FORMAT, lang)}>{formatFullDate(parsed, lang)}</time>;
 };
 
 const isZeroTime = (date: Date) =>
