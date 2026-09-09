@@ -1,4 +1,4 @@
-import { DateTime } from '@/components/datetime';
+import { ShortDateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { INSTANS } from '@/lib/dictionary';
@@ -17,7 +17,7 @@ export const Received = ({ sak, lang }: MottattProps) => {
     if (mottattVedtaksinstans !== undefined) {
       return (
         <InfoItem label={RECEIVED_VEDTAKSINSTANS[lang]}>
-          <DateTime id="mottatt-vedtaksinstans" date={mottattVedtaksinstans.date} lang={lang} />
+          <ShortDateTime id="mottatt-vedtaksinstans" date={mottattVedtaksinstans.date} lang={lang} />
         </InfoItem>
       );
     }

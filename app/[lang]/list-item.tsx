@@ -1,7 +1,7 @@
 import { Box, Heading, HStack, Stack, VStack } from '@navikt/ds-react';
 import { CaseIcon } from '@/app/[lang]/case-icon';
 import { Received } from '@/app/[lang]/received';
-import { DateTime } from '@/components/datetime';
+import { ShortDateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
 import { MeasuredLink } from '@/components/link';
 import { EVENT_NAMES } from '@/lib/event-names';
@@ -65,7 +65,7 @@ export const SakListItem = async ({ sak, lang, context }: SakListItemProps) => {
                     NO_EVENTS[lang]
                   ) : (
                     <HStack gap="space-4">
-                      <DateTime id="last-event" date={lastEvent.date} lang={lang} /> -{' '}
+                      <ShortDateTime id="last-event" date={lastEvent.date} lang={lang} /> -{' '}
                       <span>{EVENT_NAMES[lastEvent.type][lang]}</span>
                     </HStack>
                   )}

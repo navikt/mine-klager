@@ -1,6 +1,6 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { Box, Stack, Tag, VStack } from '@navikt/ds-react';
-import { DateTime } from '@/components/datetime';
+import { ShortDateTime } from '@/components/datetime';
 import { EventDescription } from '@/components/timeline/event-description';
 import { EventHeading } from '@/components/timeline/event-heading';
 import { EventIcon } from '@/components/timeline/event-icon';
@@ -37,7 +37,7 @@ export const TimelineItem = ({ sakEvent, lang, as, children }: TimelineItemConte
           <EventHeading type={type} lang={lang} />
 
           <Tag data-color="neutral" variant="moderate" icon={<CalendarIcon aria-hidden />} size="small">
-            <DateTime date={date} lang={lang} />
+            <ShortDateTime date={date} lang={lang} />
           </Tag>
         </Stack>
 

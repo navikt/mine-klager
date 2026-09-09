@@ -1,7 +1,6 @@
 import { Heading, HGrid, HStack, LocalAlert } from '@navikt/ds-react';
 import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds-react/LocalAlert';
 import { trace } from '@opentelemetry/api';
-import { parse } from 'date-fns';
 import { headers } from 'next/headers';
 import { notFound, unauthorized } from 'next/navigation';
 import type { Metadata } from 'next/types';
@@ -11,11 +10,9 @@ import { Actions } from '@/components/actions/actions';
 import { CopyItem } from '@/components/copy-item';
 import { DecoratorUpdater } from '@/components/decorator-updater';
 import { ErrorId } from '@/components/error-id';
-import { InfoItem } from '@/components/info-item';
 import { MetricEvent } from '@/components/metrics';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
-import { ReceivedVedtaksinstans } from '@/components/received-vedtaksinstans';
-import { format, ISO_DATE_FORMAT, PRETTY_DATE_FORMAT } from '@/lib/date';
+import { VarsletFrist } from '@/components/varslet-frist';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import { getYtelseName } from '@/lib/kodeverk';
 import type { MetricsContextData } from '@/lib/metrics';
@@ -24,8 +21,8 @@ import { getSak } from '@/lib/server/api';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguage, type LanguageParams, resolveLanguageParams } from '@/lib/server/get-language';
 import { recordSpanError } from '@/lib/tracing';
-import type { Frist, Sak } from '@/lib/types';
-import { BehandlingstidUnitType, CASE_TYPE_NAMES } from '@/lib/types';
+import type { Sak } from '@/lib/types';
+import { CASE_TYPE_NAMES } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
 const tracer = trace.getTracer('mine-klager');
@@ -120,7 +117,7 @@ export default async function SakPage({ params }: Props) {
         return notFound();
       }
 
-      const { typeId, saksnummer, events, innsendingsytelseId, varsletBehandlingstid, mottattKlageinstans } = sak;
+      const { typeId, saksnummer, events, innsendingsytelseId } = sak;
       const heading = await getSakHeading(typeId, innsendingsytelseId, lang);
 
       span.setAttribute('sak.found', true);
@@ -165,15 +162,9 @@ export default async function SakPage({ params }: Props) {
               {saksnummer}
             </CopyItem>
 
-            <ReceivedVedtaksinstans sak={sak} lang={lang} />
+            <ReceivedKlageinstans sak={sak} lang={lang} />
 
-            {varsletBehandlingstid === null ? (
-              <ReceivedKlageinstans sak={sak} lang={lang} />
-            ) : (
-              <InfoItem label={DEADLINE_LABEL[lang]}>
-                {formatBehandlingstid(varsletBehandlingstid, mottattKlageinstans, lang)}
-              </InfoItem>
-            )}
+            <VarsletFrist sak={sak} lang={lang} />
           </HStack>
 
           {hasLastEvent ? <Actions sak={sak} sakEvent={lastEvent} lang={lang} context={context} /> : null}
@@ -220,25 +211,6 @@ export default async function SakPage({ params }: Props) {
   });
 }
 
-const formatBehandlingstid = (frist: Frist, mottattKlageinstans: string, lang: Language) => {
-  const varslet = format(parse(frist.varsletFrist, ISO_DATE_FORMAT, new Date()), PRETTY_DATE_FORMAT, lang);
-
-  if (frist.varsletBehandlingstidUnitTypeId === null) {
-    return varslet;
-  }
-
-  const unit =
-    frist.varsletBehandlingstidUnitTypeId === BehandlingstidUnitType.WEEKS
-      ? WEEKS[lang](frist.varsletBehandlingstidUnits)
-      : MONTHS[lang](frist.varsletBehandlingstidUnits);
-
-  const from = FROM[lang];
-
-  const mottatt = format(parse(mottattKlageinstans, ISO_DATE_FORMAT, new Date()), PRETTY_DATE_FORMAT, lang);
-
-  return `${unit} ${from} ${mottatt} (${varslet})`;
-};
-
 const CASE_NUMBER_LABEL: Translation = {
   [Language.NB]: 'Saksnummer',
   [Language.NN]: 'Saksnummer',
@@ -249,30 +221,6 @@ const CASE_NUMBER_TOOLTIP: Translation = {
   [Language.NB]: 'Klikk for å kopiere saksnummeret',
   [Language.NN]: 'Klikk for å kopiere saksnummeret',
   [Language.EN]: 'Click to copy the case number',
-};
-
-const DEADLINE_LABEL: Translation = {
-  [Language.NB]: 'Varslet frist',
-  [Language.NN]: 'Varsla frist',
-  [Language.EN]: 'Deadline',
-};
-
-const WEEKS: Record<Language, (n: number) => string> = {
-  [Language.NB]: (n) => (n === 1 ? `${n.toString(10)} uke` : `${n.toString(10)} uker`),
-  [Language.NN]: (n) => (n === 1 ? `${n.toString(10)} veke` : `${n.toString(10)} veker`),
-  [Language.EN]: (n) => (n === 1 ? `${n.toString(10)} week` : `${n.toString(10)} weeks`),
-};
-
-const MONTHS: Record<Language, (n: number) => string> = {
-  [Language.NB]: (n) => (n === 1 ? `${n.toString(10)} måned` : `${n.toString(10)} måneder`),
-  [Language.NN]: (n) => (n === 1 ? `${n.toString(10)} månad` : `${n.toString(10)} månadar`),
-  [Language.EN]: (n) => (n === 1 ? `${n.toString(10)} month` : `${n.toString(10)} months`),
-};
-
-const FROM: Translation = {
-  [Language.NB]: 'fra',
-  [Language.NN]: 'frå',
-  [Language.EN]: 'from',
 };
 
 const FALLBACK_TITLE: Translation = {

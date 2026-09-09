@@ -1,4 +1,4 @@
-import { DateTime } from '@/components/datetime';
+import { FullDateTime } from '@/components/datetime';
 import { InfoItem } from '@/components/info-item';
 import { INSTANS } from '@/lib/dictionary';
 import type { Sak } from '@/lib/types';
@@ -11,7 +11,7 @@ interface MottattProps {
 
 export const ReceivedKlageinstans = ({ sak, lang }: MottattProps) => (
   <InfoItem label={RECEIVED_KLAGEINSTANS[lang]}>
-    <DateTime id="mottatt-klageinstans" date={sak.mottattKlageinstans} lang={lang} />
+    <FullDateTime id="mottatt-klageinstans" date={sak.mottattKlageinstans} lang={lang} />
   </InfoItem>
 );
 
