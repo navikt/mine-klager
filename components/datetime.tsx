@@ -6,21 +6,20 @@ import { format, formatFullDate, formatFullDatetime, formatShortDate, ISO_DATETI
 import type { Language } from '@/locales';
 
 interface DateTimeProps {
-  id?: string;
   date: string;
   lang: Language;
 }
 
 const CLASSNAME = 'whitespace-nowrap';
 
-export const FullDateTime = ({ date, id, lang }: DateTimeProps) => {
+export const FullDateTime = ({ date, lang }: DateTimeProps) => {
   const parsed = parseISO(date);
   const iso = format(parsed, ISO_DATETIME_FORMAT, lang);
   const displayDate = formatFullDate(parsed, lang);
 
   if (isZeroTime(parsed)) {
     return (
-      <time id={id} dateTime={iso} className={CLASSNAME}>
+      <time dateTime={iso} className={CLASSNAME}>
         {displayDate}
       </time>
     );
@@ -28,14 +27,14 @@ export const FullDateTime = ({ date, id, lang }: DateTimeProps) => {
 
   return (
     <Tooltip content={formatFullDatetime(parsed, lang)} describesChild>
-      <time id={id} dateTime={iso} className={CLASSNAME}>
+      <time dateTime={iso} className={CLASSNAME}>
         {displayDate}
       </time>
     </Tooltip>
   );
 };
 
-export const ShortDateTime = ({ date, id, lang }: DateTimeProps) => {
+export const ShortDateTime = ({ date, lang }: DateTimeProps) => {
   const parsed = parseISO(date);
   const iso = format(parsed, ISO_DATETIME_FORMAT, lang);
   const displayDate = formatShortDate(parsed, lang);
@@ -43,7 +42,7 @@ export const ShortDateTime = ({ date, id, lang }: DateTimeProps) => {
   if (isZeroTime(parsed)) {
     return (
       <Tooltip content={formatFullDate(parsed, lang)} describesChild>
-        <time id={id} dateTime={iso} className={CLASSNAME}>
+        <time dateTime={iso} className={CLASSNAME}>
           {displayDate}
         </time>
       </Tooltip>
@@ -52,7 +51,7 @@ export const ShortDateTime = ({ date, id, lang }: DateTimeProps) => {
 
   return (
     <Tooltip content={formatFullDatetime(parsed, lang)} describesChild>
-      <time id={id} dateTime={iso} className={CLASSNAME}>
+      <time dateTime={iso} className={CLASSNAME}>
         {displayDate}
       </time>
     </Tooltip>
