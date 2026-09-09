@@ -65,7 +65,7 @@ export const SakListItem = async ({ sak, lang, context }: SakListItemProps) => {
                     NO_EVENTS[lang]
                   ) : (
                     <HStack gap="space-4">
-                      <ShortDateTime id="last-event" date={lastEvent.date} lang={lang} /> -{' '}
+                      <ShortDateTime date={lastEvent.date} lang={lang} /> -{' '}
                       <span>{EVENT_NAMES[lastEvent.type][lang]}</span>
                     </HStack>
                   )}

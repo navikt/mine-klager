@@ -17,7 +17,7 @@ export const Received = ({ sak, lang }: MottattProps) => {
     if (mottattVedtaksinstans !== undefined) {
       return (
         <InfoItem label={RECEIVED_VEDTAKSINSTANS[lang]}>
-          <ShortDateTime id="mottatt-vedtaksinstans" date={mottattVedtaksinstans.date} lang={lang} />
+          <ShortDateTime date={mottattVedtaksinstans.date} lang={lang} />
         </InfoItem>
       );
     }

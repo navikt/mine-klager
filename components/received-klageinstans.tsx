@@ -11,7 +11,7 @@ interface MottattProps {
 
 export const ReceivedKlageinstans = ({ sak, lang }: MottattProps) => (
   <InfoItem label={RECEIVED_KLAGEINSTANS[lang]}>
-    <FullDateTime id="mottatt-klageinstans" date={sak.mottattKlageinstans} lang={lang} />
+    <FullDateTime date={sak.mottattKlageinstans} lang={lang} />
   </InfoItem>
 );
 
