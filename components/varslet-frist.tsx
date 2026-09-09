@@ -18,5 +18,5 @@ export const VarsletFrist = ({ sak, lang }: VarsletFristProps) =>
 const DEADLINE_LABEL: Translation = {
   [Language.NB]: 'Varslet frist',
   [Language.NN]: 'Varsla frist',
-  [Language.EN]: 'Deadline',
+  [Language.EN]: 'Notified deadline',
 };
