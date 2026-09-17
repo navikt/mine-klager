@@ -10,7 +10,7 @@ import { MetricEvent } from '@/components/metrics';
 import { INSTANS } from '@/lib/dictionary';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import type { MetricsContextData } from '@/lib/metrics';
-import { getSaker } from '@/lib/server/api';
+import { getSupportedSaker } from '@/lib/server/api';
 import { recordSpanError } from '@/lib/tracing';
 import { Language, type Translation } from '@/locales';
 
@@ -24,7 +24,7 @@ const tracer = trace.getTracer('mine-klager');
 const CaseList = async ({ lang, context }: CaseListProps) =>
   tracer.startActiveSpan('CaseList', async (span) => {
     try {
-      const { saker } = await getSaker(await headers());
+      const saker = await getSupportedSaker(await headers());
 
       span.setAttribute('cases.count', saker.length);
 

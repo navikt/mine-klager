@@ -11,11 +11,14 @@ const logger = getLogger('api');
 
 const SAKER_API_URL = isLocal ? 'https://mine-klager.intern.dev.nav.no/api/saker' : 'http://kabal-api/api/innsyn/saker';
 
-export const getSaker = async (headers: Headers): Promise<GetSakerResponse> => {
+export const getSakerResponse = async (headers: Headers): Promise<Response> =>
+  isLocal ? fetch(SAKER_API_URL, { headers }) : getFromKabal(SAKER_API_URL, headers);
+
+export const getSupportedSaker = async (headers: Headers): Promise<Sak[]> => {
   const lang = getLanguageFromHeaders(headers);
 
   try {
-    const res = await (isLocal ? fetch(SAKER_API_URL, { headers }) : getFromKabal(SAKER_API_URL, headers));
+    const res = await getSakerResponse(headers);
 
     if (res.status === 401) {
       logger.warn('Unauthorized when fetching cases from Kabal', {
@@ -58,7 +61,7 @@ export const getSaker = async (headers: Headers): Promise<GetSakerResponse> => {
       }
     }
 
-    return { saker: supportedSaker };
+    return supportedSaker;
   } catch (error) {
     if (error instanceof InternalServerError || error instanceof UnauthorizedError) {
       throw error;
@@ -75,8 +78,8 @@ export const getSaker = async (headers: Headers): Promise<GetSakerResponse> => {
   }
 };
 
-export const getSak = async (headers: ReadonlyHeaders, id: string): Promise<Sak | undefined> => {
-  const { saker } = await getSaker(headers);
+export const getSupportedSak = async (headers: ReadonlyHeaders, id: string): Promise<Sak | undefined> => {
+  const saker = await getSupportedSaker(headers);
 
   return saker.find((sak) => sak.id === id);
 };
