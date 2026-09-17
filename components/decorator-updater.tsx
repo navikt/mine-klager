@@ -1,6 +1,6 @@
 'use client';
 
-import { onLanguageSelect, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
+import { onBreadcrumbClick, onLanguageSelect, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import type { DecoratorLocale } from '@navikt/nav-dekoratoren-moduler/ssr';
 import { configureLogger } from '@navikt/next-logger';
 import { useRouter } from 'next/navigation';
@@ -33,9 +33,16 @@ export const DecoratorUpdater = ({ lang, breadcrumbs = [], path }: BreadcrumbsPr
       {
         title: isLanguage(lang) ? TITLE[lang] : TITLE[DEFAULT_LANGUAGE],
         url: lang === DEFAULT_LANGUAGE ? '/' : `/${lang}`,
+        handleInApp: true,
       },
-      ...breadcrumbs,
+      ...breadcrumbs.map((breadcrumb) => ({ ...breadcrumb, handleInApp: true })),
     ]);
+
+    onBreadcrumbClick((breadcrumb) => {
+      browserLog.info('onBreadcrumbClick', breadcrumb);
+
+      router.push(breadcrumb.url);
+    });
 
     onLanguageSelect((language) => {
       browserLog.info('onLanguageSelect', language);
