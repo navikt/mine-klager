@@ -17,7 +17,7 @@ import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import { getYtelseName } from '@/lib/kodeverk';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getSakHeading } from '@/lib/sak-heading';
-import { getSak } from '@/lib/server/api';
+import { getSupportedSak } from '@/lib/server/api';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguage, type LanguageParams, resolveLanguageParams } from '@/lib/server/get-language';
 import { recordSpanError } from '@/lib/tracing';
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   try {
-    const sak = await getSak(await headers(), id);
+    const sak = await getSupportedSak(await headers(), id);
 
     if (sak === undefined) {
       return {
@@ -108,7 +108,7 @@ export default async function SakPage({ params }: Props) {
 
       span.setAttribute('sak.id', id);
 
-      const sak = await getSak(await headers(), id);
+      const sak = await getSupportedSak(await headers(), id);
       const path = await getCurrentPath();
 
       if (sak === undefined) {
