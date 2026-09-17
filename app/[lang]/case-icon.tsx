@@ -11,6 +11,7 @@ export const CaseIcon = ({ typeId, ...rest }: CaseIconProps): React.ReactElement
     case CaseType.KLAGE:
       return <DocPencilIcon {...rest} aria-hidden />;
     case CaseType.ANKE:
+    case CaseType.ANKE_AFTER_2027:
       return <ParagraphIcon {...rest} aria-hidden />;
     case CaseType.OMGJØRING:
       return <ArrowCirclepathIcon {...rest} aria-hidden />;

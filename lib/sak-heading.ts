@@ -35,6 +35,7 @@ const PREFIX: Record<CaseType, Translation> = {
   [CaseType.ANKE]: ANKE_PREFIX,
   [CaseType.OMGJØRING]: OMGJØRING_PREFIX,
   [CaseType.GJENOPPTAKSBEGJÆRING]: GJENOPPTAKSBEGJÆRING_PREFIX,
+  [CaseType.ANKE_AFTER_2027]: ANKE_PREFIX,
 };
 
 export const getSakHeading = async (type: CaseType, innsendingsytelseId: string | null, lang: Language) => {
