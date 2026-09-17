@@ -55,6 +55,10 @@ export enum CaseType {
   GJENOPPTAKSBEGJÆRING = '6',
 }
 
+export const CASE_TYPES = Object.values(CaseType);
+
+export const isCaseType = (value: string): value is CaseType => CASE_TYPES.includes(value as CaseType);
+
 export const CASE_TYPE_NAMES: Record<CaseType, string> = {
   [CaseType.KLAGE]: 'klage',
   [CaseType.ANKE]: 'anke',

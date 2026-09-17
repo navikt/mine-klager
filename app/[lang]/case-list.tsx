@@ -24,9 +24,7 @@ const tracer = trace.getTracer('mine-klager');
 const CaseList = async ({ lang, context }: CaseListProps) =>
   tracer.startActiveSpan('CaseList', async (span) => {
     try {
-      const sakerResponse = await getSaker(await headers());
-
-      const { saker } = sakerResponse;
+      const { saker } = await getSaker(await headers());
 
       span.setAttribute('cases.count', saker.length);
 
