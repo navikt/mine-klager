@@ -53,6 +53,7 @@ export enum CaseType {
   ANKE = '2',
   OMGJØRING = '5',
   GJENOPPTAKSBEGJÆRING = '6',
+  ANKE_AFTER_2027 = '8',
 }
 
 export const CASE_TYPES = Object.values(CaseType);
@@ -64,6 +65,7 @@ export const CASE_TYPE_NAMES: Record<CaseType, string> = {
   [CaseType.ANKE]: 'anke',
   [CaseType.OMGJØRING]: 'omgjøringskrav',
   [CaseType.GJENOPPTAKSBEGJÆRING]: 'gjenopptaksbegjæring',
+  [CaseType.ANKE_AFTER_2027]: 'anke',
 };
 
 export interface Sak {
