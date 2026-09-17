@@ -5,7 +5,6 @@ import type { DecoratorLocale } from '@navikt/nav-dekoratoren-moduler/ssr';
 import { configureLogger } from '@navikt/next-logger';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { browserLog } from '@/lib/browser-log';
 import { INSTANS } from '@/lib/dictionary';
 import { DEFAULT_LANGUAGE, isLanguage, Language, type Translation } from '@/locales';
 
@@ -38,15 +37,9 @@ export const DecoratorUpdater = ({ lang, breadcrumbs = [], path }: BreadcrumbsPr
       ...breadcrumbs.map((breadcrumb) => ({ ...breadcrumb, handleInApp: true })),
     ]);
 
-    onBreadcrumbClick((breadcrumb) => {
-      browserLog.info('onBreadcrumbClick', breadcrumb);
-
-      router.push(breadcrumb.url);
-    });
+    onBreadcrumbClick((breadcrumb) => router.push(breadcrumb.url));
 
     onLanguageSelect((language) => {
-      browserLog.info('onLanguageSelect', language);
-
       if (language.locale === DEFAULT_LANGUAGE) {
         router.push(path ?? '/');
       } else {
