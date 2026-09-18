@@ -31,13 +31,7 @@ const READ_MORE: Translation = {
 };
 
 const UNAVAILABLE: Translation<string[]> = {
-  [Language.NB]: ['Dagpenger', 'Lønnsgaranti', 'Tvungen forvaltning', 'Tiltak og oppfølging', 'Bidrag'],
-  [Language.NN]: ['Dagpengar', 'Lønsgaranti', 'Tvungen forvalting', 'Tiltak og oppfølging', 'Bidrag'],
-  [Language.EN]: [
-    'Unemployment benefits (Dagpenger)',
-    'Wage guarantee',
-    'Sanctioned administration',
-    'Measures and follow-up',
-    'Child support',
-  ],
+  [Language.NB]: ['Dagpenger', 'Lønnsgaranti', 'Tvungen forvaltning', 'Bidrag'],
+  [Language.NN]: ['Dagpengar', 'Lønsgaranti', 'Tvungen forvalting', 'Bidrag'],
+  [Language.EN]: ['Unemployment benefits (Dagpenger)', 'Wage guarantee', 'Sanctioned administration', 'Child support'],
 };
