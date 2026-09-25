@@ -31,7 +31,7 @@ const READ_MORE: Translation = {
 };
 
 const UNAVAILABLE: Translation<string[]> = {
-  [Language.NB]: ['Dagpenger', 'Lønnsgaranti', 'Tvungen forvaltning', 'Bidrag'],
-  [Language.NN]: ['Dagpengar', 'Lønsgaranti', 'Tvungen forvalting', 'Bidrag'],
-  [Language.EN]: ['Unemployment benefits (Dagpenger)', 'Wage guarantee', 'Sanctioned administration', 'Child support'],
+  [Language.NB]: ['Lønnsgaranti', 'Tvungen forvaltning', 'Bidrag'],
+  [Language.NN]: ['Lønsgaranti', 'Tvungen forvalting', 'Bidrag'],
+  [Language.EN]: ['Wage guarantee', 'Sanctioned administration', 'Child support'],
 };
