@@ -52,7 +52,8 @@ const getYtelser = cache(async (lang: Language): Promise<Ytelse[]> => {
         throw new InternalServerError(res.status, `${FAILED_TO_FETCH}: ${body}`);
       }
 
-      return res.json();
+      // `return await`, so parse errors are caught here.
+      return await res.json();
     } catch (error) {
       recordSpanError(span, error);
 
