@@ -8,7 +8,8 @@ enum LogLevel {
   ERROR = 'error',
 }
 
-type LoggerFn = (message: string, eventData?: Record<string, string | number>) => void;
+// Undefined values are omitted from the log line by `JSON.stringify`.
+type LoggerFn = (message: string, eventData?: Record<string, string | number | undefined>) => void;
 
 const getTraceContext = () => {
   const span = trace.getActiveSpan();
