@@ -1,8 +1,7 @@
 import { Heading, HGrid, HStack, LocalAlert } from '@navikt/ds-react';
 import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds-react/LocalAlert';
 import { trace } from '@opentelemetry/api';
-import { headers } from 'next/headers';
-import { notFound, unauthorized } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import { EventList } from '@/app/[lang]/saker/[id]/event-list';
 import { WhatHappensNow } from '@/app/[lang]/saker/[id]/what-happens-now/what-happens-now';
@@ -13,7 +12,7 @@ import { ErrorId } from '@/components/error-id';
 import { MetricEvent } from '@/components/metrics';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { VarsletFrist } from '@/components/varslet-frist';
-import { InternalServerError, UnauthorizedError } from '@/lib/errors';
+import { InternalServerError } from '@/lib/errors';
 import { getYtelseName } from '@/lib/kodeverk';
 import { getLogger } from '@/lib/logger';
 import type { MetricsContextData } from '@/lib/metrics';
@@ -50,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   try {
-    const sak = await getSupportedSak(await headers(), id);
+    const sak = await getSupportedSak(id);
 
     if (sak === undefined) {
       return {
@@ -71,11 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       robots: { index: false, follow: false },
       alternates,
     };
-  } catch (error) {
-    if (error instanceof UnauthorizedError) {
-      return unauthorized();
-    }
-
+  } catch {
     return {
       title: FALLBACK_TITLE[lang],
       description: FALLBACK_DESCRIPTION[lang],
@@ -110,7 +105,7 @@ export default async function SakPage({ params }: Props) {
 
       span.setAttribute('sak.id', id);
 
-      const sak = await getSupportedSak(await headers(), id);
+      const sak = await getSupportedSak(id);
       const path = await getCurrentPath();
 
       if (sak === undefined) {
@@ -185,10 +180,6 @@ export default async function SakPage({ params }: Props) {
         </>
       );
     } catch (error) {
-      if (error instanceof UnauthorizedError) {
-        return unauthorized();
-      }
-
       recordSpanError(span, error);
 
       if (error instanceof InternalServerError) {

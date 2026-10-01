@@ -1,6 +1,6 @@
 import { trace } from '@opentelemetry/api';
 import { isDeployed } from '@/lib/environment';
-import { InternalServerError, UnauthorizedError } from '@/lib/errors';
+import { InternalServerError } from '@/lib/errors';
 import { getLogger } from '@/lib/logger';
 import { recordSpanError } from '@/lib/tracing';
 import { Language, type Translation } from '@/locales';
@@ -32,15 +32,6 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
 
       const res = await fetch(url, { headers: { accept: 'application/json' } });
 
-      if (res.status === 401) {
-        logger.warn('Unauthorized when fetching kodeverk', {
-          status: res.status,
-          statusText: res.statusText,
-        });
-
-        throw new UnauthorizedError(lang);
-      }
-
       if (!res.ok) {
         const body = await res.text();
 
@@ -55,7 +46,7 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
 
       return res.json();
     } catch (error) {
-      if (error instanceof InternalServerError || error instanceof UnauthorizedError) {
+      if (error instanceof InternalServerError) {
         throw error;
       }
 

@@ -1,14 +1,12 @@
 import { requestOboToken, validateToken } from '@navikt/oasis';
 import { trace } from '@opentelemetry/api';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
-import { unauthorized } from 'next/navigation';
-import { getLogger } from '@/lib/logger';
 import type { Audience } from '@/lib/types';
-
-const logger = getLogger('obo-token');
 
 const tracer = trace.getTracer('mine-klager');
 
+// Wonderwall autologin guarantees an active session before requests reach the app.
+// Any failure here is therefore a server-side problem, not a logged out user.
 export const getOboToken = async (audience: Audience, headers: ReadonlyHeaders) =>
   tracer.startActiveSpan('getOboToken', async (span) => {
     try {
@@ -17,8 +15,7 @@ export const getOboToken = async (audience: Audience, headers: ReadonlyHeaders) 
       const authorization = headers.get('authorization');
 
       if (authorization === null) {
-        logger.error('Missing authorization header');
-        unauthorized();
+        throw new Error('Missing authorization header');
       }
 
       const [, token] = authorization.split(' ');
@@ -26,15 +23,17 @@ export const getOboToken = async (audience: Audience, headers: ReadonlyHeaders) 
       const validation = await validateToken(token);
 
       if (!validation.ok) {
-        logger.error('Invalid token');
-        unauthorized();
+        throw new Error(`Invalid token (${validation.errorType}): ${validation.error.message}`, {
+          cause: validation.error,
+        });
       }
 
       const obo = await requestOboToken(token, `${process.env.NAIS_CLUSTER_NAME}:klage:${audience}`);
 
       if (!obo.ok) {
-        logger.error(`Failed to get on-behalf-of token for audience: ${audience}`);
-        unauthorized();
+        throw new Error(`Failed to get on-behalf-of token for audience ${audience}: ${obo.error.message}`, {
+          cause: obo.error,
+        });
       }
 
       return obo.token;

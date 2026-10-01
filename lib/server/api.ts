@@ -1,6 +1,7 @@
-import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
+import { headers as getHeaders } from 'next/headers';
+import { cache } from 'react';
 import { isDeployedToDev, isLocal } from '@/lib/environment';
-import { InternalServerError, UnauthorizedError } from '@/lib/errors';
+import { InternalServerError } from '@/lib/errors';
 import { getLogger } from '@/lib/logger';
 import { getFromKabal } from '@/lib/server/fetch';
 import { getLanguageFromHeaders } from '@/lib/server/get-language';
@@ -14,20 +15,15 @@ const SAKER_API_URL = isLocal ? 'https://mine-klager.intern.dev.nav.no/api/saker
 export const getSakerResponse = async (headers: Headers): Promise<Response> =>
   isLocal ? fetch(SAKER_API_URL, { headers }) : getFromKabal(SAKER_API_URL, headers);
 
-export const getSupportedSaker = async (headers: Headers): Promise<Sak[]> => {
+/**
+ * Cached per request, so pages calling it from both `generateMetadata` and the page component only fetch once.
+ */
+export const getSupportedSaker = cache(async (): Promise<Sak[]> => {
+  const headers = await getHeaders();
   const lang = getLanguageFromHeaders(headers);
 
   try {
     const res = await getSakerResponse(headers);
-
-    if (res.status === 401) {
-      logger.warn('Unauthorized when fetching cases from Kabal', {
-        status: res.status,
-        statusText: res.statusText,
-      });
-
-      throw new UnauthorizedError(lang);
-    }
 
     if (!res.ok) {
       logger.error(`Kabal responded with status ${res.status} when fetching cases`, {
@@ -63,7 +59,7 @@ export const getSupportedSaker = async (headers: Headers): Promise<Sak[]> => {
 
     return supportedSaker;
   } catch (error) {
-    if (error instanceof InternalServerError || error instanceof UnauthorizedError) {
+    if (error instanceof InternalServerError) {
       throw error;
     }
 
@@ -76,13 +72,13 @@ export const getSupportedSaker = async (headers: Headers): Promise<Sak[]> => {
       cause: error instanceof Error ? error : undefined,
     });
   }
-};
+});
 
-export const getSupportedSak = async (headers: ReadonlyHeaders, id: string): Promise<Sak | undefined> => {
-  const saker = await getSupportedSaker(headers);
+export const getSupportedSak = cache(async (id: string): Promise<Sak | undefined> => {
+  const saker = await getSupportedSaker();
 
   return saker.find((sak) => sak.id === id);
-};
+});
 
 const FAILED_TO_FETCH: Translation = {
   [Language.NB]: 'Kunne ikke hente saker',
