@@ -1,4 +1,5 @@
 import { trace } from '@opentelemetry/api';
+import { cache } from 'react';
 import { isDeployed } from '@/lib/environment';
 import { InternalServerError } from '@/lib/errors';
 import { getLogger } from '@/lib/logger';
@@ -17,13 +18,16 @@ interface Ytelse {
   navn: string;
 }
 
-export const getYtelseName = async (id: string, lang: Language): Promise<string> => {
+export const getYtelseName = cache(async (innsendingsytelseId: string, lang: Language): Promise<string> => {
   const response = await getYtelser(lang);
 
-  return response.find((ytelse) => ytelse.id === id)?.navn ?? id;
-};
+  return response.find((ytelse) => ytelse.id === innsendingsytelseId)?.navn ?? innsendingsytelseId;
+});
 
-const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
+/**
+ * Cached per request, so a case list fetches and logs failures once, not once per case.
+ */
+const getYtelser = cache(async (lang: Language): Promise<Ytelse[]> => {
   const url = `${API_URL}/innsendingsytelser/${lang}`;
 
   return tracer.startActiveSpan(`getYtelser ${url}`, async (span) => {
@@ -63,6 +67,6 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
       span.end();
     }
   });
-};
+});
 
 const FAILED_TO_FETCH = 'Failed to fetch ytelser from kodeverk';
