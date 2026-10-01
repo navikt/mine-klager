@@ -14,11 +14,11 @@ export default async function NotFound() {
   return (
     <>
       <DecoratorUpdater
-        lang={Language.NB}
+        lang={lang}
         path={path}
         breadcrumbs={[
           {
-            title: 'Side ikke funnet / Page not found',
+            title: HEADING[lang],
             url: path,
           },
         ]}
