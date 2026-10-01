@@ -54,11 +54,11 @@ const getYtelser = cache(async (lang: Language): Promise<Ytelse[]> => {
 
       return res.json();
     } catch (error) {
+      recordSpanError(span, error);
+
       if (error instanceof InternalServerError) {
         throw error;
       }
-
-      recordSpanError(span, error);
 
       logger.error('Failed to fetch kodeverk', {
         error: error instanceof Error ? error.message : 'Unknown error',
