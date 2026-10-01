@@ -15,6 +15,7 @@ import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { VarsletFrist } from '@/components/varslet-frist';
 import { InternalServerError, UnauthorizedError } from '@/lib/errors';
 import { getYtelseName } from '@/lib/kodeverk';
+import { getLogger } from '@/lib/logger';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getSakHeading } from '@/lib/sak-heading';
 import { getSupportedSak } from '@/lib/server/api';
@@ -26,6 +27,7 @@ import { CASE_TYPE_NAMES } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
 const tracer = trace.getTracer('mine-klager');
+const logger = getLogger('sak-page');
 
 interface Params extends LanguageParams {
   id: string;
@@ -113,6 +115,8 @@ export default async function SakPage({ params }: Props) {
 
       if (sak === undefined) {
         span.setAttribute('sak.found', false);
+
+        logger.warn('Case not found', { caseId: id });
 
         return notFound();
       }

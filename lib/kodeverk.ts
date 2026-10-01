@@ -33,11 +33,24 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
       const res = await fetch(url, { headers: { accept: 'application/json' } });
 
       if (res.status === 401) {
+        logger.warn('Unauthorized when fetching kodeverk', {
+          status: res.status,
+          statusText: res.statusText,
+        });
+
         throw new UnauthorizedError(lang);
       }
 
       if (!res.ok) {
-        throw new InternalServerError(res.status, `${FAILED_TO_FETCH[lang]}: ${await res.text()}`, lang);
+        const body = await res.text();
+
+        logger.error(`Kodeverk responded with status ${res.status} when fetching ytelser`, {
+          status: res.status,
+          statusText: res.statusText,
+          body,
+        });
+
+        throw new InternalServerError(res.status, `${FAILED_TO_FETCH[lang]}: ${body}`, lang);
       }
 
       return res.json();
