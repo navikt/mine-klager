@@ -53,7 +53,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 const getLanguage = (pathname: string) => {
   const [lang] = pathname.split('/').filter((s) => s.length > 0);
 
-  return isLanguage(lang) ? lang : DEFAULT_LANGUAGE;
+  return lang !== undefined && isLanguage(lang) ? lang : DEFAULT_LANGUAGE;
 };
 
 const WRONG: Translation = {
