@@ -7,6 +7,7 @@ import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import { Language, type Translation } from '@/locales';
 
+// Next renders this on every request as a fallback, so avoid side effects like logging. Log where `notFound()` is called.
 export default async function NotFound() {
   const path = await getCurrentPath();
   const lang = getLanguageFromHeaders(await headers());
