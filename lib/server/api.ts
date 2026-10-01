@@ -4,9 +4,7 @@ import { isDeployedToDev, isLocal } from '@/lib/environment';
 import { InternalServerError } from '@/lib/errors';
 import { getLogger } from '@/lib/logger';
 import { getFromKabal } from '@/lib/server/fetch';
-import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import { type GetSakerResponse, isCaseType, type Sak } from '@/lib/types';
-import { Language, type Translation } from '@/locales';
 
 const logger = getLogger('api');
 
@@ -20,7 +18,6 @@ export const getSakerResponse = async (headers: Headers): Promise<Response> =>
  */
 export const getSupportedSaker = cache(async (): Promise<Sak[]> => {
   const headers = await getHeaders();
-  const lang = getLanguageFromHeaders(headers);
 
   try {
     const res = await getSakerResponse(headers);
@@ -31,7 +28,7 @@ export const getSupportedSaker = cache(async (): Promise<Sak[]> => {
         statusText: res.statusText,
       });
 
-      throw new InternalServerError(res.status, FAILED_TO_FETCH[lang], lang);
+      throw new InternalServerError(res.status, FAILED_TO_FETCH);
     }
 
     const { saker }: GetSakerResponse = await res.json();
@@ -68,7 +65,7 @@ export const getSupportedSaker = cache(async (): Promise<Sak[]> => {
       stack: error instanceof Error ? (error.stack ?? '') : '',
     });
 
-    throw new InternalServerError(500, FAILED_TO_FETCH[lang], lang, {
+    throw new InternalServerError(500, FAILED_TO_FETCH, {
       cause: error instanceof Error ? error : undefined,
     });
   }
@@ -80,8 +77,4 @@ export const getSupportedSak = cache(async (id: string): Promise<Sak | undefined
   return saker.find((sak) => sak.id === id);
 });
 
-const FAILED_TO_FETCH: Translation = {
-  [Language.NB]: 'Kunne ikke hente saker',
-  [Language.NN]: 'Kunne ikkje hente saker',
-  [Language.EN]: 'Failed to fetch cases',
-};
+const FAILED_TO_FETCH = 'Failed to fetch cases from Kabal';

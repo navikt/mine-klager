@@ -3,7 +3,7 @@ import { isDeployed } from '@/lib/environment';
 import { InternalServerError } from '@/lib/errors';
 import { getLogger } from '@/lib/logger';
 import { recordSpanError } from '@/lib/tracing';
-import { Language, type Translation } from '@/locales';
+import type { Language } from '@/locales';
 
 const logger = getLogger('kodeverk');
 const tracer = trace.getTracer('mine-klager');
@@ -41,7 +41,7 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
           body,
         });
 
-        throw new InternalServerError(res.status, `${FAILED_TO_FETCH[lang]}: ${body}`, lang);
+        throw new InternalServerError(res.status, `${FAILED_TO_FETCH}: ${body}`);
       }
 
       return res.json();
@@ -56,7 +56,7 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
 
-      throw new InternalServerError(500, FAILED_TO_FETCH[lang], lang, {
+      throw new InternalServerError(500, FAILED_TO_FETCH, {
         cause: error instanceof Error ? error : undefined,
       });
     } finally {
@@ -65,8 +65,4 @@ const getYtelser = async (lang: Language): Promise<Ytelse[]> => {
   });
 };
 
-const FAILED_TO_FETCH: Translation = {
-  [Language.NB]: 'Kunne ikke hente ytelser',
-  [Language.NN]: 'Kunne ikkje hente ytelser',
-  [Language.EN]: 'Failed to fetch benefits',
-};
+const FAILED_TO_FETCH = 'Failed to fetch ytelser from kodeverk';
