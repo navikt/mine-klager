@@ -49,8 +49,15 @@ interface Props {
 export const Decorator = async ({ children, lang }: Readonly<Props>) => {
   const Decorator = await getDecorator(lang);
 
+  // The decorator script sets attributes like `data-decorator-consent` on `<html>` before hydration.
+  // Only suppresses mismatches in the attributes of `<html>` itself, not its children.
   return (
-    <html lang={lang} data-environment={process.env.NAIS_CLUSTER_NAME} data-version={process.env.VERSION}>
+    <html
+      lang={lang}
+      data-environment={process.env.NAIS_CLUSTER_NAME}
+      data-version={process.env.VERSION}
+      suppressHydrationWarning
+    >
       <Faro />
 
       {/** biome-ignore lint/style/noHeadElement:  App Router requires native <head>, not next/head. next/head breaks the Decorator. */}
