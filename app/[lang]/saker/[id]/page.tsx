@@ -106,102 +106,127 @@ export default async function SakPage({ params }: Props) {
   await ensureValidLanguage(params);
 
   const { lang, id } = await resolveLanguageParams(params);
+  const result = await loadSak(id, lang);
 
-  return tracer.startActiveSpan('SakPage', async (span) => {
+  if (result.status === LoadSakStatus.NOT_FOUND) {
+    return notFound();
+  }
+
+  if (result.status === LoadSakStatus.ERROR) {
+    return (
+      <LocalAlert status="error">
+        <LocalAlertHeader>
+          <LocalAlertTitle>{FETCH_CASE_ERROR_TITLE[lang]}</LocalAlertTitle>
+        </LocalAlertHeader>
+        <LocalAlertContent>
+          {FETCH_CASE_ERROR_DESCRIPTION[lang]}
+          <ErrorId id={result.traceId} label={TRACE_ID_LABEL[lang]} prefix="trace" />
+        </LocalAlertContent>
+      </LocalAlert>
+    );
+  }
+
+  const { sak, heading } = result;
+  const { typeId, saksnummer, events, innsendingsytelseId } = sak;
+  const path = await getCurrentPath();
+
+  const lastEvent = events.at(-1);
+  const hasLastEvent = lastEvent !== undefined;
+
+  const eventCount = events.length;
+
+  const context: MetricsContextData = {
+    lang,
+    path,
+    page: 'sak',
+    ytelse: innsendingsytelseId ?? 'UNKNOWN',
+    type: CASE_TYPE_NAMES[typeId],
+  };
+
+  return (
+    <>
+      {/** biome-ignore lint/style/useNamingConvention: Metric event naming convention */}
+      <MetricEvent domain="sak" context={context} eventData={{ eventCount, last_event_type: lastEvent?.type }} />
+
+      <DecoratorUpdater
+        lang={lang}
+        path={`/saker/${id}`}
+        breadcrumbs={[
+          {
+            title: heading,
+            url: path,
+          },
+        ]}
+      />
+
+      <Heading level="1" size="large" spacing>
+        {heading}
+      </Heading>
+
+      <HStack gap="space-8">
+        <CopyItem label={CASE_NUMBER_LABEL[lang]} tooltip={CASE_NUMBER_TOOLTIP[lang]} context={context}>
+          {saksnummer}
+        </CopyItem>
+
+        <ReceivedKlageinstans sak={sak} lang={lang} />
+
+        <VarsletFrist sak={sak} lang={lang} />
+      </HStack>
+
+      {hasLastEvent ? <Actions sak={sak} sakEvent={lastEvent} lang={lang} context={context} /> : null}
+
+      <HGrid
+        gap="space-32 space-16"
+        marginBlock="space-32 space-0"
+        columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}
+      >
+        <EventList sak={sak} lang={lang} context={context} />
+
+        {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} context={context} /> : null}
+      </HGrid>
+    </>
+  );
+}
+
+enum LoadSakStatus {
+  FOUND = 0,
+  NOT_FOUND = 1,
+  ERROR = 2,
+}
+
+type SakResult =
+  | { status: LoadSakStatus.FOUND; sak: Sak; heading: string }
+  | { status: LoadSakStatus.NOT_FOUND }
+  | { status: LoadSakStatus.ERROR; traceId: string };
+
+/** Loads the case without rendering, so `notFound()` is called outside the span's `try`. */
+const loadSak = async (id: string, lang: Language) =>
+  tracer.startActiveSpan('SakPage', async (span): Promise<SakResult> => {
     try {
       span.setAttribute('sak.id', id);
 
       const sak = await getSupportedSak(id);
-      const path = await getCurrentPath();
 
       if (sak === undefined) {
         span.setAttribute('sak.found', false);
 
         logger.warn('Case not found', { caseId: id });
 
-        return notFound();
+        return { status: LoadSakStatus.NOT_FOUND };
       }
 
-      const { typeId, saksnummer, events, innsendingsytelseId } = sak;
-      const heading = await getSakHeading(typeId, innsendingsytelseId, lang);
+      const heading = await getSakHeading(sak.typeId, sak.innsendingsytelseId, lang);
 
       span.setAttribute('sak.found', true);
-      span.setAttribute('sak.typeId', typeId);
-      span.setAttribute('sak.events.count', events.length);
+      span.setAttribute('sak.typeId', sak.typeId);
+      span.setAttribute('sak.events.count', sak.events.length);
 
-      const lastEvent = events.at(-1);
-      const hasLastEvent = lastEvent !== undefined;
-
-      const eventCount = events.length;
-
-      const context: MetricsContextData = {
-        lang,
-        path,
-        page: 'sak',
-        ytelse: innsendingsytelseId ?? 'UNKNOWN',
-        type: CASE_TYPE_NAMES[typeId],
-      };
-
-      return (
-        <>
-          {/** biome-ignore lint/style/useNamingConvention: Metric event naming convention */}
-          <MetricEvent domain="sak" context={context} eventData={{ eventCount, last_event_type: lastEvent?.type }} />
-
-          <DecoratorUpdater
-            lang={lang}
-            path={`/saker/${id}`}
-            breadcrumbs={[
-              {
-                title: heading,
-                url: path,
-              },
-            ]}
-          />
-
-          <Heading level="1" size="large" spacing>
-            {heading}
-          </Heading>
-
-          <HStack gap="space-8">
-            <CopyItem label={CASE_NUMBER_LABEL[lang]} tooltip={CASE_NUMBER_TOOLTIP[lang]} context={context}>
-              {saksnummer}
-            </CopyItem>
-
-            <ReceivedKlageinstans sak={sak} lang={lang} />
-
-            <VarsletFrist sak={sak} lang={lang} />
-          </HStack>
-
-          {hasLastEvent ? <Actions sak={sak} sakEvent={lastEvent} lang={lang} context={context} /> : null}
-
-          <HGrid
-            gap="space-32 space-16"
-            marginBlock="space-32 space-0"
-            columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, '2xl': 2 }}
-          >
-            <EventList sak={sak} lang={lang} context={context} />
-
-            {hasLastEvent ? <WhatHappensNow lastEvent={lastEvent} lang={lang} context={context} /> : null}
-          </HGrid>
-        </>
-      );
+      return { status: LoadSakStatus.FOUND, sak, heading };
     } catch (error) {
       recordSpanError(span, error);
 
       if (error instanceof InternalServerError) {
-        const traceId = span.spanContext().traceId;
-
-        return (
-          <LocalAlert status="error">
-            <LocalAlertHeader>
-              <LocalAlertTitle>{FETCH_CASE_ERROR_TITLE[lang]}</LocalAlertTitle>
-            </LocalAlertHeader>
-            <LocalAlertContent>
-              {FETCH_CASE_ERROR_DESCRIPTION[lang]}
-              <ErrorId id={traceId} label={TRACE_ID_LABEL[lang]} prefix="trace" />
-            </LocalAlertContent>
-          </LocalAlert>
-        );
+        return { status: LoadSakStatus.ERROR, traceId: span.spanContext().traceId };
       }
 
       throw error;
@@ -209,7 +234,6 @@ export default async function SakPage({ params }: Props) {
       span.end();
     }
   });
-}
 
 const CASE_NUMBER_LABEL: Translation = {
   [Language.NB]: 'Saksnummer',
