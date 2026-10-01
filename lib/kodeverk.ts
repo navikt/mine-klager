@@ -26,6 +26,7 @@ export const getYtelseName = cache(async (innsendingsytelseId: string, lang: Lan
 
 /**
  * Cached per request, so a case list fetches and logs failures once, not once per case.
+ * The response is also cached across requests, since ytelser rarely change. Next only caches status 200.
  */
 const getYtelser = cache(async (lang: Language): Promise<Ytelse[]> => {
   const url = `${API_URL}/innsendingsytelser/${lang}`;
@@ -34,7 +35,10 @@ const getYtelser = cache(async (lang: Language): Promise<Ytelse[]> => {
     try {
       span.setAttribute('kodeverk.lang', lang);
 
-      const res = await fetch(url, { headers: { accept: 'application/json' } });
+      const res = await fetch(url, {
+        headers: { accept: 'application/json' },
+        next: { revalidate: YTELSER_CACHE_TTL },
+      });
 
       if (!res.ok) {
         const body = await res.text();
@@ -70,3 +74,9 @@ const getYtelser = cache(async (lang: Language): Promise<Ytelse[]> => {
 });
 
 const FAILED_TO_FETCH = 'Failed to fetch ytelser from kodeverk';
+
+/*
+ * Revalidate every hour (60 minutes * 60 seconds). Next serves the cached response and refreshes it in the background,
+ * keeping the old response if the refresh fails. So the interval only affects freshness, not latency or resilience.
+ */
+const YTELSER_CACHE_TTL = 60 * 60;
