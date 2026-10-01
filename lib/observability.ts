@@ -15,6 +15,11 @@ class Grafana {
     isDeployedToProd ? 'https://telemetry.nav.no/collect' : 'https://telemetry.ekstern.dev.nav.no/collect';
 
   public initialize = () => {
+    // Faro can only be registered once, but effects run twice in React Strict Mode and on remounts.
+    if (this.faro !== null) {
+      return;
+    }
+
     this.faro = initializeFaro({
       url: this.getUrl(),
       app: { name: 'mine-klager' },
