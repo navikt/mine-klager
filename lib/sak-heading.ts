@@ -1,10 +1,7 @@
 import { INSTANS } from '@/lib/dictionary';
 import { getYtelseName } from '@/lib/kodeverk';
-import { getLogger } from '@/lib/logger';
 import { CaseType } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
-
-const logger = getLogger('sak-heading');
 
 const KLAGE_PREFIX: Translation = {
   nb: 'Klage som gjelder',
@@ -47,11 +44,8 @@ export const getSakHeading = async (type: CaseType, innsendingsytelseId: string 
 
   try {
     ytelseName = await getYtelseName(innsendingsytelseId, lang);
-  } catch (error) {
-    logger.error('Failed to get ytelse name for heading', {
-      innsendingsytelseId,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
+  } catch {
+    // Already logged by `getYtelser`.
     ytelseName = innsendingsytelseId;
   }
 
