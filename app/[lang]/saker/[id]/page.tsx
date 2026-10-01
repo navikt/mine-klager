@@ -19,7 +19,7 @@ import type { MetricsContextData } from '@/lib/metrics';
 import { getSakHeading } from '@/lib/sak-heading';
 import { getSupportedSak } from '@/lib/server/api';
 import { getCurrentPath } from '@/lib/server/current-path';
-import { getLanguage, type LanguageParams, resolveLanguageParams } from '@/lib/server/get-language';
+import { type LanguageParams, resolveLanguageParams } from '@/lib/server/get-language';
 import { ensureValidLanguage } from '@/lib/server/not-found';
 import { recordSpanError } from '@/lib/tracing';
 import type { Sak } from '@/lib/types';
@@ -105,10 +105,10 @@ export default async function SakPage({ params }: Props) {
   // Also checked here, since Next renders the page in parallel with the layout. Avoids fetching the case.
   await ensureValidLanguage(params);
 
+  const { lang, id } = await resolveLanguageParams(params);
+
   return tracer.startActiveSpan('SakPage', async (span) => {
     try {
-      const { lang, id } = await resolveLanguageParams(params);
-
       span.setAttribute('sak.id', id);
 
       const sak = await getSupportedSak(id);
@@ -189,17 +189,16 @@ export default async function SakPage({ params }: Props) {
       recordSpanError(span, error);
 
       if (error instanceof InternalServerError) {
-        const errorLang = await getLanguage(params);
         const traceId = span.spanContext().traceId;
 
         return (
           <LocalAlert status="error">
             <LocalAlertHeader>
-              <LocalAlertTitle>{FETCH_CASE_ERROR_TITLE[errorLang]}</LocalAlertTitle>
+              <LocalAlertTitle>{FETCH_CASE_ERROR_TITLE[lang]}</LocalAlertTitle>
             </LocalAlertHeader>
             <LocalAlertContent>
-              {FETCH_CASE_ERROR_DESCRIPTION[errorLang]}
-              <ErrorId id={traceId} label={TRACE_ID_LABEL[errorLang]} prefix="trace" />
+              {FETCH_CASE_ERROR_DESCRIPTION[lang]}
+              <ErrorId id={traceId} label={TRACE_ID_LABEL[lang]} prefix="trace" />
             </LocalAlertContent>
           </LocalAlert>
         );
