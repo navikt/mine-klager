@@ -13,3 +13,8 @@ export function proxy(request: NextRequest) {
 
   return NextResponse.next({ headers });
 }
+
+// Skip routes that never render a page, so they do not need the headers. Unknown paths still need them for the not found page.
+export const config = {
+  matcher: ['/((?!_next/|isAlive$|isReady$|metrics$|api/logger$).*)'],
+};
