@@ -1,13 +1,10 @@
 import { trace } from '@opentelemetry/api';
 import type { NextRequest } from 'next/server';
 import { isLocal } from '@/lib/environment';
-import { getLogger } from '@/lib/logger';
 import { getFromKabal } from '@/lib/server/fetch';
 import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import { recordSpanError } from '@/lib/tracing';
 import { Language, type Translation } from '@/locales';
-
-const logger = getLogger('pdf');
 
 const tracer = trace.getTracer('mine-klager');
 
@@ -17,6 +14,7 @@ interface Params {
   id: string;
 }
 
+// Kabal failures are logged by `getFromKabal`.
 export async function GET(req: NextRequest, { params }: { params: Promise<Params> }) {
   const { headers } = req;
   const lang = getLanguageFromHeaders(headers);
@@ -27,19 +25,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<Params
     try {
       span.setAttribute('document.id', id);
 
-      const url = `${PDF_BASE_URL}/${id}`;
-      const res = await (isLocal ? fetch(url, { method: 'GET', headers }) : getFromKabal(url, headers));
+      const res = await getFromKabal(`${PDF_BASE_URL}/${id}`, headers);
 
       if (!res.ok) {
         span.setAttribute('http.status_code', res.status);
-
-        const log = res.status >= 500 ? logger.error : logger.warn;
-
-        log(`Kabal responded with status ${res.status} when fetching document`, {
-          documentId: id,
-          status: res.status,
-          statusText: res.statusText,
-        });
 
         return new Response(ERROR_MESSAGE[lang], { status: res.status });
       }
@@ -47,11 +36,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<Params
       return res;
     } catch (error) {
       recordSpanError(span, error);
-
-      logger.error('Failed to fetch document from Kabal', {
-        error: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? (error.stack ?? '') : '',
-      });
 
       return new Response(ERROR_MESSAGE[lang], { status: 500 });
     } finally {
