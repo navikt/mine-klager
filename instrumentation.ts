@@ -18,15 +18,15 @@ export async function register() {
 export const onRequestError: Instrumentation.onRequestError = (error, request, context) => {
   logger.error('Unhandled server error', {
     error: error instanceof Error ? error.message : 'Unknown error',
-    stack: error instanceof Error ? (error.stack ?? '') : '',
+    stack: error instanceof Error ? error.stack : undefined,
     digest: getDigest(error),
     path: request.path,
     method: request.method,
     routePath: context.routePath,
     routeType: context.routeType,
-    renderSource: context.renderSource ?? '',
+    renderSource: context.renderSource,
   });
 };
 
-const getDigest = (error: unknown): string =>
-  error instanceof Error && 'digest' in error && typeof error.digest === 'string' ? error.digest : '';
+const getDigest = (error: unknown): string | undefined =>
+  error instanceof Error && 'digest' in error && typeof error.digest === 'string' ? error.digest : undefined;
