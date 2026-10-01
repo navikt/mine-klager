@@ -15,7 +15,7 @@ const getTraceContext = () => {
   const span = trace.getActiveSpan();
 
   if (span === undefined) {
-    return { traceId: '', spanId: '' };
+    return { traceId: undefined, spanId: undefined };
   }
 
   const { traceId, spanId } = span.spanContext();
