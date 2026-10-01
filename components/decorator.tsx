@@ -27,6 +27,7 @@ const getDecorator = (language: Language) => {
     fetchDecoratorReact({
       env,
       params: {
+        teamName: 'mine-klager.klage',
         language,
         availableLanguages,
         logoutWarning: true,
