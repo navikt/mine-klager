@@ -30,7 +30,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             <LocalAlertTitle>{WRONG[lang]}</LocalAlertTitle>
           </LocalAlertHeader>
           <LocalAlertContent>
-            {error.message.length === 0 ? null : error.message}
+            {DESCRIPTION[lang]}
             {error.digest === undefined ? null : (
               <ErrorId id={error.digest} label={ERROR_REFERENCE[lang]} prefix="digest" />
             )}
@@ -60,6 +60,12 @@ const WRONG: Translation = {
   [Language.NB]: 'Noe gikk galt',
   [Language.NN]: 'Noko gjekk gale',
   [Language.EN]: 'Something went wrong',
+};
+
+const DESCRIPTION: Translation = {
+  [Language.NB]: 'Vi klarte ikke å vise siden akkurat nå. Vennligst prøv igjen senere.',
+  [Language.NN]: 'Vi klarte ikkje å vise sida akkurat no. Ver venleg og prøv igjen seinare.',
+  [Language.EN]: 'We were unable to show the page right now. Please try again later.',
 };
 
 const GO_BACK: Translation = {
