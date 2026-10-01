@@ -9,6 +9,7 @@ import { INSTANS } from '@/lib/dictionary';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguage, type LanguageParams } from '@/lib/server/get-language';
+import { ensureValidLanguage } from '@/lib/server/not-found';
 import { Language, type Translation } from '@/locales';
 
 const CaseList = lazy(() => import('@/app/[lang]/case-list'));
@@ -18,6 +19,8 @@ interface MetadataProps {
 }
 
 export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+  await ensureValidLanguage(params);
+
   const lang = await getLanguage(params);
 
   return {
@@ -47,6 +50,8 @@ interface SakerPageProps {
 const tracer = trace.getTracer('mine-klager');
 
 export default async function SakerPage({ params }: SakerPageProps) {
+  await ensureValidLanguage(params);
+
   return tracer.startActiveSpan('SakerPage', async (span) => {
     try {
       const lang = await getLanguage(params);

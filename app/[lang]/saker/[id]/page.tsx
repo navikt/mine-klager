@@ -20,6 +20,7 @@ import { getSakHeading } from '@/lib/sak-heading';
 import { getSupportedSak } from '@/lib/server/api';
 import { getCurrentPath } from '@/lib/server/current-path';
 import { getLanguage, type LanguageParams, resolveLanguageParams } from '@/lib/server/get-language';
+import { ensureValidLanguage } from '@/lib/server/not-found';
 import { recordSpanError } from '@/lib/tracing';
 import type { Sak } from '@/lib/types';
 import { CASE_TYPE_NAMES } from '@/lib/types';
@@ -38,6 +39,8 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  await ensureValidLanguage(params);
+
   const { lang, id } = await resolveLanguageParams(params);
 
   const alternates: Metadata['alternates'] = {
@@ -99,6 +102,9 @@ const UNKNOWN: Translation = {
 };
 
 export default async function SakPage({ params }: Props) {
+  // Also checked here, since Next renders the page in parallel with the layout. Avoids fetching the case.
+  await ensureValidLanguage(params);
+
   return tracer.startActiveSpan('SakPage', async (span) => {
     try {
       const { lang, id } = await resolveLanguageParams(params);
