@@ -43,7 +43,7 @@ export const getFromKabal = async (url: string, incomingHeaders: Headers): Retur
       logger.error('Failed to fetch from Kabal', {
         url,
         error: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? (error.stack ?? '') : '',
+        stack: error instanceof Error ? error.stack : undefined,
       });
 
       throw error;
