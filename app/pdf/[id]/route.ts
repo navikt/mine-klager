@@ -33,6 +33,14 @@ export async function GET(req: NextRequest, { params }: { params: Promise<Params
       if (!res.ok) {
         span.setAttribute('http.status_code', res.status);
 
+        const log = res.status >= 500 ? logger.error : logger.warn;
+
+        log(`Kabal responded with status ${res.status} when fetching document`, {
+          documentId: id,
+          status: res.status,
+          statusText: res.statusText,
+        });
+
         return new Response(ERROR_MESSAGE[lang], { status: res.status });
       }
 
@@ -40,7 +48,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<Params
     } catch (error) {
       recordSpanError(span, error);
 
-      logger.error('Failed to fetch document', {
+      logger.error('Failed to fetch document from Kabal', {
         error: error instanceof Error ? error.message : 'Unknown error',
         stack: error instanceof Error ? (error.stack ?? '') : '',
       });
