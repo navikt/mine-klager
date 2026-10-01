@@ -3,7 +3,8 @@ import { CURRENT_PATH_HEADER, DECORATOR_LANGUAGE_COOKIE, LANGUAGE_HEADER } from 
 import { DEFAULT_LANGUAGE, isLanguage } from '@/locales';
 
 export function proxy(request: NextRequest) {
-  const headers = new Headers();
+  // Copy the incoming headers, since `request.headers` replaces them all.
+  const headers = new Headers(request.headers);
 
   headers.set(CURRENT_PATH_HEADER, request.nextUrl.pathname);
 
@@ -11,7 +12,7 @@ export function proxy(request: NextRequest) {
 
   headers.set(LANGUAGE_HEADER, lang !== undefined && isLanguage(lang.value) ? lang.value : DEFAULT_LANGUAGE);
 
-  return NextResponse.next({ headers });
+  return NextResponse.next({ request: { headers } });
 }
 
 // Skip routes that never render a page, so they do not need the headers. Unknown paths still need them for the not found page.
