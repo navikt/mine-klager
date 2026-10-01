@@ -1,14 +1,12 @@
 import { Heading, LocalAlert, Skeleton, VStack } from '@navikt/ds-react';
 import { LocalAlertContent, LocalAlertHeader, LocalAlertTitle } from '@navikt/ds-react/LocalAlert';
 import { trace } from '@opentelemetry/api';
-import { headers } from 'next/headers';
-import { unauthorized } from 'next/navigation';
 import { Disclaimer } from '@/app/[lang]/disclaimer';
 import { SakListItem } from '@/app/[lang]/list-item';
 import { ErrorId } from '@/components/error-id';
 import { MetricEvent } from '@/components/metrics';
 import { INSTANS } from '@/lib/dictionary';
-import { InternalServerError, UnauthorizedError } from '@/lib/errors';
+import { InternalServerError } from '@/lib/errors';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getSupportedSaker } from '@/lib/server/api';
 import { recordSpanError } from '@/lib/tracing';
@@ -24,7 +22,7 @@ const tracer = trace.getTracer('mine-klager');
 const CaseList = async ({ lang, context }: CaseListProps) =>
   tracer.startActiveSpan('CaseList', async (span) => {
     try {
-      const saker = await getSupportedSaker(await headers());
+      const saker = await getSupportedSaker();
 
       span.setAttribute('cases.count', saker.length);
 
@@ -44,10 +42,6 @@ const CaseList = async ({ lang, context }: CaseListProps) =>
         </>
       );
     } catch (error) {
-      if (error instanceof UnauthorizedError) {
-        return unauthorized();
-      }
-
       recordSpanError(span, error);
 
       if (error instanceof InternalServerError) {
