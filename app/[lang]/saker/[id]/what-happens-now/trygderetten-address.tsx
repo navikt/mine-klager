@@ -19,7 +19,9 @@ export const TrygderettenAddress = ({ lang }: TrygderettenAddressProps) => (
       iconPosition="right"
       className="flex"
     >
-      <address className="whitespace-pre text-left font-ax-font-family font-normal">{TRYGDERTETTEN_ADDRESS}</address>
+      <address className="font-(family-name:--ax-font-family) whitespace-pre text-left font-normal">
+        {TRYGDERTETTEN_ADDRESS}
+      </address>
     </Button>
   </Tooltip>
 );
