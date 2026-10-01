@@ -1,7 +1,7 @@
 import { trace } from '@opentelemetry/api';
 import { headers } from 'next/headers';
 import { getSakerResponse } from '@/lib/server/api';
-import { getDecoratorLanguage } from '@/lib/server/get-language';
+import { getLanguageFromHeaders } from '@/lib/server/get-language';
 import { recordSpanError } from '@/lib/tracing';
 import type { Translation } from '@/locales';
 
@@ -23,7 +23,7 @@ export async function GET() {
 
       span.setAttribute('response.status', 500);
 
-      const lang = await getDecoratorLanguage();
+      const lang = getLanguageFromHeaders(await headers());
 
       return new Response(UNKNOWN_ERROR[lang], { status: 500 });
     } finally {
