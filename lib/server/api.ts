@@ -50,13 +50,7 @@ export const getSupportedSak = cache(async (id: string): Promise<Sak | undefined
 
 // Fetch failures and non-OK statuses are logged by `getFromKabal`.
 const fetchSaker = async (): Promise<Sak[]> => {
-  let res: Response;
-
-  try {
-    res = await getSakerResponse(await getHeaders());
-  } catch (error) {
-    throw new InternalServerError(500, FAILED_TO_FETCH, { cause: error instanceof Error ? error : undefined });
-  }
+  const res = await fetchSakerResponse();
 
   if (!res.ok) {
     throw new InternalServerError(res.status, FAILED_TO_FETCH);
@@ -71,6 +65,15 @@ const fetchSaker = async (): Promise<Sak[]> => {
       error: error instanceof Error ? error.message : 'Unknown error',
     });
 
+    throw new InternalServerError(500, FAILED_TO_FETCH, { cause: error instanceof Error ? error : undefined });
+  }
+};
+
+const fetchSakerResponse = async (): Promise<Response> => {
+  try {
+    // `return await`, so fetch errors are caught here.
+    return await getSakerResponse(await getHeaders());
+  } catch (error) {
     throw new InternalServerError(500, FAILED_TO_FETCH, { cause: error instanceof Error ? error : undefined });
   }
 };
