@@ -4,8 +4,9 @@ import type { Audience } from '@/lib/types';
 
 const tracer = trace.getTracer('mine-klager');
 
-// Wonderwall autologin guarantees an active session before requests reach the app.
+// Wonderwall autologin and `proxy.ts` guarantee a valid token before requests reach the app.
 // Any failure here is therefore a server-side problem, not a logged out user.
+// The token is still validated here, so the data is protected even if the proxy matcher changes.
 export const getOboToken = async (audience: Audience, headers: Headers) =>
   tracer.startActiveSpan('getOboToken', async (span) => {
     try {
