@@ -30,6 +30,7 @@ const getDecorator = (language: Language) =>
         language,
         availableLanguages,
         logoutWarning: true,
+        redirectToApp: true,
         breadcrumbs: [
           {
             title: TITLE[language],
