@@ -61,9 +61,7 @@ const fetchSaker = async (): Promise<Sak[]> => {
 
     return saker;
   } catch (error) {
-    logger.error('Failed to parse cases from Kabal', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    logger.error('Failed to parse cases from Kabal', {}, error);
 
     throw new InternalServerError(500, FAILED_TO_FETCH, { cause: error instanceof Error ? error : undefined });
   }
