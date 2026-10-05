@@ -40,11 +40,7 @@ export const getFromKabal = async (url: string, incomingHeaders: Headers): Retur
     } catch (error) {
       recordSpanError(span, error);
 
-      logger.error('Failed to fetch from Kabal', {
-        url,
-        error: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
-      });
+      logger.error('Failed to fetch from Kabal', { url }, error);
 
       throw error;
     } finally {

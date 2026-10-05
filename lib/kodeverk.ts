@@ -61,10 +61,7 @@ const getYtelser = cache(async (lang: Language): Promise<Ytelse[]> => {
         throw error;
       }
 
-      logger.error('Failed to fetch kodeverk', {
-        error: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
-      });
+      logger.error('Failed to fetch kodeverk', {}, error);
 
       throw new InternalServerError(500, FAILED_TO_FETCH, {
         cause: error instanceof Error ? error : undefined,
