@@ -1,6 +1,5 @@
 import { BodyShort, InfoCard } from '@navikt/ds-react';
 import { InfoCardContent } from '@navikt/ds-react/InfoCard';
-import { UnavailableYtelser } from '@/app/[lang]/unavailable-ytelser';
 import { INSTANS } from '@/lib/dictionary';
 import { Language, type Translation } from '@/locales';
 
@@ -14,8 +13,7 @@ export const Disclaimer = ({ lang, className }: DisclaimerProps) => (
     <InfoCardContent>
       <BodyShort spacing>{FIRST_LINE[lang]}</BodyShort>
       <BodyShort spacing>{SECOND_LINE[lang]}</BodyShort>
-      <BodyShort spacing>{THIRD_LINE[lang]}</BodyShort>
-      <UnavailableYtelser lang={lang} />
+      <BodyShort>{THIRD_LINE[lang]}</BodyShort>
     </InfoCardContent>
   </InfoCard>
 );
@@ -33,7 +31,7 @@ const SECOND_LINE: Translation = {
 };
 
 const THIRD_LINE: Translation = {
-  [Language.NB]: `Du kan per nå dessverre ikke se saker hos ${INSTANS.klageinstans.nb} som gjelder ytelsene i listen under.`,
-  [Language.NN]: `Du kan per no dessverre ikkje sjå saker hos ${INSTANS.klageinstans.nn} som gjeld ytingane i lista under.`,
-  [Language.EN]: `You cannot currently see cases with ${INSTANS.klageinstans.en} related to the benefits in the list below.`,
+  [Language.NB]: `Du kan per nå dessverre ikke se saker hos ${INSTANS.klageinstans.nb} som gjelder lønnsgaranti, tvungen forvaltning eller bidrag.`,
+  [Language.NN]: `Du kan per no dessverre ikkje sjå saker hos ${INSTANS.klageinstans.nn} som gjeld lønsgaranti, tvungen forvalting eller bidrag.`,
+  [Language.EN]: `You cannot currently see cases with ${INSTANS.klageinstans.en} related to wage guarantee, sanctioned administration or child support.`,
 };
