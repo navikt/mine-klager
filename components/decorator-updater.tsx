@@ -2,15 +2,10 @@
 
 import { onBreadcrumbClick, onLanguageSelect, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import type { DecoratorLocale } from '@navikt/nav-dekoratoren-moduler/ssr';
-import { configureLogger } from '@navikt/next-logger';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { INSTANS } from '@/lib/dictionary';
 import { DEFAULT_LANGUAGE, isLanguage, Language, type Translation } from '@/locales';
-
-configureLogger({
-  apiPath: '/api/logger',
-});
 
 interface BreadcrumbsProps {
   lang: DecoratorLocale;
