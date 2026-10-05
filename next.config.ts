@@ -9,6 +9,8 @@ const PATHS: string[] = ['/saker/:id', INDEX_PATH];
 const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
+    // Nais runs with a read-only root filesystem, so `.next/cache` is not writable. Keep the cache in memory only.
+    isrFlushToDisk: false,
   },
   serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   assetPrefix: process.env.NODE_ENV === 'production' ? 'https://cdn.nav.no/klage/mine-klager' : undefined,
