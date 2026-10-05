@@ -1,55 +1,26 @@
-import { trace } from '@opentelemetry/api';
+import { logger } from '@navikt/next-logger';
 import { VERSION } from '@/lib/version';
 
-enum LogLevel {
-  DEBUG = 'debug',
-  INFO = 'info',
-  WARN = 'warn',
-  ERROR = 'error',
-}
-
-// Undefined values are omitted from the log line by `JSON.stringify`.
+// Undefined values are omitted from the log line by pino.
 type LoggerFn = (message: string, eventData?: Record<string, string | number | undefined>) => void;
 
-const getTraceContext = () => {
-  const span = trace.getActiveSpan();
+interface Logger {
+  debug: LoggerFn;
+  info: LoggerFn;
+  warn: LoggerFn;
+  error: LoggerFn;
+}
 
-  if (span === undefined) {
-    return { traceId: undefined, spanId: undefined };
-  }
+/**
+ * Logs single line JSON through pino. `trace_id` and `span_id` are added by `@navikt/next-logger`.
+ */
+export const getLogger = (module: string): Logger => {
+  const child = logger.child({ module, version: VERSION });
 
-  const { traceId, spanId } = span.spanContext();
-
-  return { traceId, spanId };
+  return {
+    debug: (message, eventData) => child.debug(eventData ?? {}, message),
+    info: (message, eventData) => child.info(eventData ?? {}, message),
+    warn: (message, eventData) => child.warn(eventData ?? {}, message),
+    error: (message, eventData) => child.error(eventData ?? {}, message),
+  };
 };
-
-export const getLogger = (module: string) => ({
-  debug: getLogLine(LogLevel.DEBUG, module),
-  info: getLogLine(LogLevel.INFO, module),
-  warn: getLogLine(LogLevel.WARN, module),
-  error: getLogLine(LogLevel.ERROR, module),
-});
-
-type GetLogLineFn = (level: LogLevel, module: string) => LoggerFn;
-
-const getLogLine: GetLogLineFn = (level, module) => (message, eventData) => {
-  const { traceId, spanId } = getTraceContext();
-
-  // biome-ignore lint/suspicious/noConsole: Logging
-  console[level](
-    JSON.stringify({
-      ...eventData,
-      level,
-      module,
-      message,
-      // biome-ignore lint/style/useNamingConvention: Logging format
-      trace_id: traceId,
-      // biome-ignore lint/style/useNamingConvention: Logging format
-      span_id: spanId,
-      version: VERSION,
-      '@timestamp': timestamp(),
-    }),
-  );
-};
-
-const timestamp = () => new Date().toISOString();

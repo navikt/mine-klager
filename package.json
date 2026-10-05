@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack | pino-pretty",
+    "dev": "next dev --turbopack | pino-pretty --messageKey=message",
     "build": "next build",
     "typecheck": "tsc --noEmit",
     "lint": "biome check"
