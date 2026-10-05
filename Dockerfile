@@ -17,4 +17,8 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
+# Patch `console` and Next's internal logger with `next-logger` before Next loads, so all logs are single line JSON.
+# Loading it in `instrumentation.ts` is too late for Next's internal logger, which is already referenced by then.
+# Part of the entrypoint, so overriding `CMD` does not drop it.
+ENTRYPOINT ["node", "--require", "next-logger"]
 CMD ["server.js"]

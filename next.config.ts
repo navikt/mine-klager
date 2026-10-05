@@ -12,7 +12,13 @@ const nextConfig: NextConfig = {
     // Nais runs with a read-only root filesystem, so `.next/cache` is not writable. Keep the cache in memory only.
     isrFlushToDisk: false,
   },
-  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
+  // `next-logger` is preloaded with `--require` (see `Dockerfile`), so it must be copied to the standalone output.
+  // `next-logger.config.js` is loaded at runtime and requires `@navikt/next-logger`. If bundled, it is not copied to the standalone output.
+  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream', 'next-logger', '@navikt/next-logger'],
+  // `next-logger` loads `next-logger.config.js` at runtime, so it must be included in the standalone output.
+  outputFileTracingIncludes: {
+    '/*': ['./next-logger.config.js'],
+  },
   assetPrefix: process.env.NODE_ENV === 'production' ? 'https://cdn.nav.no/klage/mine-klager' : undefined,
   output: 'standalone',
   poweredByHeader: false,
