@@ -39,7 +39,10 @@ const nextConfig: NextConfig = {
       })),
     ),
   rewrites: async () => ({
-    beforeFiles: [],
+    beforeFiles: [
+      // iOS and crawlers request the legacy precomposed icon. Serve the regular icon instead of a not found page.
+      { source: '/apple-touch-icon-precomposed.png', destination: '/apple-touch-icon.png' },
+    ],
     // Default no language prefix to default language prefix.
     afterFiles: PATHS.map<Rewrite>((path) => ({
       source: path,
