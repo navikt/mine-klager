@@ -24,6 +24,10 @@ spec:
     sidecar:
       enabled: true
       autoLogin: true
+      autoLoginIgnorePaths:
+        - /apple-touch-icon*.png
+        - /favicon.ico
+        - /robots.txt
   prometheus:
     enabled: true
     path: /metrics
