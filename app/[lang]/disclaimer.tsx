@@ -31,7 +31,7 @@ const SECOND_LINE: Translation = {
 };
 
 const THIRD_LINE: Translation = {
-  [Language.NB]: `Du kan per nå dessverre ikke se saker hos ${INSTANS.klageinstans.nb} som gjelder lønnsgaranti, tvungen forvaltning eller bidrag.`,
-  [Language.NN]: `Du kan per no dessverre ikkje sjå saker hos ${INSTANS.klageinstans.nn} som gjeld lønsgaranti, tvungen forvalting eller bidrag.`,
-  [Language.EN]: `You cannot currently see cases with ${INSTANS.klageinstans.en} related to wage guarantee, sanctioned administration or child support.`,
+  [Language.NB]: `Du kan per nå dessverre ikke se saker hos ${INSTANS.klageinstans.nb} som gjelder lønnsgaranti eller bidrag.`,
+  [Language.NN]: `Du kan per no dessverre ikkje sjå saker hos ${INSTANS.klageinstans.nn} som gjeld lønsgaranti eller bidrag.`,
+  [Language.EN]: `You cannot currently see cases with ${INSTANS.klageinstans.en} related to wage guarantee or child support.`,
 };
