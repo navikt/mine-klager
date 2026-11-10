@@ -10,11 +10,11 @@ export const EventIcon = ({ type }: EventIconProps) => {
 
   return (
     <div
-      className="relative z-0 shrink-0 grow-0 after:absolute after:top-10 after:bottom-2 after:left-1/2 after:-z-10 after:w-05 after:-translate-x-1/2 after:bg-ax-bg-neutral-soft after:transition-colors after:duration-200 after:content-['']"
+      className="after:w-05 after:bg-ax-bg-neutral-soft relative z-0 shrink-0 grow-0 after:absolute after:top-10 after:bottom-2 after:left-1/2 after:-z-10 after:-translate-x-1/2 after:transition-colors after:duration-200 after:content-['']"
       role="presentation"
       aria-hidden
     >
-      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-ax-bg-neutral-soft transition-colors duration-200 *:h-6 *:w-fit">
+      <div className="bg-ax-bg-neutral-soft flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-200 *:h-6 *:w-fit">
         <Icon />
       </div>
     </div>

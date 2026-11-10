@@ -19,7 +19,7 @@ export const TrygderettenAddress = ({ lang }: TrygderettenAddressProps) => (
       iconPosition="right"
       className="flex"
     >
-      <address className="font-(family-name:--ax-font-family) whitespace-pre text-left font-normal">
+      <address className="text-left font-(family-name:--ax-font-family) font-normal whitespace-pre">
         {TRYGDERTETTEN_ADDRESS}
       </address>
     </Button>

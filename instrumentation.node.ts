@@ -12,7 +12,7 @@ const sdk = new NodeSDK({
   resource: resourceFromAttributes({
     [ATTR_SERVICE_NAME]: 'mine-klager',
   }),
-  spanProcessor: new BatchSpanProcessor(new OTLPTraceExporter()),
+  spanProcessors: [new BatchSpanProcessor(new OTLPTraceExporter())],
   instrumentations: [
     new DnsInstrumentation(),
     new HttpInstrumentation(),
