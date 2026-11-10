@@ -32,7 +32,7 @@ export const WhatHappensNow = ({ lastEvent, lang, context }: WhatHappensProps) =
         padding="space-16"
         background="neutral-soft"
         width="fit-content"
-        className="transition-colors duration-200 hover:bg-ax-bg-neutral-moderate-hoverA"
+        className="hover:bg-ax-bg-neutral-moderate-hoverA transition-colors duration-200"
       >
         <VStack gap="space-16">
           <div>

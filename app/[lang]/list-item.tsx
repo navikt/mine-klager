@@ -37,7 +37,7 @@ export const SakListItem = async ({ sak, lang, context }: SakListItemProps) => {
         >
           <MeasuredLink
             href={`${pathPrefix}/saker/${id}`}
-            className="rounded-[inherit] border-2 border-transparent text-(--ax-text-neutral) no-underline focus:border-ax-border-focus focus:outline-none"
+            className="focus:border-ax-border-focus rounded-[inherit] border-2 border-transparent text-(--ax-text-neutral) no-underline focus:outline-none"
             context={context}
           >
             <CaseIcon

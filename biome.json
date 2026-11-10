@@ -46,7 +46,11 @@
       },
       "nursery": {
         "useExplicitType": "off",
-        "useSortedClasses": { "level": "on", "fix": "safe", "options": {} }
+        "useTailwindSortedClasses": {
+          "level": "on",
+          "fix": "safe",
+          "options": {}
+        }
       },
       "correctness": {
         "useImportExtensions": "off",
@@ -61,28 +65,64 @@
             "strictCase": true,
             "requireAscii": false,
             "conventions": [
-              { "selector": { "kind": "enumMember" }, "formats": ["CONSTANT_CASE"] },
+              {
+                "selector": { "kind": "enumMember" },
+                "formats": ["CONSTANT_CASE"]
+              },
               {
                 "selector": { "kind": "function", "scope": "global" },
                 "formats": ["camelCase", "PascalCase", "CONSTANT_CASE"]
               },
-              { "selector": { "kind": "function" }, "formats": ["camelCase", "PascalCase"] },
+              {
+                "selector": { "kind": "function" },
+                "formats": ["camelCase", "PascalCase"]
+              },
               { "selector": { "kind": "class" }, "formats": ["PascalCase"] },
-              { "selector": { "kind": "interface" }, "formats": ["PascalCase"] },
-              { "selector": { "kind": "typeAlias" }, "formats": ["PascalCase"] },
-              { "selector": { "kind": "typeParameter" }, "formats": ["PascalCase"] },
+              {
+                "selector": { "kind": "interface" },
+                "formats": ["PascalCase"]
+              },
+              {
+                "selector": { "kind": "typeAlias" },
+                "formats": ["PascalCase"]
+              },
+              {
+                "selector": { "kind": "typeParameter" },
+                "formats": ["PascalCase"]
+              },
               {
                 "selector": { "kind": "const", "scope": "global" },
                 "formats": ["CONSTANT_CASE", "camelCase", "PascalCase"]
               },
-              { "selector": { "kind": "const" }, "formats": ["camelCase", "PascalCase"] },
+              {
+                "selector": { "kind": "const" },
+                "formats": ["camelCase", "PascalCase"]
+              },
               { "selector": { "kind": "enum" }, "formats": ["PascalCase"] },
-              { "selector": { "kind": "catchParameter" }, "formats": ["camelCase"] },
-              { "selector": { "kind": "classMember" }, "formats": ["camelCase"] },
-              { "selector": { "kind": "typeMember" }, "formats": ["camelCase"] },
-              { "selector": { "kind": "functionParameter" }, "formats": ["camelCase"] },
-              { "selector": { "kind": "namespaceLike" }, "formats": ["PascalCase"] },
-              { "selector": { "kind": "importAlias" }, "formats": ["PascalCase", "camelCase", "CONSTANT_CASE"] },
+              {
+                "selector": { "kind": "catchParameter" },
+                "formats": ["camelCase"]
+              },
+              {
+                "selector": { "kind": "classMember" },
+                "formats": ["camelCase"]
+              },
+              {
+                "selector": { "kind": "typeMember" },
+                "formats": ["camelCase"]
+              },
+              {
+                "selector": { "kind": "functionParameter" },
+                "formats": ["camelCase"]
+              },
+              {
+                "selector": { "kind": "namespaceLike" },
+                "formats": ["PascalCase"]
+              },
+              {
+                "selector": { "kind": "importAlias" },
+                "formats": ["PascalCase", "camelCase", "CONSTANT_CASE"]
+              },
               { "selector": { "kind": "any" }, "formats": ["camelCase"] }
             ]
           }
@@ -103,7 +143,10 @@
         "useConsistentCurlyBraces": "off"
       },
       "suspicious": {
-        "noConsole": { "level": "warn", "options": { "allow": ["debug", "info", "warn", "error"] } },
+        "noConsole": {
+          "level": "warn",
+          "options": { "allow": ["debug", "info", "warn", "error"] }
+        },
         "noReactSpecificProps": "off",
         "noEmptyBlockStatements": "warn",
         "noFocusedTests": "error",
@@ -111,14 +154,22 @@
       },
       "complexity": {
         "useSimplifiedLogicExpression": "error",
-        "noExcessiveCognitiveComplexity": { "level": "warn", "options": { "maxAllowedComplexity": 25 } },
+        "noExcessiveCognitiveComplexity": {
+          "level": "warn",
+          "options": { "maxAllowedComplexity": 25 }
+        },
         "noUselessFragments": { "level": "on", "fix": "safe", "options": {} }
       }
     }
   },
   "formatter": { "enabled": true, "lineWidth": 120, "indentStyle": "space" },
   "javascript": {
-    "formatter": { "enabled": true, "quoteStyle": "single", "arrowParentheses": "always", "bracketSameLine": false },
+    "formatter": {
+      "enabled": true,
+      "quoteStyle": "single",
+      "arrowParentheses": "always",
+      "bracketSameLine": false
+    },
     "linter": { "enabled": true }
   },
   "json": {
@@ -148,6 +199,6 @@
     "assist": { "enabled": true }
   },
   "files": {
-    "includes": ["**", "!**/*.css", "!**/dist", "!**/.next"]
+    "includes": ["**", "!**/dist", "!**/.next", "!nais/**/*.yaml"]
   }
 }
