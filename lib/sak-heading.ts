@@ -1,7 +1,8 @@
 import { INSTANS } from '@/lib/dictionary';
-import { getYtelseName } from '@/lib/kodeverk';
+import { formatInnsendingsytelser } from '@/lib/format-innsendingsytelser';
+import { getInnsendingsytelserByIds } from '@/lib/kodeverk';
 import { CaseType } from '@/lib/types';
-import { Language, type Translation } from '@/locales';
+import type { Language, Translation } from '@/locales';
 
 const KLAGE_PREFIX: Translation = {
   nb: 'Klage som gjelder',
@@ -35,25 +36,12 @@ const PREFIX: Record<CaseType, Translation> = {
   [CaseType.ANKE_AFTER_2027]: ANKE_PREFIX,
 };
 
-export const getSakHeading = async (type: CaseType, innsendingsytelseId: string | null, lang: Language) => {
-  if (innsendingsytelseId === null) {
-    return `${PREFIX[type][lang]} «${UNKNOWN[lang]}»`;
-  }
+export const getSakHeading = async (type: CaseType, innsendingsytelseIdList: string[], lang: Language) => {
+  const ytelser = await getInnsendingsytelserByIds(innsendingsytelseIdList, lang);
+  const formattedYtelser = formatInnsendingsytelser(
+    ytelser.map((ytelse) => ytelse.navn),
+    lang,
+  );
 
-  let ytelseName: string;
-
-  try {
-    ytelseName = await getYtelseName(innsendingsytelseId, lang);
-  } catch {
-    // Already logged by `getYtelser`.
-    ytelseName = innsendingsytelseId;
-  }
-
-  return `${PREFIX[type][lang]} «${ytelseName}»`;
-};
-
-const UNKNOWN: Translation = {
-  [Language.NB]: 'ukjent ytelse',
-  [Language.NN]: 'ukjend yting',
-  [Language.EN]: 'unknown benefit',
+  return `${PREFIX[type][lang]} ${formattedYtelser}`;
 };

@@ -24,6 +24,19 @@ export const getYtelseName = cache(async (innsendingsytelseId: string, lang: Lan
   return response.find((ytelse) => ytelse.id === innsendingsytelseId)?.navn ?? innsendingsytelseId;
 });
 
+export const getInnsendingsytelserByIds = async (ids: string[], lang: Language): Promise<Ytelse[]> => {
+  if (ids.length === 0) {
+    return [];
+  }
+
+  try {
+    const ytelser = await getYtelser(lang);
+    return ids.map((id) => ({ id, navn: ytelser.find((ytelse) => ytelse.id === id)?.navn ?? id }));
+  } catch {
+    return ids.map((id) => ({ id, navn: id }));
+  }
+};
+
 /**
  * Cached per request, so a case list fetches and logs failures once, not once per case.
  * The response is also cached across requests, since ytelser rarely change. Next only caches status 200.
