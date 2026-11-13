@@ -4,12 +4,12 @@
 version: 'v0.0.3'
 workflows:
     '.github/workflows/deploy-to-dev.yaml':
-        - 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1'
+        - 'actions/checkout@v7.0.1'
         - 'nais/deploy@1de80da70ad26556ecdc5964a8b7ec3bbed98120'
         - 'nais/deploy@9850be311389ca754d9a9f2280615419d738c891'
         - 'nais/docker-build-push@423a915c9b72edf2ba848b88171ccb0489e2a40a'
         - 'navikt/mine-klager-e2e-tests@main'
-        - 'oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6'
+        - 'oven-sh/setup-bun@v2.2.0'
     '.github/workflows/deploy-to-prod.yaml':
         - 'actions/checkout@v7.0.1'
         - 'nais/deploy@9850be311389ca754d9a9f2280615419d738c891'
