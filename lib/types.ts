@@ -76,7 +76,6 @@ export interface Sak {
   /**
    * Practically impossible for this to be `null`.
    */
-  innsendingsytelseId: string | null;
   innsendingsytelseIdList: string[];
   events: SakEvent[];
   varsletBehandlingstid: Frist | null;

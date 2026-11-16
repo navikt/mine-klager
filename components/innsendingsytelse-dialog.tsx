@@ -22,21 +22,19 @@ export const InnsendingsytelseDialog = ({ triggerText, options, eventName, conte
           <Dialog.Title>Velg innsendingsytelse</Dialog.Title>
         </Dialog.Header>
         <Dialog.Body>
-          <div>
-            {options.map((option) => (
-              <ButtonLink
-                key={option.href}
-                variant="secondary"
-                href={option.href}
-                openInNewTab
-                component="actions"
-                eventName={eventName}
-                context={context}
-              >
-                {option.navn}
-              </ButtonLink>
-            ))}
-          </div>
+          {options.map((option) => (
+            <ButtonLink
+              key={option.href}
+              variant="secondary"
+              href={option.href}
+              openInNewTab
+              component="actions"
+              eventName={eventName}
+              context={context}
+            >
+              {option.navn}
+            </ButtonLink>
+          ))}
         </Dialog.Body>
       </Dialog.Popup>
     </Dialog>

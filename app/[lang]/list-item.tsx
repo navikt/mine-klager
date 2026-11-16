@@ -17,8 +17,8 @@ interface SakListItemProps {
 }
 
 export const SakListItem = async ({ sak, lang, context }: SakListItemProps) => {
-  const { id, typeId, saksnummer, events, innsendingsytelseId } = sak;
-
+  const { id, typeId, saksnummer, events, innsendingsytelseIdList } = sak;
+  const innsendingsytelseId = innsendingsytelseIdList[0] ?? null;
   const heading = await getSakHeading(typeId, innsendingsytelseId, lang);
   const lastEvent = events.at(-1);
 

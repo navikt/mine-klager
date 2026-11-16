@@ -29,7 +29,7 @@ export const Appeal = async ({ sak, lang, context }: AppealProps) => {
   return (
     <ButtonLink
       variant="primary"
-      href={getAppealLink(sak.innsendingsytelseId ?? sak.innsendingsytelseIdList[0] ?? null, sak.saksnummer, lang)}
+      href={getAppealLink(sak.innsendingsytelseIdList[0] ?? null, sak.saksnummer, lang)}
       openInNewTab
       eventName="send-anke"
       component="actions"

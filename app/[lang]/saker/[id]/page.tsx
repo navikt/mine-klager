@@ -63,8 +63,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       };
     }
 
-    const { innsendingsytelseId, saksnummer } = sak;
-
+    const { innsendingsytelseIdList, saksnummer } = sak;
+    const innsendingsytelseId = innsendingsytelseIdList[0] ?? null;
     const ytelseName = innsendingsytelseId === null ? UNKNOWN[lang] : await getYtelseName(innsendingsytelseId, lang);
 
     return {
@@ -127,7 +127,8 @@ export default async function SakPage({ params }: Props) {
   }
 
   const { sak, heading } = result;
-  const { typeId, saksnummer, events, innsendingsytelseId } = sak;
+  const { typeId, saksnummer, events, innsendingsytelseIdList } = sak;
+  const innsendingsytelseId = innsendingsytelseIdList[0] ?? null;
   const path = await getCurrentPath();
 
   const lastEvent = events.at(-1);
@@ -215,7 +216,8 @@ const loadSak = async (id: string, lang: Language) =>
         return { status: LoadSakStatus.NOT_FOUND };
       }
 
-      const heading = await getSakHeading(sak.typeId, sak.innsendingsytelseId, lang);
+      const innsendingsytelseId = sak.innsendingsytelseIdList[0] ?? null;
+      const heading = await getSakHeading(sak.typeId, innsendingsytelseId, lang);
 
       span.setAttribute('sak.found', true);
       span.setAttribute('sak.typeId', sak.typeId);

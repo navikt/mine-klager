@@ -54,12 +54,7 @@ const EttersendDokumentasjon = async ({
   return (
     <ButtonLink
       variant="primary"
-      href={getEttersendelseLink(
-        sak.innsendingsytelseId ?? sak.innsendingsytelseIdList[0] ?? null,
-        sak.saksnummer,
-        lang,
-        caseType,
-      )}
+      href={getEttersendelseLink(sak.innsendingsytelseIdList[0] ?? null, sak.saksnummer, lang, caseType)}
       openInNewTab
       eventName={eventName}
       component="actions"
