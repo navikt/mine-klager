@@ -22,7 +22,13 @@ export const Appeal = async ({ sak, lang, context }: AppealProps) => {
       href: getAppealLink(ytelse.id, sak.saksnummer, lang),
     }));
     return (
-      <InnsendingsytelseDialog triggerText={APPEAL[lang]} options={options} eventName="send-anke" context={context} />
+      <InnsendingsytelseDialog
+        lang={lang}
+        triggerText={APPEAL[lang]}
+        options={options}
+        eventName="send-anke"
+        context={context}
+      />
     );
   }
 

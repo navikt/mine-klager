@@ -7,7 +7,7 @@ import type { MetricsContextData } from '@/lib/metrics';
 import type { Sak, SakEvent } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
-enum CaseTypeEnum {
+export enum CaseTypeEnum {
   KLAGE = 'klage',
   ANKE = 'anke',
 }
@@ -43,6 +43,7 @@ const EttersendDokumentasjon = async ({
     }));
     return (
       <InnsendingsytelseDialog
+        lang={lang}
         triggerText={ETTERSEND_DOKUMENTASJON[lang]}
         options={options}
         eventName={eventName}

@@ -13,7 +13,8 @@ import { MetricEvent } from '@/components/metrics';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { VarsletFrist } from '@/components/varslet-frist';
 import { InternalServerError } from '@/lib/errors';
-import { getYtelseName } from '@/lib/kodeverk';
+import { formatInnsendingsytelser } from '@/lib/format-innsendingsytelser';
+import { getInnsendingsytelserByIds } from '@/lib/kodeverk';
 import { getLogger } from '@/lib/logger';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getSakHeading } from '@/lib/sak-heading';
@@ -64,8 +65,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 
     const { innsendingsytelseIdList, saksnummer } = sak;
-    const innsendingsytelseId = innsendingsytelseIdList[0] ?? null;
-    const ytelseName = innsendingsytelseId === null ? UNKNOWN[lang] : await getYtelseName(innsendingsytelseId, lang);
+    const ytelser = await getInnsendingsytelserByIds(innsendingsytelseIdList, lang);
+    const formattedYtelser = formatInnsendingsytelser(
+      ytelser.map((ytelse) => ytelse.navn),
+      lang,
+    );
+    const ytelseName = formattedYtelser === '' ? `«${UNKNOWN[lang]}»` : formattedYtelser;
 
     return {
       title: `${saksnummer} - ${ytelseName}`,
@@ -216,8 +221,7 @@ const loadSak = async (id: string, lang: Language) =>
         return { status: LoadSakStatus.NOT_FOUND };
       }
 
-      const innsendingsytelseId = sak.innsendingsytelseIdList[0] ?? null;
-      const heading = await getSakHeading(sak.typeId, innsendingsytelseId, lang);
+      const heading = await getSakHeading(sak.typeId, sak.innsendingsytelseIdList ?? null, lang);
 
       span.setAttribute('sak.found', true);
       span.setAttribute('sak.typeId', sak.typeId);

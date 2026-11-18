@@ -12,6 +12,7 @@ interface ButtonLinkProps {
   eventName: string;
   component: string;
   context: MetricsContextData;
+  className?: string;
 }
 
 export const ButtonLink = ({
@@ -22,8 +23,10 @@ export const ButtonLink = ({
   eventName,
   component,
   context,
+  className,
 }: ButtonLinkProps) => (
   <Button
+    className={className}
     role="link"
     icon={openInNewTab ? <ExternalLinkIcon aria-hidden /> : undefined}
     variant={variant}
