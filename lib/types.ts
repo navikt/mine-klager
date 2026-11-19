@@ -68,11 +68,6 @@ export const CASE_TYPE_NAMES: Record<CaseType, string> = {
   [CaseType.ANKE_AFTER_2027]: 'anke',
 };
 
-export enum CaseTypeEnum {
-  KLAGE = 'klage',
-  ANKE = 'anke',
-}
-
 export interface Sak {
   id: string;
   typeId: CaseType;

@@ -4,8 +4,13 @@ import { getNavKlageUrl } from '@/lib/get-nav-klage-url';
 import { KLANG_DOMAIN } from '@/lib/klang';
 import { getInnsendingsytelserByIds } from '@/lib/kodeverk';
 import type { MetricsContextData } from '@/lib/metrics';
-import { CaseTypeEnum, type Sak, type SakEvent } from '@/lib/types';
+import type { Sak, SakEvent } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
+
+enum CaseTypeEnum {
+  KLAGE = 'klage',
+  ANKE = 'anke',
+}
 
 interface EttersendDokumentasjonProps {
   sak: Sak;
@@ -43,7 +48,7 @@ const EttersendDokumentasjon = async ({
         options={options}
         eventName={eventName}
         context={context}
-        caseType={caseType}
+        title={ETTERSEND_DOKUMENTASJON_DIALOG_TITLE[lang]}
       />
     );
   }
@@ -87,4 +92,10 @@ const ETTERSEND_DOKUMENTASJON: Translation = {
   [Language.NB]: 'Ettersend dokumentasjon',
   [Language.NN]: 'Ettersend dokumentasjon',
   [Language.EN]: 'Submit additional documentation',
+};
+
+const ETTERSEND_DOKUMENTASJON_DIALOG_TITLE: Translation = {
+  [Language.NB]: 'Velg hva ettersendelsen gjelder',
+  [Language.NN]: 'Velg kva ettersendinga gjeld',
+  [Language.EN]: 'Select what the additional documentation is about',
 };

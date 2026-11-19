@@ -3,7 +3,8 @@ import { Language } from '@/locales';
 
 const NAV_DOMAIN = isDeployedToProd ? 'https://www.nav.no' : 'https://www.ansatt.dev.nav.no';
 
-export const getNavUrl = (lang: Language): string => {
+export const getNavUrl = (path: string, lang: Language): string => {
   const language = lang === Language.NB ? '' : `/${lang}`;
-  return `${NAV_DOMAIN}/${language}`;
+
+  return `${NAV_DOMAIN}/${path}${language}`;
 };

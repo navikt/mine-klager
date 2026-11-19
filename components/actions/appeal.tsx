@@ -4,7 +4,7 @@ import { getNavKlageUrl } from '@/lib/get-nav-klage-url';
 import { KLANG_DOMAIN } from '@/lib/klang';
 import { getInnsendingsytelserByIds } from '@/lib/kodeverk';
 import type { MetricsContextData } from '@/lib/metrics';
-import { CaseTypeEnum, type Sak } from '@/lib/types';
+import type { Sak } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
 interface AppealProps {
@@ -28,7 +28,7 @@ export const Appeal = async ({ sak, lang, context }: AppealProps) => {
         options={options}
         eventName="send-anke"
         context={context}
-        caseType={CaseTypeEnum.ANKE}
+        title={APPEAL_DIALOG_TITLE[lang]}
       />
     );
   }
@@ -59,4 +59,10 @@ const APPEAL: Translation = {
   [Language.NB]: 'Send anke på klagevedtak',
   [Language.NN]: 'Send anke på klagevedtak',
   [Language.EN]: 'Appeal the complaint decision',
+};
+
+const APPEAL_DIALOG_TITLE: Translation = {
+  [Language.NB]: 'Velg hva du vil anke på',
+  [Language.NN]: 'Velg kva du vil anke på',
+  [Language.EN]: 'Select what you want to appeal',
 };
