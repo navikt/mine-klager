@@ -14,11 +14,12 @@ export const formatInnsendingsytelser = (innsendingsytelser: string[], lang: Lan
   }
 
   const quotedYtelser = innsendingsytelser.map(addQuotes);
-  const or = OR_BY_LANGUAGE[lang];
 
   if (quotedYtelser.length === 1) {
     return quotedYtelser.join('');
   }
+
+  const or = OR_BY_LANGUAGE[lang];
 
   if (quotedYtelser.length === 2) {
     return quotedYtelser.join(` ${or} `);

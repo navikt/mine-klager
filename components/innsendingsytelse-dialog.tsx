@@ -4,6 +4,7 @@ import { BodyLong, Button, Dialog, Link } from '@navikt/ds-react';
 import { ButtonLink } from '@/components/button-link';
 import { getNavUrl } from '@/lib/get-nav-url';
 import type { MetricsContextData } from '@/lib/metrics';
+import type { CaseTypeEnum } from '@/lib/types';
 import type { Language } from '@/locales';
 
 interface InnsendingsytelseDialogProps {
@@ -12,6 +13,7 @@ interface InnsendingsytelseDialogProps {
   eventName: string;
   context: MetricsContextData;
   lang: Language;
+  caseType: CaseTypeEnum;
 }
 
 export const InnsendingsytelseDialog = ({
@@ -20,6 +22,7 @@ export const InnsendingsytelseDialog = ({
   eventName,
   context,
   lang,
+  caseType,
 }: InnsendingsytelseDialogProps) => {
   return (
     <Dialog>
@@ -28,7 +31,7 @@ export const InnsendingsytelseDialog = ({
       </Dialog.Trigger>
       <Dialog.Popup width="small">
         <Dialog.Header>
-          <Dialog.Title>Velg hva du vil klage/anke på</Dialog.Title>
+          <Dialog.Title>Velg hva du vil {caseType} på</Dialog.Title>
         </Dialog.Header>
         <Dialog.Body className="flex flex-col gap-4">
           <BodyLong>

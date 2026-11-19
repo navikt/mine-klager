@@ -4,13 +4,8 @@ import { getNavKlageUrl } from '@/lib/get-nav-klage-url';
 import { KLANG_DOMAIN } from '@/lib/klang';
 import { getInnsendingsytelserByIds } from '@/lib/kodeverk';
 import type { MetricsContextData } from '@/lib/metrics';
-import type { Sak, SakEvent } from '@/lib/types';
+import { CaseTypeEnum, type Sak, type SakEvent } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
-
-export enum CaseTypeEnum {
-  KLAGE = 'klage',
-  ANKE = 'anke',
-}
 
 interface EttersendDokumentasjonProps {
   sak: Sak;
@@ -48,6 +43,7 @@ const EttersendDokumentasjon = async ({
         options={options}
         eventName={eventName}
         context={context}
+        caseType={caseType}
       />
     );
   }
@@ -55,7 +51,7 @@ const EttersendDokumentasjon = async ({
   return (
     <ButtonLink
       variant="primary"
-      href={getEttersendelseLink(sak.innsendingsytelseIdList[0] ?? null, sak.saksnummer, lang, caseType)}
+      href={getEttersendelseLink(sak.innsendingsytelseIdList[0], sak.saksnummer, lang, caseType)}
       openInNewTab
       eventName={eventName}
       component="actions"
@@ -67,12 +63,12 @@ const EttersendDokumentasjon = async ({
 };
 
 const getEttersendelseLink = (
-  innsendingsytelseId: string | null,
+  innsendingsytelseId: string | undefined,
   saksnummmer: string,
   lang: Language,
   caseType: CaseTypeEnum,
 ) => {
-  if (innsendingsytelseId === null) {
+  if (innsendingsytelseId === undefined) {
     return getNavKlageUrl(lang);
   }
 

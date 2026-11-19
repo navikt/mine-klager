@@ -133,7 +133,7 @@ export default async function SakPage({ params }: Props) {
 
   const { sak, heading } = result;
   const { typeId, saksnummer, events, innsendingsytelseIdList } = sak;
-  const innsendingsytelseId = innsendingsytelseIdList[0] ?? null;
+  const innsendingsytelseId = innsendingsytelseIdList[0];
   const path = await getCurrentPath();
 
   const lastEvent = events.at(-1);
@@ -221,7 +221,7 @@ const loadSak = async (id: string, lang: Language) =>
         return { status: LoadSakStatus.NOT_FOUND };
       }
 
-      const heading = await getSakHeading(sak.typeId, sak.innsendingsytelseIdList ?? null, lang);
+      const heading = await getSakHeading(sak.typeId, sak.innsendingsytelseIdList, lang);
 
       span.setAttribute('sak.found', true);
       span.setAttribute('sak.typeId', sak.typeId);

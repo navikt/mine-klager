@@ -4,7 +4,7 @@ import { getNavKlageUrl } from '@/lib/get-nav-klage-url';
 import { KLANG_DOMAIN } from '@/lib/klang';
 import { getInnsendingsytelserByIds } from '@/lib/kodeverk';
 import type { MetricsContextData } from '@/lib/metrics';
-import type { Sak } from '@/lib/types';
+import { CaseTypeEnum, type Sak } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
 interface AppealProps {
@@ -28,6 +28,7 @@ export const Appeal = async ({ sak, lang, context }: AppealProps) => {
         options={options}
         eventName="send-anke"
         context={context}
+        caseType={CaseTypeEnum.ANKE}
       />
     );
   }
@@ -35,7 +36,7 @@ export const Appeal = async ({ sak, lang, context }: AppealProps) => {
   return (
     <ButtonLink
       variant="primary"
-      href={getAppealLink(sak.innsendingsytelseIdList[0] ?? null, sak.saksnummer, lang)}
+      href={getAppealLink(sak.innsendingsytelseIdList[0], sak.saksnummer, lang)}
       openInNewTab
       eventName="send-anke"
       component="actions"
@@ -46,8 +47,8 @@ export const Appeal = async ({ sak, lang, context }: AppealProps) => {
   );
 };
 
-const getAppealLink = (innsendingsytelseId: string | null, saksnummmer: string, lang: Language) => {
-  if (innsendingsytelseId === null) {
+const getAppealLink = (innsendingsytelseId: string | undefined, saksnummmer: string, lang: Language) => {
+  if (innsendingsytelseId === undefined) {
     return getNavKlageUrl(lang);
   }
 

@@ -36,8 +36,8 @@ const PREFIX: Record<CaseType, Translation> = {
   [CaseType.ANKE_AFTER_2027]: ANKE_PREFIX,
 };
 
-export const getSakHeading = async (type: CaseType, innsendingsytelseIdList: string[] | null, lang: Language) => {
-  if (innsendingsytelseIdList === null || innsendingsytelseIdList.length === 0) {
+export const getSakHeading = async (type: CaseType, innsendingsytelseIdList: string[], lang: Language) => {
+  if (innsendingsytelseIdList.length === 0) {
     return `${PREFIX[type][lang]} «${UNKNOWN[lang]}»`;
   }
 
