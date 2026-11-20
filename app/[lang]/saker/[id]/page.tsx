@@ -133,7 +133,6 @@ export default async function SakPage({ params }: Props) {
 
   const { sak, heading } = result;
   const { typeId, saksnummer, events, innsendingsytelseIdList } = sak;
-  const innsendingsytelseId = innsendingsytelseIdList[0];
   const path = await getCurrentPath();
 
   const lastEvent = events.at(-1);
@@ -145,7 +144,7 @@ export default async function SakPage({ params }: Props) {
     lang,
     path,
     page: 'sak',
-    ytelse: innsendingsytelseId ?? 'UNKNOWN',
+    ytelse: innsendingsytelseIdList.length === 0 ? 'UNKNOWN' : innsendingsytelseIdList.join(', '),
     type: CASE_TYPE_NAMES[typeId],
   };
 

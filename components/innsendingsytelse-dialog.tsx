@@ -8,7 +8,7 @@ import { Language, type Translation } from '@/locales';
 
 interface InnsendingsytelseDialogProps {
   triggerText: string;
-  options: { navn: string; href: string }[];
+  options: { id: string; navn: string; href: string }[];
   eventName: string;
   context: MetricsContextData;
   lang: Language;
@@ -44,7 +44,7 @@ export const InnsendingsytelseDialog = ({
               openInNewTab
               component="actions"
               eventName={eventName}
-              context={context}
+              context={{ ...context, ytelse: option.id }}
             >
               {option.navn}
             </ButtonLink>

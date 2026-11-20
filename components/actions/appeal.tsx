@@ -18,6 +18,7 @@ export const Appeal = async ({ sak, lang, context }: AppealProps) => {
     const ytelser = await getInnsendingsytelserByIds(sak.innsendingsytelseIdList, lang);
 
     const options = ytelser.map((ytelse) => ({
+      id: ytelse.id,
       navn: ytelse.navn,
       href: getAppealLink(ytelse.id, sak.saksnummer, lang),
     }));

@@ -38,6 +38,7 @@ const EttersendDokumentasjon = async ({
     const ytelser = await getInnsendingsytelserByIds(sak.innsendingsytelseIdList, lang);
 
     const options = ytelser.map((ytelse) => ({
+      id: ytelse.id,
       navn: ytelse.navn,
       href: getEttersendelseLink(ytelse.id, sak.saksnummer, lang, caseType),
     }));
