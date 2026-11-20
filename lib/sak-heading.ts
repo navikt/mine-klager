@@ -1,5 +1,6 @@
 import { INSTANS } from '@/lib/dictionary';
-import { getYtelseName } from '@/lib/kodeverk';
+import { formatInnsendingsytelser } from '@/lib/format-innsendingsytelser';
+import { getInnsendingsytelserByIds } from '@/lib/kodeverk';
 import { CaseType } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
 
@@ -35,21 +36,18 @@ const PREFIX: Record<CaseType, Translation> = {
   [CaseType.ANKE_AFTER_2027]: ANKE_PREFIX,
 };
 
-export const getSakHeading = async (type: CaseType, innsendingsytelseId: string | null, lang: Language) => {
-  if (innsendingsytelseId === null) {
+export const getSakHeading = async (type: CaseType, innsendingsytelseIdList: string[], lang: Language) => {
+  if (innsendingsytelseIdList.length === 0) {
     return `${PREFIX[type][lang]} «${UNKNOWN[lang]}»`;
   }
 
-  let ytelseName: string;
+  const ytelser = await getInnsendingsytelserByIds(innsendingsytelseIdList, lang);
+  const formattedYtelser = formatInnsendingsytelser(
+    ytelser.map((ytelse) => ytelse.navn),
+    lang,
+  );
 
-  try {
-    ytelseName = await getYtelseName(innsendingsytelseId, lang);
-  } catch {
-    // Already logged by `getYtelser`.
-    ytelseName = innsendingsytelseId;
-  }
-
-  return `${PREFIX[type][lang]} «${ytelseName}»`;
+  return `${PREFIX[type][lang]} ${formattedYtelser}`;
 };
 
 const UNKNOWN: Translation = {

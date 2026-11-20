@@ -13,7 +13,8 @@ import { MetricEvent } from '@/components/metrics';
 import { ReceivedKlageinstans } from '@/components/received-klageinstans';
 import { VarsletFrist } from '@/components/varslet-frist';
 import { InternalServerError } from '@/lib/errors';
-import { getYtelseName } from '@/lib/kodeverk';
+import { formatInnsendingsytelser } from '@/lib/format-innsendingsytelser';
+import { getInnsendingsytelserByIds } from '@/lib/kodeverk';
 import { getLogger } from '@/lib/logger';
 import type { MetricsContextData } from '@/lib/metrics';
 import { getSakHeading } from '@/lib/sak-heading';
@@ -63,9 +64,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       };
     }
 
-    const { innsendingsytelseId, saksnummer } = sak;
-
-    const ytelseName = innsendingsytelseId === null ? UNKNOWN[lang] : await getYtelseName(innsendingsytelseId, lang);
+    const { innsendingsytelseIdList, saksnummer } = sak;
+    const ytelser = await getInnsendingsytelserByIds(innsendingsytelseIdList, lang);
+    const formattedYtelser = formatInnsendingsytelser(
+      ytelser.map((ytelse) => ytelse.navn),
+      lang,
+    );
+    const ytelseName = formattedYtelser === '' ? `«${UNKNOWN[lang]}»` : formattedYtelser;
 
     return {
       title: `${saksnummer} - ${ytelseName}`,
@@ -127,7 +132,7 @@ export default async function SakPage({ params }: Props) {
   }
 
   const { sak, heading } = result;
-  const { typeId, saksnummer, events, innsendingsytelseId } = sak;
+  const { typeId, saksnummer, events, innsendingsytelseIdList } = sak;
   const path = await getCurrentPath();
 
   const lastEvent = events.at(-1);
@@ -139,7 +144,7 @@ export default async function SakPage({ params }: Props) {
     lang,
     path,
     page: 'sak',
-    ytelse: innsendingsytelseId ?? 'UNKNOWN',
+    ytelse: innsendingsytelseIdList.length === 0 ? 'UNKNOWN' : innsendingsytelseIdList.join(', '),
     type: CASE_TYPE_NAMES[typeId],
   };
 
@@ -215,7 +220,7 @@ const loadSak = async (id: string, lang: Language) =>
         return { status: LoadSakStatus.NOT_FOUND };
       }
 
-      const heading = await getSakHeading(sak.typeId, sak.innsendingsytelseId, lang);
+      const heading = await getSakHeading(sak.typeId, sak.innsendingsytelseIdList, lang);
 
       span.setAttribute('sak.found', true);
       span.setAttribute('sak.typeId', sak.typeId);

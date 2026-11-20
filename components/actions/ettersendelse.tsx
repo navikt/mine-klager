@@ -1,6 +1,8 @@
 import { ButtonLink } from '@/components/button-link';
+import { InnsendingsytelseDialog } from '@/components/innsendingsytelse-dialog';
 import { getNavKlageUrl } from '@/lib/get-nav-klage-url';
 import { KLANG_DOMAIN } from '@/lib/klang';
+import { getInnsendingsytelserByIds } from '@/lib/kodeverk';
 import type { MetricsContextData } from '@/lib/metrics';
 import type { Sak, SakEvent } from '@/lib/types';
 import { Language, type Translation } from '@/locales';
@@ -25,31 +27,58 @@ interface EventNameProps {
   eventName: string;
 }
 
-const EttersendDokumentasjon = ({
+const EttersendDokumentasjon = async ({
   sak,
   lang,
   caseType,
   eventName,
   context,
-}: EttersendDokumentasjonProps & CaseTypeProps & EventNameProps) => (
-  <ButtonLink
-    variant="primary"
-    href={getEttersendelseLink(sak, lang, caseType)}
-    openInNewTab
-    eventName={eventName}
-    component="actions"
-    context={context}
-  >
-    {ETTERSEND_DOKUMENTASJON[lang]}
-  </ButtonLink>
-);
+}: EttersendDokumentasjonProps & CaseTypeProps & EventNameProps) => {
+  if (sak.innsendingsytelseIdList.length >= 2) {
+    const ytelser = await getInnsendingsytelserByIds(sak.innsendingsytelseIdList, lang);
 
-const getEttersendelseLink = (sak: Sak, lang: Language, caseType: CaseTypeEnum) => {
-  if (sak.innsendingsytelseId === null) {
+    const options = ytelser.map((ytelse) => ({
+      id: ytelse.id,
+      navn: ytelse.navn,
+      href: getEttersendelseLink(ytelse.id, sak.saksnummer, lang, caseType),
+    }));
+    return (
+      <InnsendingsytelseDialog
+        lang={lang}
+        triggerText={ETTERSEND_DOKUMENTASJON[lang]}
+        options={options}
+        eventName={eventName}
+        context={context}
+        title={ETTERSEND_DOKUMENTASJON_DIALOG_TITLE[lang]}
+      />
+    );
+  }
+
+  return (
+    <ButtonLink
+      variant="primary"
+      href={getEttersendelseLink(sak.innsendingsytelseIdList[0], sak.saksnummer, lang, caseType)}
+      openInNewTab
+      eventName={eventName}
+      component="actions"
+      context={context}
+    >
+      {ETTERSEND_DOKUMENTASJON[lang]}
+    </ButtonLink>
+  );
+};
+
+const getEttersendelseLink = (
+  innsendingsytelseId: string | undefined,
+  saksnummmer: string,
+  lang: Language,
+  caseType: CaseTypeEnum,
+) => {
+  if (innsendingsytelseId === undefined) {
     return getNavKlageUrl(lang);
   }
 
-  return `${KLANG_DOMAIN}/${lang}/ettersendelse/${caseType}/${sak.innsendingsytelseId}?saksnummer=${sak.saksnummer}&ka`;
+  return `${KLANG_DOMAIN}/${lang}/ettersendelse/${caseType}/${innsendingsytelseId}?saksnummer=${saksnummmer}&ka`;
 };
 
 export const EttersendDokumentasjonKlage = (props: EttersendDokumentasjonProps) => (
@@ -64,4 +93,10 @@ const ETTERSEND_DOKUMENTASJON: Translation = {
   [Language.NB]: 'Ettersend dokumentasjon',
   [Language.NN]: 'Ettersend dokumentasjon',
   [Language.EN]: 'Submit additional documentation',
+};
+
+const ETTERSEND_DOKUMENTASJON_DIALOG_TITLE: Translation = {
+  [Language.NB]: 'Velg hva ettersendelsen gjelder',
+  [Language.NN]: 'Velg kva ettersendinga gjeld',
+  [Language.EN]: 'Select what the additional documentation is about',
 };
